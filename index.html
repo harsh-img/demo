@@ -762,13 +762,29 @@
         });
 
         yesBtn.addEventListener("click", () => {
-            finalReply.textContent = "Meri side se reply: I love you too jaan! Hamesha saath rahunga. 💖";
+            yesBtn.disabled = true;
+            noBtn.disabled = true;
             reactionText.textContent = "✅ Proposal Accepted";
             playFall("💘");
+
             const selectedName = (nameInput.value && nameInput.value.trim()) ? nameInput.value.trim() : "Someone Special";
             const waMessage = encodeURIComponent(`Hi, ${selectedName} ne YES click kar diya! 💖`);
             const waUrl = `https://wa.me/919413128045?text=${waMessage}`;
-            window.open(waUrl, "_blank", "noopener");
+
+            let secondsLeft = 10;
+            finalReply.textContent = `Meri side se reply: I love you too jaan! ${secondsLeft}s me message redirect hoga... 💖`;
+
+            const countdown = setInterval(() => {
+                secondsLeft -= 1;
+                if (secondsLeft > 0) {
+                    finalReply.textContent = `Meri side se reply: I love you too jaan! ${secondsLeft}s me message redirect hoga... 💖`;
+                    return;
+                }
+
+                clearInterval(countdown);
+                finalReply.textContent = "Redirecting to WhatsApp... 💌";
+                window.open(waUrl, "_blank", "noopener");
+            }, 1000);
         });
 
         function moveNoButton() {
