@@ -765,6 +765,10 @@
             finalReply.textContent = "Meri side se reply: I love you too jaan! Hamesha saath rahunga. 💖";
             reactionText.textContent = "✅ Proposal Accepted";
             playFall("💘");
+            const selectedName = (nameInput.value && nameInput.value.trim()) ? nameInput.value.trim() : "Someone Special";
+            const waMessage = encodeURIComponent(`Hi, ${selectedName} ne YES click kar diya! 💖`);
+            const waUrl = `https://wa.me/919413128045?text=${waMessage}`;
+            window.open(waUrl, "_blank", "noopener");
         });
 
         function moveNoButton() {
