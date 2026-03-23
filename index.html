@@ -395,6 +395,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            overflow: hidden;
+            padding: 6px;
         }
 
         .btn-yes {
@@ -408,6 +410,8 @@
             color: #fff;
             left: 62%;
             top: 8px;
+            width: auto;
+            min-width: 96px;
             transition: left 150ms ease, top 150ms ease, transform 130ms ease;
         }
 
@@ -488,9 +492,14 @@
                 grid-template-columns: 1fr;
             }
 
-            .btn {
+            .controls .btn {
                 width: 100%;
                 white-space: normal;
+            }
+
+            .proposal-actions .btn {
+                width: auto;
+                min-width: 110px;
             }
 
             .flower-stage {
@@ -503,7 +512,7 @@
             }
 
             .proposal-actions {
-                min-height: 92px;
+                min-height: 110px;
             }
 
             .btn-no {
@@ -537,7 +546,7 @@
             </div>
 
             <div class="proposal" id="proposalBox">
-                <p class="proposal-title">Do you love snow? ❄️</p>
+                <p class="proposal-title">Do you love me? ❄️</p>
                 <div class="proposal-actions" id="proposalArea">
                     <button id="yesBtn" class="btn btn-yes">Yes 💖</button>
                     <button id="noBtn" class="btn btn-no" type="button">No 😅</button>
@@ -563,6 +572,7 @@
         const noBtn = document.getElementById("noBtn");
         const finalReply = document.getElementById("finalReply");
         let isNameLocked = false;
+        let noMoveStage = 0;
 
         function renderFlower(config) {
             const { petals, scale, petalWidth, petalHeight, petalY, petalOrigin } = config;
@@ -701,6 +711,9 @@
         function maybeShowProposal() {
             if (surpriseIndex === surprises.length - 1) {
                 proposalBox.classList.add("show");
+                noMoveStage = 0;
+                noBtn.style.left = "62%";
+                noBtn.style.top = "8px";
                 proposalBox.scrollIntoView({ behavior: "smooth", block: "nearest" });
             } else {
                 proposalBox.classList.remove("show");
@@ -736,7 +749,17 @@
             lockNameInput();
         });
 
-        surpriseBtn.addEventListener("click", showSurprise);
+        surpriseBtn.addEventListener("click", (event) => {
+            if (!isNameLocked) {
+                event.preventDefault();
+                surpriseText.textContent = "Pehle naam set karo, phir Next Surprise chalega ✍️";
+                shayariText.textContent = "Naam ke bina kahani adhoori hai, pehle apna naam likho.";
+                reactionText.textContent = "⚠️ Name Required";
+                surpriseText.classList.add("show");
+                return;
+            }
+            showSurprise();
+        });
 
         yesBtn.addEventListener("click", () => {
             finalReply.textContent = "Meri side se reply: I love you too jaan! Hamesha saath rahunga. 💖";
@@ -747,16 +770,44 @@
         function moveNoButton() {
             const areaRect = proposalArea.getBoundingClientRect();
             const btnRect = noBtn.getBoundingClientRect();
-            const maxX = Math.max(8, areaRect.width - btnRect.width - 8);
-            const maxY = Math.max(8, areaRect.height - btnRect.height - 8);
-            noBtn.style.left = `${Math.random() * maxX}px`;
-            noBtn.style.top = `${Math.random() * maxY}px`;
+            const yesRect = yesBtn.getBoundingClientRect();
+            const pad = 8;
+            const maxX = Math.max(pad, areaRect.width - btnRect.width - pad);
+            const maxY = Math.max(pad, areaRect.height - btnRect.height - pad);
+
+            if (noMoveStage === 0) {
+                noBtn.style.top = `${pad}px`;
+                noBtn.style.left = `${Math.max(pad, (areaRect.width - btnRect.width) / 2)}px`;
+                noMoveStage = 1;
+            } else if (noMoveStage === 1) {
+                noBtn.style.top = `${pad}px`;
+                noBtn.style.left = `${maxX}px`;
+                noMoveStage = 2;
+            } else {
+                const yesTop = yesRect.top - areaRect.top;
+                const yesBottom = yesRect.bottom - areaRect.top;
+                let newX = Math.random() * maxX;
+                let newY = Math.random() * maxY;
+                let attempts = 0;
+
+                while (
+                    attempts < 12 &&
+                    newY + btnRect.height > yesTop - 6 &&
+                    newY < yesBottom + 6
+                ) {
+                    newX = Math.random() * maxX;
+                    newY = Math.random() * maxY;
+                    attempts += 1;
+                }
+
+                noBtn.style.left = `${newX}px`;
+                noBtn.style.top = `${newY}px`;
+            }
             noBtn.classList.remove("shake");
             noBtn.offsetHeight;
             noBtn.classList.add("shake");
         }
 
-        noBtn.addEventListener("mouseenter", moveNoButton);
         noBtn.addEventListener("click", (event) => {
             event.preventDefault();
             moveNoButton();
