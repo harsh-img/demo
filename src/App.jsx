@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import "./App.css";
 
@@ -42,6 +42,76 @@ const pageTransition = {
 
 const PETAL_ANGLES = [0, 60, 120, 180, 240, 300];
 const INNER_ANGLES = [30, 90, 150, 210, 270, 330];
+
+/** Served from /public — filename has spaces */
+const CELEBRATION_SONG_SRC = encodeURI(
+  "/Ishqa Ve Chadeya - Ishqa Ve _ Zeeshan Ali _ Punjabi Song.mp3"
+);
+
+function MiniRoseSvg({ className, gradId }) {
+  return (
+    <svg className={className} viewBox="0 0 32 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <linearGradient id={gradId} x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#ff8fab" />
+          <stop offset="55%" stopColor="#e85d8b" />
+          <stop offset="100%" stopColor="#a61e4d" />
+        </linearGradient>
+      </defs>
+      <path
+        d="M16 36 Q14 28 15 22 Q12 18 10 14 Q14 12 16 16 Q18 12 22 14 Q20 18 17 22 Q18 28 16 36"
+        fill="none"
+        stroke="#1b4332"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+      />
+      <ellipse cx="16" cy="12" rx="10" ry="12" fill={`url(#${gradId})`} />
+      <ellipse cx="11" cy="11" rx="5" ry="8" fill="#ff4d6d" opacity="0.85" transform="rotate(-25 11 11)" />
+      <ellipse cx="21" cy="11" rx="5" ry="8" fill="#ff4d6d" opacity="0.85" transform="rotate(25 21 11)" />
+      <circle cx="16" cy="13" r="4" fill="#4a0518" />
+    </svg>
+  );
+}
+
+function FallingRoses() {
+  const items = useMemo(
+    () =>
+      Array.from({ length: 28 }, (_, i) => {
+        const seed = i * 17 + (i % 5) * 23;
+        return {
+          id: i,
+          left: `${(seed * 2.7) % 100}%`,
+          delay: ((i * 0.37) % 9).toFixed(2),
+          duration: 9 + (i % 7) + (i % 3) * 0.5,
+          drift: i % 2 === 0 ? 1 : -1,
+          scale: 0.55 + (i % 5) * 0.12,
+          sway: 18 + (i % 6) * 6,
+        };
+      }),
+    []
+  );
+
+  return (
+    <div className="falling-roses-layer" aria-hidden="true">
+      {items.map((p) => (
+        <div
+          key={p.id}
+          className="falling-rose-wrap"
+          style={{
+            left: p.left,
+            animationDelay: `${p.delay}s`,
+            animationDuration: `${p.duration}s`,
+            "--rose-drift": p.drift,
+            "--rose-scale": p.scale,
+            "--rose-sway": p.sway,
+          }}
+        >
+          <MiniRoseSvg className="falling-rose-svg" gradId={`frg-${p.id}`} />
+        </div>
+      ))}
+    </div>
+  );
+}
 
 function BloomingRose() {
   const ox = 60;
@@ -187,6 +257,7 @@ export default function App() {
   const [step, setStep] = useState(0);
   const [input, setInput] = useState("");
   const [text, setText] = useState("");
+  const celebrationAudioRef = useRef(null);
   const [noBtnStyle, setNoBtnStyle] = useState({
     position: "absolute",
     top: "58%",
@@ -218,6 +289,17 @@ export default function App() {
       top: `${8 + Math.random() * 72}%`,
       left: `${8 + Math.random() * 72}%`,
     });
+  };
+
+  const handleYes = () => {
+    let audio = celebrationAudioRef.current;
+    if (!audio) {
+      audio = new Audio(CELEBRATION_SONG_SRC);
+      celebrationAudioRef.current = audio;
+    }
+    audio.currentTime = 0;
+    void audio.play().catch(() => {});
+    setStep(3);
   };
 
   return (
@@ -378,7 +460,7 @@ export default function App() {
                       <motion.button
                         type="button"
                         className="btn-yes"
-                        onClick={() => setStep(3)}
+                        onClick={handleYes}
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
                         transition={{ type: "spring", stiffness: 260, damping: 14, delay: 0.15 }}
@@ -410,12 +492,13 @@ export default function App() {
         {step === 3 && (
           <motion.div
             key="success"
-            className="stage"
+            className="stage stage-success"
             variants={pageTransition}
             initial="initial"
             animate="animate"
             exit="exit"
           >
+            <FallingRoses />
             <motion.div
               className="success-card"
               initial={{ scale: 0.85, opacity: 0 }}

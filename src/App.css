@@ -384,7 +384,66 @@
 }
 
 /* —— Step 3: Success —— */
+.stage-success {
+  position: relative;
+}
+
+.falling-roses-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.falling-rose-wrap {
+  position: absolute;
+  top: -12vh;
+  width: clamp(26px, 6.5vw, 48px);
+  opacity: 0.9;
+  filter: drop-shadow(0 3px 10px rgba(232, 93, 139, 0.5));
+  animation-name: rose-fall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+
+.falling-rose-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+@keyframes rose-fall {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(var(--rose-scale, 1));
+    opacity: 0;
+  }
+  6% {
+    opacity: 0.95;
+  }
+  22% {
+    transform: translate3d(calc(var(--rose-sway, 24) * 0.35 * 1px * var(--rose-drift, 1)), 22vh, 0) rotate(120deg)
+      scale(var(--rose-scale, 1));
+  }
+  48% {
+    transform: translate3d(calc(var(--rose-sway, 24) * -0.25 * 1px * var(--rose-drift, 1)), 48vh, 0) rotate(260deg)
+      scale(var(--rose-scale, 1));
+  }
+  72% {
+    transform: translate3d(calc(var(--rose-sway, 24) * 0.5 * 1px * var(--rose-drift, 1)), 72vh, 0) rotate(400deg)
+      scale(var(--rose-scale, 1));
+  }
+  100% {
+    transform: translate3d(calc(var(--rose-sway, 24) * 0.15 * 1px * var(--rose-drift, 1)), 118vh, 0) rotate(520deg)
+      scale(var(--rose-scale, 1));
+    opacity: 0.35;
+  }
+}
+
 .success-card {
+  position: relative;
+  z-index: 1;
   width: min(100%, 440px);
   padding: clamp(2.5rem, 6vw, 3.5rem);
   border-radius: 32px;
@@ -439,11 +498,16 @@
 @media (prefers-reduced-motion: reduce) {
   .stars-layer,
   .particle,
-  .video-hint {
+  .video-hint,
+  .falling-rose-wrap {
     animation: none;
   }
 
   .particle {
+    display: none;
+  }
+
+  .falling-roses-layer {
     display: none;
   }
 }
