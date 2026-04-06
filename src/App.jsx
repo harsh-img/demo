@@ -369,7 +369,7 @@ export default function App() {
                   >
                     <h3>
                       Jyotsana — dil se aur poori izzat ke saath yeh poochhna chahta hoon:
-                      kya tum mere saath relationship mein aana chahogi?
+                      kya tum mere saath relationship mein aana chahogi? Do you love me?
                       <span className="proposal-sub">
                         Will you be in a relationship with me? 💍
                       </span>
