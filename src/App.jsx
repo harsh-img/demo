@@ -45,59 +45,61 @@ const NAV_ITEMS = [
 
 const COPY = {
   banner: {
-    line1: "Jab se mile… ab tak —",
-    lineBig: "ek hi kahani, bas unfold hoti ja rahi hai.",
-    line2: "Dates ab sirf numbers nahi… har ek ke peeche tum ho.",
-    right1: "Photos bol jaati hain woh feeling",
-    right2: "jo words chhod dete hain halfway.",
-    badge: "♥ for Jyotsana",
-    scroll: "Niche scroll karo",
-    micro: "life's good ♥",
+    line1: "Jyotsana — tumse pyaar likhna",
+    lineBig: "asaan nahi, par dil maanta hai.",
+    line2: "Jab se tum mile… har din thoda softer, thoda apna, aur bahut zyada khubsurat laga.",
+    right1: "Jo humne saath jiya, woh sirf",
+    right2: "‘time pass’ nahi — dil ne seriously save kar liya.",
+    badge: "♥ only you",
+    scroll: "Neeche chalo, saari yaadein tumhari hain",
+    micro: "love you · always ♥",
   },
   about: {
-    title: "Jyotsana — dil ke itne paas ki chuppi bhi sukoon lagti hai",
+    title: "Meri Jyotsana — jahan pyaar sirf word nahi, routine ban gaya",
     paras: [
-      "Tumhari hasi, tumhari chup, tumhara saath… in sab ne sikhaya ki pyaar zor se nahi, ehsaas se banta hai.",
-      "Gym ki tired selfie ho ya scooter pe hawa, raaste ki chai ho ya bas tumhare paas baithna — har cheez ne bol diya: ‘hum’ chhota shabd hai, par feeling infinite.",
+      "Tumhari muskurahat se din start hota hai, tumhari chup se main seekhta hoon… pyaar kabhi zor se nahi, bas samajh aur hug se bhi bol jaata hai.",
+      "Chaahe gym ki thakan ho, scooter pe hawa ho, ya bas tumhare baju mein baithkar kuch bhi na bolna — har pal ne sikhaya: tum meri favourite jagah ho, har mood mein.",
     ],
   },
   gallery: {
-    title: "Gallery — saari yaadein mixed, jaise real life",
-    body: "Koi category sort nahi… jo dil ne save kiya wahi yahan. Portrait seedha khada, landscape wide — bilkul waise hi jaise click hua tha.",
+    title: "Hamari gallery — random moments, ek hi dil se",
+    body: "Yahan koi ‘perfect feed’ nahi… sirf woh sab jo humne jeete aur dil ne bol diya ‘yeh rakh lo’. Vertical, horizontal, sab tumhari tarah natural.",
   },
   moments: {
-    title: "Moments reel",
-    body: "Neeche wali strip silently chalti hai — purane din + naye din, ek hi flow mein. Pause karke dekhna.",
+    title: "Chhoti si reel — bade pyaar ke clips",
+    body: "Neeche strip chalti rehti hai jaise heart ka shuffle on… purana ya naya, har frame tumhari yaad ka hissa hai. Ruk ke dekhna, dil halka ho jaata hai.",
   },
   letter: {
-    title: "Ek chhota sa letter",
+    title: "Tumhare naam — dil se",
     lines: [
-      "Jyotsana,",
-      "Kabhi lagta ho duniya sprint kar rahi hai… toh yaad rakhna: kuch rishte slow walk par sabse gehra feel dete hain.",
-      "Main har us din ka thankful hoon jis din tum aayi — aur har us pal ka jo aaj tak saath chala.",
-      "— tumhari kahani sunne wala",
+      "Meri pyari Jyotsana,",
+      "Duniya kitni bhi loud ho, tumhare saath wala hissa hamesha sukoon wala rehta hai. Main tumse pyaar karta hoon — bina shart, bina rush, bas tum ho toh kaafi.",
+      "Jis din tum mili, us din se leke aaj tak… har choti badi cheez ne thank you bola tumhe. Aage bhi saath chalna hai, haath pakad ke, hansi ke saath.",
+      "— tumhara, hamesha tumhara",
     ],
   },
   gift: {
-    hint: "Neeche box pe tap karo — chhota sa surprise andar.",
-    cta: "Gift khol do",
+    hint: "Neeche dil wala box hai — ek baar tap karna, jaise dil kholna ho.",
+    cta: "Apna gift khol lo ♥",
     insideTitle: "Sirf tumhare liye",
-    insideText: "Yeh poori site hi ek gift hai — yaadon ka, words ka, aur us ‘hum’ ka jo explain karna mushkil hai isliye photos rakh di.",
+    insideText:
+      "Yeh saara page ek hi baat kehna chahta hai: tum special ho, meri life ka sabse pyaara hissa ho. Words kam padenge, isliye saari photos aur clips rakh di — taaki tum dekh sako kitna pyaar hai.",
   },
   footer: {
-    tagline: "jab se mile… ab tak — bas tum, bas hum, bas yaadein.",
-    line: "Har frame ek quiet thank you hai — tumhare liye, hum dono ke liye, aur us story ke liye jo ab bhi likhi ja rahi hai.",
-    sub: "Pyaar bhara · always",
-    stripLabel: "Chhoti si throwback strip",
-    backToTop: "↑ wapas hero pe",
+    tagline: "Jyotsana — tum ho toh lagta hai ghar mil gaya, har jagah.",
+    line: "Har photo aur clip ek chupchaap I love you hai… tumhare liye, hum dono ke liye, aur har us pal ke liye jo ab bhi likhe ja rahe hain.",
+    sub: "Tumse pyaar · ab aur hamesha",
+    stripLabel: "Thodi si yaadein, zyada saara pyaar",
+    backToTop: "↑ wapas tumhari photo pe",
+    tiny: "dil se banaya hai — tumhare liye, sirf tumhare liye",
   },
 };
 
 const QUOTES = [
-  { lines: ["Naam hai Jyotsana,", "aur lagta hai roshni ne", "finally ek chehra choose kar liya."] },
-  { lines: ["Jab se mile hain,", "calendar ki dates ab", "sirf memories ban gayi."] },
-  { lines: ["Shor mein bhi sukoon hai", "agar tumhari awaaz ho,", "aur khamoshi mein bhi gaana."] },
-  { lines: ["Jo humne jiya hai", "use explain karna mushkil,", "isliye frames rakh diye."] },
+  { lines: ["Jyotsana naam sunte hi", "dil mein ek soft sa light on", "ho jaata hai."] },
+  { lines: ["Tumse pyaar itna asaan nahi", "jitna tum lagti ho,", "isliye shukriya har din ka."] },
+  { lines: ["Tumhari awaaz = meri favourite", "playlist ka first song,", "baaki sab background."] },
+  { lines: ["Jo humne jiya, woh words mein", "poora aaye na aaye,", "dil mein poora aa chuka hai."] },
 ];
 
 function SmartMedia({ file, kind, compact = false, caption }) {
@@ -601,7 +603,7 @@ export default function App() {
             </div>
 
             <div className="site-footer__bottom reveal-item">
-              <span className="site-footer__tiny">forever grateful · ek hi page, poori kahani</span>
+              <span className="site-footer__tiny">{COPY.footer.tiny}</span>
               <a href="#banner" className="site-footer__to-top">
                 {COPY.footer.backToTop}
               </a>
