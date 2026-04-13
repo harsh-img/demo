@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import "./App.css";
 
@@ -62,20 +62,108 @@ const fadeUp = {
   }),
 };
 
-export default function App() {
-  const [proposalOpen, setProposalOpen] = useState(false);
-  const [saidYes, setSaidYes] = useState(false);
+/** Short-lived popper bursts — mount with unique id */
+function PartyPopper({ burstId, variant }) {
+  const n = variant === "yes" ? 64 : 36;
+  const bits = useMemo(
+    () =>
+      Array.from({ length: n }, (_, i) => ({
+        i,
+        a: (i / n) * 360 + Math.random() * 18,
+        d: 100 + Math.random() * 200,
+        delay: Math.random() * 0.14,
+        spin: 360 + Math.random() * 540,
+        xo: (Math.random() - 0.5) * 50,
+        yo: (Math.random() - 0.5) * 50,
+        w: 5 + Math.random() * 7,
+        h: 7 + Math.random() * 12,
+      })),
+    [burstId, n]
+  );
 
-  const openProposal = useCallback(() => setProposalOpen(true), []);
+  return (
+    <div className="popper-root" aria-hidden>
+      {bits.map((b) => (
+        <span
+          key={`${burstId}-${b.i}`}
+          className={`popper-bit popper-bit--${variant}`}
+          style={{
+            "--a": `${b.a}deg`,
+            "--d": `${b.d}px`,
+            "--delay": `${b.delay}s`,
+            "--spin": `${b.spin}deg`,
+            "--xo": `${b.xo}px`,
+            "--yo": `${b.yo}px`,
+            width: b.w,
+            height: b.h,
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
+export default function App() {
+  const jawaabRef = useRef(null);
+  const [proposalOpen, setProposalOpen] = useState(false);
+  /** null = sawaal | 'yes' | 'later' = answered — modal band nahi hota inhe pe */
+  const [proposalOutcome, setProposalOutcome] = useState(null);
+  const [bursts, setBursts] = useState([]);
+
+  const firePoppers = useCallback((variant, times = 1) => {
+    for (let t = 0; t < times; t++) {
+      const delay = t * 200;
+      window.setTimeout(() => {
+        const id = `${Date.now()}-${t}-${Math.random()}`;
+        setBursts((prev) => [...prev, { id, variant }]);
+        window.setTimeout(() => {
+          setBursts((prev) => prev.filter((b) => b.id !== id));
+        }, 1200);
+      }, delay);
+    }
+  }, []);
+
+  const scrollToJawaab = useCallback(() => {
+    jawaabRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, []);
+
+  const openProposal = useCallback(() => {
+    setProposalOutcome(null);
+    setProposalOpen(true);
+  }, []);
+
   const closeProposal = useCallback(() => {
-    if (!saidYes) setProposalOpen(false);
-  }, [saidYes]);
-  const onYes = useCallback(() => setSaidYes(true), []);
+    setProposalOpen(false);
+    setProposalOutcome(null);
+  }, []);
+
+  const onBackdropClick = useCallback(() => {
+    if (proposalOutcome !== null) return;
+    closeProposal();
+  }, [proposalOutcome, closeProposal]);
+
+  const onYes = useCallback(() => {
+    setProposalOutcome("yes");
+    firePoppers("yes", 3);
+  }, [firePoppers]);
+
+  const onNeedTime = useCallback(() => {
+    setProposalOutcome("later");
+    firePoppers("later", 2);
+  }, [firePoppers]);
+
+  const backToQuestion = useCallback(() => {
+    setProposalOutcome(null);
+  }, []);
 
   return (
     <div className="spa">
       <div className="spa__bg" aria-hidden />
       <div className="spa__grain" aria-hidden />
+
+      {bursts.map((b) => (
+        <PartyPopper key={b.id} burstId={b.id} variant={b.variant} />
+      ))}
 
       <header className="spa-header">
         <span className="spa-header__mark" aria-hidden>
@@ -154,8 +242,27 @@ export default function App() {
             <p className="bridge__text">
               Saari baatein isliye likhi hain taaki tum samjho: main tumse pyaar karta hoon — dimag se, dil se, aur us tarah se bhi jo sirf tumhare paas rehne se samajh aati hai.
             </p>
-            <button type="button" className="btn btn--solid btn--wide" onClick={openProposal}>
+            <button type="button" className="btn btn--solid btn--wide" onClick={scrollToJawaab}>
               Apna jawab yahan
+            </button>
+          </motion.div>
+        </section>
+
+        <section className="jawaab" id="jawaab" ref={jawaabRef}>
+          <motion.div
+            className="jawaab__card"
+            initial={{ opacity: 0, y: 32 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-10%" }}
+            transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <p className="jawaab__kicker">Last stop · tumhari baari</p>
+            <h2 className="jawaab__title">Yahan aa gaye — ab dil kholo</h2>
+            <p className="jawaab__text">
+              Neeche wale button se wohi sawaal khulega. Jawab jo bhi ho, likha hua milega — kuch band nahi hoga beech mein ♥
+            </p>
+            <button type="button" className="btn btn--solid btn--wide" onClick={openProposal}>
+              Dil ka jawaab yahan khol do
             </button>
           </motion.div>
         </section>
@@ -179,7 +286,7 @@ export default function App() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={saidYes ? undefined : closeProposal}
+            onClick={onBackdropClick}
           >
             <motion.div
               className="modal"
@@ -189,45 +296,92 @@ export default function App() {
               transition={{ type: "spring", damping: 26, stiffness: 320 }}
               onClick={(e) => e.stopPropagation()}
             >
-              {!saidYes ? (
-                <>
-                  <p className="modal__kicker">{NAME}</p>
-                  <h2 id="proposal-title" className="modal__title">
-                    Kya tum <em>mere saath</em> yeh pyaar poori tarah jeena chahogi?
-                  </h2>
-                  <p className="modal__body">
-                    Dil se, honestly — bas hum. Acche din, mushkil din, aur woh saare beech ke pal jahan sirf tumhara saath chahiye.
-                  </p>
-                  <div className="modal__actions">
-                    <button type="button" className="btn btn--solid btn--yes" onClick={onYes}>
-                      Haan, bilkul
+              <AnimatePresence mode="wait">
+                {proposalOutcome === null && (
+                  <motion.div
+                    key="q"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.25 }}
+                  >
+                    <p className="modal__kicker">{NAME}</p>
+                    <h2 id="proposal-title" className="modal__title">
+                      Kya tum <em>mere saath</em> yeh pyaar poori tarah jeena chahogi?
+                    </h2>
+                    <p className="modal__body">
+                      Dil se, honestly — bas hum. Acche din, mushkil din, aur woh saare beech ke pal jahan sirf tumhara saath chahiye.
+                    </p>
+                    <div className="modal__actions">
+                      <button type="button" className="btn btn--solid btn--yes" onClick={onYes}>
+                        Haan, bilkul
+                      </button>
+                      <button type="button" className="btn btn--ghost" onClick={onNeedTime}>
+                        Thoda time chahiye
+                      </button>
+                    </div>
+                  </motion.div>
+                )}
+
+                {proposalOutcome === "yes" && (
+                  <motion.div
+                    key="yes"
+                    className="modal__yes"
+                    initial={{ opacity: 0, scale: 0.94 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.96 }}
+                    transition={{ duration: 0.45 }}
+                  >
+                    <span className="modal__glow" aria-hidden />
+                    <h2 className="modal__title modal__title--sm">Bas, dil ne sun liya:</h2>
+                    <p className="modal__body modal__body--big">
+                      I love you. Tum meri khushi ho, meri pride ho, meri sukoon — ab yeh pakka hai.
+                    </p>
+                    <p className="modal__cheek">Jaldi milo… hug tight, kiss soft, baaki sab baad mein ♥</p>
+                    <p className="modal__note">
+                      Yeh screen band kar bhi sakti ho jab mann kare — par jo likha hai woh permanent mood mein rehne wala hai.
+                    </p>
+                    <button type="button" className="btn btn--ghost btn--full" onClick={closeProposal}>
+                      Theek hai, dil full smile ♥
                     </button>
-                    <button type="button" className="btn btn--ghost" onClick={closeProposal}>
-                      Thoda time chahiye
-                    </button>
-                  </div>
-                </>
-              ) : (
-                <motion.div
-                  className="modal__yes"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <span className="modal__glow" aria-hidden />
-                  <h2 className="modal__title modal__title--sm">Bas, dil ne sun liya:</h2>
-                  <p className="modal__body modal__body--big">
-                    I love you. Tum meri khushi ho, meri pride ho, meri sukoon — ab yeh pakka hai.
-                  </p>
-                  <p className="modal__cheek">Jaldi milo… hug tight, kiss soft, baaki sab baad mein ♥</p>
-                </motion.div>
-              )}
+                  </motion.div>
+                )}
+
+                {proposalOutcome === "later" && (
+                  <motion.div
+                    key="later"
+                    className="modal__later"
+                    initial={{ opacity: 0, scale: 0.94 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.96 }}
+                    transition={{ duration: 0.45 }}
+                  >
+                    <span className="modal__glow modal__glow--soft" aria-hidden />
+                    <h2 className="modal__title modal__title--sm">Dil yeh keh raha hai — bilkul theek hai:</h2>
+                    <p className="modal__body modal__body--big">
+                      Tumhari har feeling qeemti hai. Time chahiye toh lo poora — main rush nahi karunga, pressure nahi banunga.
+                    </p>
+                    <p className="modal__body">
+                      Jab dil bole, tab aa jana; main yahin rahunga, same respect aur same pyaar ke saath. Tumhari speed meri favourite hai — isliye kuch band nahi hua, bas pause jaisa feel ho toh woh bhi pyaar hai.
+                    </p>
+                    <p className="modal__cheek">Thoda waqt lena weak nahi… dil se sochna strong lagta hai. Proud hoon tum par ♥</p>
+                    <div className="modal__actions">
+                      <button type="button" className="btn btn--solid btn--yes" onClick={backToQuestion}>
+                        Sawaal phir se padhna hai
+                      </button>
+                      <button type="button" className="btn btn--ghost btn--full" onClick={closeProposal}>
+                        Theek, dil ne note kar liya ♥
+                      </button>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {saidYes && <div className="confetti" aria-hidden />}
+      {proposalOutcome === "yes" && <div className="confetti" aria-hidden />}
     </div>
   );
 }

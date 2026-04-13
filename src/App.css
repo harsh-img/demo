@@ -256,8 +256,47 @@
   margin-bottom: 0;
 }
 
+.jawaab {
+  padding: 2rem clamp(1.25rem, 5vw, 3.5rem) 4rem;
+  scroll-margin-top: 5rem;
+}
+
+.jawaab__card {
+  max-width: 36rem;
+  margin: 0 auto;
+  padding: clamp(1.75rem, 4vw, 2.5rem);
+  border-radius: 1.25rem;
+  border: 1px solid rgba(212, 175, 122, 0.22);
+  background: linear-gradient(165deg, rgba(26, 15, 20, 0.95) 0%, rgba(18, 10, 14, 0.9) 100%);
+  box-shadow: 0 28px 90px rgba(0, 0, 0, 0.5), 0 0 48px rgba(199, 107, 126, 0.1);
+}
+
+.jawaab__kicker {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--gold);
+  margin: 0 0 0.65rem;
+}
+
+.jawaab__title {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 500;
+  margin: 0 0 0.85rem;
+  line-height: 1.2;
+}
+
+.jawaab__text {
+  font-family: "Tiro Devanagari Hindi", "Outfit", sans-serif;
+  font-size: 1.02rem;
+  line-height: 1.7;
+  color: var(--muted);
+  margin: 0 0 1.35rem;
+}
+
 .bridge {
-  padding: 2rem clamp(1.25rem, 5vw, 3.5rem) 5rem;
+  padding: 2rem clamp(1.25rem, 5vw, 3.5rem) 2.5rem;
 }
 
 .bridge__card {
@@ -403,6 +442,78 @@
   font-family: "Tiro Devanagari Hindi", serif;
 }
 
+.modal__later {
+  text-align: center;
+}
+
+.modal__later .modal__body {
+  text-align: left;
+}
+
+.modal__later .modal__actions {
+  margin-top: 0.25rem;
+}
+
+.modal__note {
+  margin: 1rem 0 1.25rem;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: var(--muted);
+  font-family: "Tiro Devanagari Hindi", "Outfit", sans-serif;
+}
+
+.btn--full {
+  width: 100%;
+  margin-top: 0.25rem;
+}
+
+.modal__glow--soft {
+  background: radial-gradient(circle, rgba(212, 175, 122, 0.35) 0%, transparent 70%);
+  box-shadow: 0 0 36px rgba(212, 175, 122, 0.25);
+}
+
+/* Party popper burst */
+.popper-root {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.popper-bit {
+  position: absolute;
+  left: 50%;
+  top: 42%;
+  border-radius: 2px;
+  opacity: 1;
+  will-change: transform, opacity;
+  animation: popper-fly 1.05s cubic-bezier(0.22, 1, 0.36, 1) var(--delay, 0s) forwards;
+}
+
+.popper-bit--yes {
+  background: linear-gradient(135deg, #f5ebe0 0%, #e8b4bc 40%, #d4af7a 100%);
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.35);
+}
+
+.popper-bit--later {
+  background: linear-gradient(135deg, rgba(232, 180, 188, 0.95), rgba(120, 80, 95, 0.75));
+  box-shadow: 0 0 4px rgba(212, 175, 122, 0.25);
+}
+
+@keyframes popper-fly {
+  0% {
+    transform: translate(calc(-50% + var(--xo, 0px)), calc(-50% + var(--yo, 0px))) rotate(var(--a, 0deg))
+      translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(calc(-50% + var(--xo, 0px)), calc(-50% + var(--yo, 0px))) rotate(var(--a, 0deg))
+      translateY(var(--d, 120px)) rotate(var(--spin, 360deg));
+    opacity: 0;
+  }
+}
+
 .confetti {
   position: fixed;
   inset: 0;
@@ -429,7 +540,9 @@
 @media (prefers-reduced-motion: reduce) {
   .hero__scroll span,
   .modal__glow,
-  .confetti {
-    animation: none;
+  .confetti,
+  .popper-bit {
+    animation: none !important;
+    opacity: 0;
   }
 }
