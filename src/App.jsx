@@ -48,7 +48,7 @@ const SECTIONS = [
     title: "Future hum likhenge — ek saath, ek rhythm mein",
     paras: [
       "Mujhe tumhare saath woh sab chahiye: lazy Sundays, serious talks, random dance, raat ko chai, aur woh choti choti rituals jo ‘couple’ se zyada ‘home’ banate hain.",
-      "Shaadi mere liye sirf label nahi — commitment ka full volume. Tumhare saath family, friends, stress, success — sab split screen mein, haath pakde.",
+      "Aage jo bhi likhein, chahta hoon tum uska centre rahogi — khushi ho ya thakan, sab mein woh ease jahan bas haath pakadna kaafi ho jaye.",
     ],
   },
 ];
@@ -193,10 +193,10 @@ export default function App() {
                 <>
                   <p className="modal__kicker">{NAME}</p>
                   <h2 id="proposal-title" className="modal__title">
-                    Kya tum meri <em>shaadi</em> karogi?
+                    Kya tum <em>mere saath</em> yeh pyaar poori tarah jeena chahogi?
                   </h2>
                   <p className="modal__body">
-                    Partner banogi meri zindagi ka — good days, bad days, aur woh saare beech ke days jahan bas tumhara haath chahiye hoga?
+                    Dil se, honestly — bas hum. Acche din, mushkil din, aur woh saare beech ke pal jahan sirf tumhara saath chahiye.
                   </p>
                   <div className="modal__actions">
                     <button type="button" className="btn btn--solid btn--yes" onClick={onYes}>
@@ -214,10 +214,10 @@ export default function App() {
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.5 }}
                 >
-                  <span className="modal__ring" aria-hidden />
-                  <h2 className="modal__title modal__title--sm">Toh phir official:</h2>
+                  <span className="modal__glow" aria-hidden />
+                  <h2 className="modal__title modal__title--sm">Bas, dil ne sun liya:</h2>
                   <p className="modal__body modal__body--big">
-                    I love you. Aur ab se tum meri fiancée — meri family, meri pride, meri peace.
+                    I love you. Tum meri khushi ho, meri pride ho, meri sukoon — ab yeh pakka hai.
                   </p>
                   <p className="modal__cheek">Jaldi milo… hug tight, kiss soft, baaki sab baad mein ♥</p>
                 </motion.div>
