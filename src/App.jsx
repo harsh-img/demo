@@ -1,174 +1,149 @@
-import { useState, useEffect, useRef } from 'react';
-import './App.css';
+import React, { useState, useEffect, useRef } from 'react';
+import './index.css';
+import avatarImg from './assets/avatar.png';
 
 /* 
-  Floating Hearts Background Component
+  Ethereal Starlight Background 
 */
-const FloatingHearts = () => {
-  const [hearts, setHearts] = useState([]);
-
-  useEffect(() => {
-    const symbols = ['❤️', '💖', '✨', '🌸', '🌹'];
-    const interval = setInterval(() => {
-      const id = Date.now();
-      const newHeart = {
-        id,
-        symbol: symbols[Math.floor(Math.random() * symbols.length)],
-        left: Math.random() * 100,
-        size: Math.random() * 20 + 10,
-        duration: Math.random() * 5 + 5,
-      };
-      setHearts(prev => [...prev, newHeart].slice(-30));
-    }, 400);
-    return () => clearInterval(interval);
-  }, []);
+const Starfield = () => {
+  const stars = Array.from({ length: 50 }).map((_, i) => ({
+    id: i,
+    top: Math.random() * 100,
+    left: Math.random() * 100,
+    size: Math.random() * 3,
+    delay: Math.random() * 10,
+  }));
 
   return (
-    <div className="particles-bg">
-      {hearts.map(h => (
-        <span
-          key={h.id}
-          className="bg-heart"
+    <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
+      {stars.map(s => (
+        <div
+          key={s.id}
           style={{
-            left: `${h.left}%`,
-            fontSize: `${h.size}px`,
-            animationDuration: `${h.duration}s`,
-            bottom: '-50px',
+            position: 'absolute',
+            top: `${s.top}%`,
+            left: `${s.left}%`,
+            width: `${s.size}px`,
+            height: `${s.size}px`,
+            background: 'white',
+            borderRadius: '50%',
+            opacity: 0,
+            animation: `fadeInOut 5s infinite ${s.delay}s`,
+            boxShadow: '0 0 10px white',
           }}
-        >
-          {h.symbol}
-        </span>
+        />
       ))}
+      <style>{`
+        @keyframes fadeInOut {
+          0%, 100% { opacity: 0; transform: scale(0.5); }
+          50% { opacity: 0.8; transform: scale(1.2); }
+        }
+      `}</style>
     </div>
   );
 };
 
 export default function App() {
-  const [stage, setStage] = useState('START'); // START, LOADING, JOURNEY, SECRET
-  const [journeyStep, setJourneyStep] = useState(0);
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const [isHovered, setIsHovered] = useState(false);
+  const portalRef = useRef(null);
 
-  const journeyData = [
-    {
-      title: "The Beginning",
-      content: "Jab pehli baar tumhein dekha, tab shayad hi pata tha ki...",
-      btn: "Kya pata tha?"
-    },
-    {
-      title: "The Realization",
-      content: "Ki tum mere liye sirf ek chehra nahi, mera pura jahaan ban jaoge.",
-      btn: "Aur phir?"
-    },
-    {
-      title: "The Suspense",
-      content: "Kayi raaz hain jo dil mein dabbe the, aaj ek ek karke bahar aayenge.",
-      btn: "Main tyaar hoon"
-    },
-    {
-      title: "The Emotion",
-      content: "Har dhadkan tumhara naam leti hai, har saans mein tumhari mehek hai.",
-      btn: "Secret Reveal"
-    }
-  ];
-
-  const handleStart = () => {
-    setStage('LOADING');
-    setTimeout(() => {
-      setStage('JOURNEY');
-    }, 3000);
-  };
-
-  const nextStep = () => {
-    if (journeyStep < journeyData.length - 1) {
-      setJourneyStep(journeyStep + 1);
-    } else {
-      setStage('SECRET');
-    }
+  const handleMouseMove = (e) => {
+    if (!portalRef.current) return;
+    const rect = portalRef.current.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    setTilt({ x: x * 15, y: -y * 15 });
   };
 
   return (
-    <div className="app-container">
-      <FloatingHearts />
+    <div className="surreal-container" onMouseMove={handleMouseMove}>
+      <div className="aurora" />
+      <div className="morphing-blob" style={{ top: '10%', left: '10%' }} />
+      <div className="morphing-blob" style={{ bottom: '10%', right: '10%', background: 'rgba(255,133,161,0.1)' }} />
+      <Starfield />
 
-      {stage === 'START' && (
-        <div className="name-screen" onClick={handleStart}>
-          <h1 className="main-name grad-text" style={{ animation: 'float 4s infinite ease-in-out' }}>Jyotsana</h1>
-          <div className="sub-lines">
-            <span className="sub-line sub-line-1">Har pal tumhara khayal...</span>
-            <span className="sub-line sub-line-2">Har khwab tumhare naam.</span>
-          </div>
-          <div className="click-hint" style={{ marginTop: '4rem' }}>Dil ki gehraiyo mein utarne ke liye click karein...</div>
+      <main 
+        ref={portalRef}
+        className="portal-card"
+        style={{
+          transform: `rotateY(${tilt.x}deg) rotateX(${tilt.y}deg)`,
+        }}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => {
+          setIsHovered(false);
+          setTilt({ x: 0, y: 0 });
+        }}
+      >
+        <div className="avatar-sphere">
+          <img 
+            src={avatarImg} 
+            className="avatar-img" 
+            alt="My Love Avatar"
+            style={{ 
+              filter: isHovered ? 'brightness(1.2) contrast(1.1)' : 'none',
+              transform: isHovered ? 'scale(1.05)' : 'scale(1)',
+              animation: 'pulse 3s infinite ease-in-out'
+            }}
+          />
+          {/* Glowing Aura Loop */}
+          <div style={{
+            position: 'absolute',
+            inset: '-10px',
+            border: '2px solid var(--secondary)',
+            borderRadius: '50%',
+            opacity: 0.5,
+            animation: 'auraOrbit 4s linear infinite',
+          }} />
         </div>
-      )}
 
-      {stage === 'LOADING' && (
-        <div className="loading-screen">
-          <div className="heart-loader" style={{ textShadow: '0 0 20px var(--rose)' }}>❤️</div>
-          <p className="loading-text" style={{ fontSize: '1.8rem' }}>Dil ke raaz khul rahe hain...</p>
-          <p style={{ color: 'var(--text-dim)', marginTop: '1.5rem', fontSize: '1rem', fontStyle: 'italic' }}>
-             "Kuch baatein unkahi, kuch jazbaat ansune..."
-          </p>
-          <div className="hb-wrap" style={{ marginTop: '2rem' }}>
-             <div className="hb-bar" style={{ height: '20px' }}></div>
-             <div className="hb-bar" style={{ height: '40px' }}></div>
-             <div className="hb-bar" style={{ height: '30px' }}></div>
-          </div>
+        <h1 className="love-title">Celestial Love</h1>
+        
+        <div className="interactive-quote">
+          "In a universe of billions, my soul recognized yours 
+          like a star finding its galaxy. You aren't just a part 
+          of my world; you are the gravity that holds it together."
         </div>
-      )}
 
-      {stage === 'JOURNEY' && (
-        <div className="journey-screen">
-          <div className="journey-card glass" style={{ animation: 'fadeIn 1s' }}>
-            <span className="journey-step-num">Raaz {journeyStep + 1} / {journeyData.length}</span>
-            <h2 className="grad-text" style={{ marginBottom: '1.5rem', fontFamily: 'Playfair Display', fontSize: '2.5rem' }}>
-              {journeyData[journeyStep].title}
-            </h2>
-            <p className="journey-content" style={{ minHeight: '120px' }}>
-              {journeyData[journeyStep].content}
-            </p>
-            <button className="journey-btn" onClick={nextStep}>
-              {journeyData[journeyStep].btn}
-            </button>
-          </div>
+        <div style={{
+          marginTop: '2rem',
+          fontSize: '0.9rem',
+          color: 'var(--accent)',
+          letterSpacing: '1px',
+          fontWeight: '700'
+        }}>
+          — UNLOCKING PHASE ∞ —
         </div>
-      )}
 
-      {stage === 'SECRET' && (
-        <div className="secret-container">
-          <div className="glass secret-box" style={{ border: '2px solid var(--rose-glow)', boxShadow: '0 0 50px var(--rose-glow)' }}>
-            <h1 className="secret-title grad-text" style={{ fontSize: '4.5rem' }}>Mera Sabse Bada Raaz</h1>
-            <div className="divider-c" style={{ width: '100px', height: '3px', background: 'var(--rose)', margin: '2rem auto' }}></div>
-            <p style={{ fontSize: '1.4rem', marginBottom: '2rem', lineHeight: '1.8' }}>
-              Secret yeh nahi ki main tumhein pasand karta hoon...<br />
-              <strong style={{ fontSize: '2rem', color: 'var(--rose)', display: 'block', marginTop: '1rem' }}>
-                Secret yeh hai ki tum mere har khushi ka 'Zariya' ho.
-              </strong>
-            </p>
-            <p style={{ fontSize: '1.1rem', color: 'var(--text-dim)' }}>
-              Tumhare bina har rang fika hai, har mehfil adhuri hai.<br />
-              Ab yeh dil sirf tumhare liye hi dhadakta hai.
-            </p>
-            <div className="final-vow" style={{ fontSize: '3rem', marginTop: '3rem' }}>
-              "Bas Tum, Humesha." ❤️
-            </div>
-            <div style={{ marginTop: '4rem' }}>
-              <button className="journey-btn" style={{ padding: '1rem 3rem' }} onClick={() => setStage('START')}>
-                Ek Baar Phir Se...
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-      
-      {/* Footer Signature */}
+        <button className="cosmic-btn">
+          Explore My Heart
+        </button>
+
+        {/* Decorative Floating Circles */}
+        <div style={{
+          position: 'absolute',
+          top: '-20px',
+          right: '-20px',
+          width: '60px',
+          height: '60px',
+          background: 'var(--glow)',
+          borderRadius: '50%',
+          filter: 'blur(20px)',
+          animation: 'float 3s infinite'
+        }} />
+      </main>
+
+      {/* Floating Floating text */}
       <div style={{
         position: 'absolute',
-        bottom: '20px',
-        right: '20px',
-        fontSize: '0.7rem',
-        color: 'var(--text-dim)',
-        letterSpacing: '1px'
+        bottom: '30px',
+        width: '100%',
+        textAlign: 'center',
+        color: 'rgba(255,255,255,0.3)',
+        fontSize: '0.8rem',
+        letterSpacing: '5px'
       }}>
-        Redesigned with Love for Jyotsana
+        BEYOND SPACE & TIME
       </div>
     </div>
   );
