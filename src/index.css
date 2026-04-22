@@ -1,10 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,700;1,400&family=Great+Vibes&family=Montserrat:wght@300;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,700;1,400&family=Great+Vibes&family=Montserrat:wght@300;600;800&family=Dancing+Script:wght@700&display=swap');
 
 :root {
-  --paper: #f9f4ef;
-  --ink: #2c1810;
-  --gold: #d4af37;
-  --cover: #4a0e0e; /* Deep Burgundy Cover */
+  --paper: #fefae0;
+  --ink: #283618;
+  --gold: #bc6c25;
+  --gold-glow: rgba(188, 108, 37, 0.4);
+  --cover: #4a0e0e;
 }
 
 * {
@@ -15,7 +16,7 @@
 
 body {
   font-family: 'Crimson Pro', serif;
-  background-color: #1a1a1a; /* Dark cozy background */
+  background: radial-gradient(circle at center, #2c1810 0%, #000 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -26,9 +27,9 @@ body {
 /* 3D Book Structure */
 .book-container {
   position: relative;
-  width: min(90vw, 450px);
-  height: min(80vh, 600px);
-  perspective: 1500px;
+  width: min(95vw, 500px);
+  height: min(85vh, 650px);
+  perspective: 2000px;
 }
 
 .book {
@@ -49,14 +50,14 @@ body {
   background: var(--paper);
   transform-origin: left;
   transform-style: preserve-3d;
-  transition: transform 1s cubic-bezier(0.645, 0.045, 0.355, 1);
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  padding: 3rem 2.5rem;
+  transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+  box-shadow: 0 0 20px rgba(0,0,0,0.2);
+  padding: 2.5rem 2rem;
   display: flex;
   flex-direction: column;
   cursor: pointer;
   backface-visibility: hidden;
-  border-radius: 0 5px 5px 0;
+  border-radius: 0 10px 10px 0;
 }
 
 .page.flipped {
@@ -64,76 +65,94 @@ body {
   z-index: 100 !important;
 }
 
-.page-content {
-  opacity: 1;
-  transition: opacity 0.5s;
-}
-
-/* Cover Styling */
+/* Cover Decoration */
 .cover {
   background: var(--cover);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  border-radius: 0 10px 10px 0;
-  border-left: 10px solid #333;
+  border-left: 12px solid #222;
+  box-shadow: 10px 10px 40px rgba(0,0,0,0.6);
+  position: relative;
+  overflow: hidden;
+}
+
+.cover::before {
+  content: '';
+  position: absolute;
+  inset: 20px;
+  border: 2px solid var(--gold);
+  opacity: 0.3;
+  pointer-events: none;
 }
 
 .cover h1 {
   font-family: 'Great Vibes', cursive;
-  font-size: 4rem;
+  font-size: 5rem;
   color: var(--gold);
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  text-shadow: 3px 3px 6px rgba(0,0,0,0.4);
+  z-index: 10;
 }
 
-.cover-tagline {
-  color: #fff;
-  font-size: 0.8rem;
-  letter-spacing: 5px;
-  text-transform: uppercase;
-  margin-top: 1rem;
-}
-
-/* Internal Page Headings */
+/* Page Content */
 .chapter-num {
   font-family: 'Montserrat', sans-serif;
-  font-size: 0.7rem;
-  letter-spacing: 5px;
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 4px;
   color: var(--gold);
   text-transform: uppercase;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .chapter-title {
-  font-size: 2.2rem;
-  margin-bottom: 2rem;
-  font-weight: 700;
-  color: var(--gold);
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--ink);
+  font-weight: 800;
+  line-height: 1;
 }
 
 .page-text {
-  font-size: 1.1rem;
-  line-height: 1.8;
-  color: var(--ink);
-  text-align: justify;
+  font-size: 1.2rem;
+  line-height: 1.7;
+  color: #333;
+  word-spacing: 2px;
 }
 
-/* Navigation Hint */
-.nav-hint {
-  position: fixed;
-  bottom: 20px;
-  color: rgba(255,255,255,0.4);
+/* margin note style */
+.handwritten {
+  font-family: 'Dancing Script', cursive;
+  color: #d62828;
+  font-size: 1.3rem;
+  margin-top: 1.5rem;
+  transform: rotate(-2deg);
+}
+
+.page-footer {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   font-size: 0.8rem;
-  letter-spacing: 2px;
+  opacity: 0.5;
+  border-top: 1px solid rgba(0,0,0,0.1);
+  padding-top: 10px;
 }
 
-/* Texture */
-.page::after {
-  content: '';
+/* Fun Ornaments */
+.ornament {
   position: absolute;
-  inset: 0;
-  background: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
-  opacity: 0.3;
+  opacity: 0.15;
   pointer-events: none;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.floating-icon {
+  animation: float 3s infinite ease-in-out;
+  display: inline-block;
 }

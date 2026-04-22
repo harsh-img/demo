@@ -5,57 +5,77 @@ const chapters = [
   {
     type: 'cover',
     title: 'Jyotsana',
-    subtitle: 'The Story of a Soul'
+    subtitle: 'The Heart\'s Journal ❤️✨'
   },
   {
     num: 'Chapter 01',
-    title: 'The First Breath',
-    content: 'Zindagi mein bahut log aate hain, magar kuch log thahar jaate hain. Jab maine tumhein dekha, pehli baar laga ki waqt ki raftaar kam ho sakti hai. Tumhara naam sirf ek naam nahi, mere liye ek sukoon tha.'
+    title: 'The First Spark ✨',
+    emoji: '🔥',
+    content: 'Duniya mein 8 billion log hain, magar meri nazar hamesha "voh" ek insaan dhoondti thi. Aur jab tum mili, toh aisa laga jaise movie ka koi slow-motion scene chal raha ho! 🎬',
+    note: 'P.S. Pehli baar mein hi tumne mera dil chura liya tha! 🕵️‍♀️💕'
   },
   {
     num: 'Chapter 02',
-    title: 'The Silent Note',
-    content: 'Baatein toh sab karte hain, magar tumhari khamoshi bahut kuch bol jati hai. Maine seekha hai ki tumhare chup rehne ke peeche bhi ek pura jahan chupa hota hai. Tumhari aankhein woh sab bol deti hain jo tum keh nahi paati.'
+    title: 'Sweet Quietness 🤫',
+    emoji: '🍂',
+    content: 'Log kehte hain silence awkward hota hai, magar tumhare sath khamoshi bhi kitni music jaisi lagti hai na? Bina bole itni baatein kar lena sirf humein aata hai. ☕',
+    note: 'Fun Fact: Tumhari khamoshi mein bhi ek alag hi swag hai! 😎'
   },
   {
     num: 'Chapter 03',
-    title: 'Hidden Magic',
-    content: 'Tumhara baalon ko kaan ke peeche karna, ya sote waqt thoda sa muskurana—tumhein shayad pata bhi nahi, magar mere liye yeh kisi magic se kam nahi hai. In chhoti chhoti baaton mein hi toh tum basti ho.'
+    title: 'Your Little Quirks 😸',
+    emoji: '🧸',
+    content: 'Woh jo tum gusse mein apni naak sikodti ho, ya jab tum excited hoti ho toh tumhari aankhein chamakne lagti hain—yeh sab dekh kar main bas hasta rehta hoon. Kitni cute ho tum! 🌸',
+    note: 'Note: Tumhari pagal-panti hi toh meri favorite hai! 🤪❤️'
   },
   {
     num: 'Chapter 04',
-    title: 'The Calm Center',
-    content: 'Jab kabhi tumhein tension ho, ya duniya bojh lagne lage—bas yaad rakhna ki ek jagah aisi hai jahan sirf sukon hai. Mere khayalon mein tum hamesha mehfooz ho. Saas lo, gehra... sab theek hai.'
+    title: 'Relaxation Zone 🧘‍♀️',
+    emoji: '☁️',
+    content: 'Tension? Stress? 🚫 Chodo un sab ko! Jab bhi thaka hua feel karo, bas aankhein band karo aur socho hum saath mein ice-cream kha rahe hain. Sab problems gayab ho jayengi! 🍦✨',
+    note: 'Task: Abhi ke abhi ek lambi saans lo... aur smile karo! 😊'
   },
   {
     num: 'Chapter 05',
-    title: 'The Reflection',
-    content: 'Log kaanch mein khud ko dekhte hain, magar main tumhein apni nazron se dikhana chahta hoon. Tum itni khoobsurat ho ki meri har shayari adhoori lagti hai. Tumhara hona hi meri sabse badi khushi hai.'
+    title: 'Absolute Queen 👸',
+    emoji: '👑',
+    content: 'Log filter use karte hain, magar tumhein zarurat hi nahi hai. Tumhare natural smile ke aage filters fail hain. Tum sirf meri queen nahi, tum mera pura kingdom ho! 🏰💖',
+    note: 'Warning: Itni pyaari mat bana karo, nazar lag jayegi! 🧿'
   },
   {
     num: 'Chapter 06',
-    title: 'Parallel Worlds',
-    content: 'Agar hazaron duniya hoti, toh har ek duniya mein main tumhein hi dhoondta. Humaara milna koi ittefaq nahi, shayad yeh sadiyon purana ek wada tha jo is zindagi mein pura ho raha hai.'
+    title: 'Multiverse of Us 🌌',
+    emoji: '🛸',
+    content: 'Agar main kisi dusre planet par bhi hota, toh alien banke tumhare pass aata! 👽 Kyunki gravity humein nahi, humaara pyaar humein khichta hai. Har universe mein "Bas Tum". 💫',
+    note: 'Imagination: Kya hum aliens banke bhi itne hi cute lagte? 🛸💕'
   },
   {
     num: 'Chapter 07',
-    title: 'The Rhythm',
-    content: 'Tumhari aawaz mere liye kisi dhun ki tarah hai. Din bhar ki thakan mitti hai jab tum bolti ho. Main chahta hoon ki tum hamesha hasti raho, kyunki tumhari hasi meri duniya ki sabse pyari sound hai.'
+    title: 'The Radio You 📻',
+    emoji: '🎵',
+    content: 'Tumhari aawaz sunna mera favorite kaam hai. Chahe tum koi boring story sunao ya sirf "Hmm" kaho, mere liye woh kisi hit gaane se kam nahi hai. Remix karke sunun kya? 😂',
+    note: 'Dedication: Yeh chapter tumhari pyaari si voice ke naam! 🎙️❤️'
   },
   {
     num: 'Chapter 08',
-    title: 'Night Thoughts',
-    content: 'Jab raat gehari hoti hai aur duniya so jati hai, tab mere khayalon mein sirf tum hoti ho. Andhere mein bhi tumhari muskurahat ek roshni ki tarah chamakti hai. Tum mera woh sukoon ho jo neend mein bhi sath rehta hai.'
+    title: 'Night Owl Story 🦉',
+    emoji: '🌙',
+    content: 'Raat ko jab baarish hoti hai aur tum mere khayalon mein aati ho, toh neend kahan aayegi? Bas tumhari purani photos dekhta hoon aur phir se tumse pyaar ho jata hai. 🌧️💞',
+    note: 'Secret: Kabhi-kabhi main tumhari photos ko "Hi" bhi bolta hoon! 🤭'
   },
   {
     num: 'Chapter 09',
-    title: 'The Promise',
-    content: 'Main wada karta hoon ki chahe mousam badle ya log, meri chahat tumhare liye wahi rahegi. Main hamesha tumhara hath thame rakhunga—khushi mein bhi aur un mushkil raaton mein bhi jab tum akela mehsoos karo.'
+    title: 'Pinky Promise 🤙',
+    emoji: '🤝',
+    content: 'Wada raha... tumhare har nakhre uthaunga, tumhari har zid poori karunga (within budget! 😂). Main hamesha tumhara "Personal Cheerleader" rahunga. 📣🥰',
+    note: 'Vow: Main kabhi tumhara hath nahi chhodunga. Promise! 🤞❤️'
   },
   {
     num: 'Chapter 10',
-    title: 'The Unending',
-    content: 'Yeh kitab yahan khatam nahi hoti, yeh toh bas ek nayi shuruaat hai. Har naya din humaari kahani ka naya panna hoga. Jyotsana, tum meri zindagi ki woh kitab ho jise main baar-baar padhna chahta hoon.'
+    title: 'To Be Continued... 📖',
+    emoji: '🌈',
+    content: 'Yeh kitab toh bas trailer hai, puri film toh abhi baki hai mere dost! 🎥 Har naya din, humari kahani ka naya romantic aur funny episode hoga. I love you, Jyotsana! ❤️',
+    note: 'Ending Note: Agla chapter hum saath mein likhenge! ✍️💞'
   }
 ];
 
@@ -83,18 +103,30 @@ export default function App() {
             >
               <div className="page-content">
                 {chapter.type === 'cover' ? (
-                  <>
+                  <div style={{ textAlign: 'center', width: '100%' }}>
+                    <div className="floating-icon" style={{ fontSize: '3rem', marginBottom: '1rem' }}>📔</div>
                     <h1>{chapter.title}</h1>
                     <p className="cover-tagline">{chapter.subtitle}</p>
-                    <p style={{ marginTop: '3rem', color: 'rgba(255,255,255,0.4)', fontSize: '0.8rem' }}>Click to Open My Heart</p>
-                  </>
+                    <div style={{ marginTop: '4rem', opacity: 0.5, fontSize: '0.8rem' }}>
+                      Panno ko paltein aur <br /> jaadu dekhein... ✨
+                    </div>
+                  </div>
                 ) : (
                   <>
-                    <span className="chapter-num">{chapter.num}</span>
+                    <div className="chapter-num">
+                      <span>{chapter.num}</span>
+                      <span className="floating-icon">{chapter.emoji}</span>
+                    </div>
                     <h2 className="chapter-title">{chapter.title}</h2>
                     <p className="page-text">{chapter.content}</p>
-                    <div style={{ marginTop: 'auto', textAlign: 'right', fontSize: '0.8rem', opacity: 0.4 }}>
-                      Page {index + 1}
+                    {chapter.note && (
+                      <div className="handwritten">
+                        {chapter.note}
+                      </div>
+                    )}
+                    <div className="page-footer">
+                      <span>Memories of Jyotsana</span>
+                      <span>Page {index + 1}</span>
                     </div>
                   </>
                 )}
@@ -104,13 +136,14 @@ export default function App() {
         </div>
       </div>
       
-      <div className="nav-hint">
-        {flippedPages.length === 0 ? "Open the book to start the journey" : "Click to flip pages"}
+      <div className="nav-hint" style={{ color: 'var(--gold)' }}>
+        {flippedPages.length === 0 ? "Click to open the magic cover! ✨" : "Click the right side to keep reading... 📖"}
       </div>
 
-      {/* Background Ambience */}
-      <div style={{ position: 'fixed', top: '10%', right: '10%', fontSize: '2rem', opacity: 0.1 }}>🕯️</div>
-      <div style={{ position: 'fixed', bottom: '15%', left: '15%', fontSize: '2rem', opacity: 0.1 }}>🌸</div>
+      {/* Decorations */}
+      <div style={{ position: 'fixed', top: '5%', left: '5%', fontSize: '2rem', opacity: 0.1, animation: 'float 4s infinite' }}>⭐</div>
+      <div style={{ position: 'fixed', top: '15%', right: '15%', fontSize: '2rem', opacity: 0.1, animation: 'float 5s infinite' }}>💖</div>
+      <div style={{ position: 'fixed', bottom: '10%', left: '10%', fontSize: '2rem', opacity: 0.1, animation: 'float 6s infinite' }}>🧸</div>
     </div>
   );
 }
