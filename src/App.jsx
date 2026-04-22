@@ -5,7 +5,7 @@ const chapters = [
   {
     type: 'cover',
     title: 'Jyotsana',
-    subtitle: 'The Heart\'s Journal ❤️✨'
+    subtitle: 'Soul living in my heart'
   },
   {
     num: 'Chapter 01',
@@ -71,11 +71,18 @@ const chapters = [
     note: 'Vow: Main kabhi tumhara hath nahi chhodunga. Promise! 🤞❤️'
   },
   {
-    num: 'Chapter 10',
+    num: 'The Final Chapter',
     title: 'To Be Continued... 📖',
     emoji: '🌈',
-    content: 'Yeh kitab toh bas trailer hai, puri film toh abhi baki hai mere dost! 🎥 Har naya din, humari kahani ka naya romantic aur funny episode hoga. I love you, Jyotsana! ❤️',
-    note: 'Ending Note: Agla chapter hum saath mein likhenge! ✍️💞'
+    content: 'Yeh kitab toh bas trailer hai, puri film toh abhi baki hai mere dost! 🎥 Har naya din, humari kahani ka naya romantic aur funny episode hoga. Main hamesha tumhara yehi "Personal Cheerleader" rahunga! ❤️',
+    note: 'Next Step: Check the very last page... 💌'
+  },
+  {
+    type: 'letter',
+    num: 'A Special Note',
+    title: 'A Letter for You 💌',
+    content: 'Jyotsana, yeh kitab likhte waqt mere dil mein sirf ek hi baat thi—ki tumhare chehre par woh smile dekh sakun jo mere liye duniya ki sabse badi khushi hai. Main nahi jaanta life humein kahan le jayegi, magar jitna bhi safar hai, main use tumhare sath jeena chahta hoon. Tum sirf ek ehsaas nahi, tum meri woh khwahish ho jo puri toh ho gayi hai, magar khamosh nahi hui. Mere paas alfaz kam hain, magar jazbaat behisab hain. \n\nBas ek baat kehni thi—agar yeh sab padh kar tumhein sach mein dil se achaa lage, toh hi reply karna... barna koi baat nahi, ise tumhare liye ek pyari yaad samajh kar rehne dena. Main hamesha tumhara wahi wahi wahi rahungA. ❤️',
+    note: 'With infinite love, Always. 🤙🌹'
   }
 ];
 
@@ -97,13 +104,14 @@ export default function App() {
           {chapters.map((chapter, index) => (
             <div 
               key={index}
-              className={`page ${chapter.type === 'cover' ? 'cover' : ''} ${flippedPages.includes(index) ? 'flipped' : ''}`}
+              className={`page ${chapter.type === 'cover' ? 'cover' : ''} ${chapter.type === 'letter' ? 'letter' : ''} ${flippedPages.includes(index) ? 'flipped' : ''}`}
               style={{ zIndex: chapters.length - index }}
               onClick={() => togglePage(index)}
             >
               <div className="page-content">
                 {chapter.type === 'cover' ? (
-                  <div style={{ textAlign: 'center', width: '100%' }}>
+                  <div style={{ textAlign: 'center', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <div className="cover-corner-br">✻</div>
                     <div className="floating-icon" style={{ fontSize: '3rem', marginBottom: '1rem' }}>📔</div>
                     <h1>{chapter.title}</h1>
                     <p className="cover-tagline">{chapter.subtitle}</p>
