@@ -1,115 +1,116 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './index.css';
-import avatarImg from './assets/avatar.png';
+
+const chapters = [
+  {
+    type: 'cover',
+    title: 'Jyotsana',
+    subtitle: 'The Story of a Soul'
+  },
+  {
+    num: 'Chapter 01',
+    title: 'The First Breath',
+    content: 'Zindagi mein bahut log aate hain, magar kuch log thahar jaate hain. Jab maine tumhein dekha, pehli baar laga ki waqt ki raftaar kam ho sakti hai. Tumhara naam sirf ek naam nahi, mere liye ek sukoon tha.'
+  },
+  {
+    num: 'Chapter 02',
+    title: 'The Silent Note',
+    content: 'Baatein toh sab karte hain, magar tumhari khamoshi bahut kuch bol jati hai. Maine seekha hai ki tumhare chup rehne ke peeche bhi ek pura jahan chupa hota hai. Tumhari aankhein woh sab bol deti hain jo tum keh nahi paati.'
+  },
+  {
+    num: 'Chapter 03',
+    title: 'Hidden Magic',
+    content: 'Tumhara baalon ko kaan ke peeche karna, ya sote waqt thoda sa muskurana—tumhein shayad pata bhi nahi, magar mere liye yeh kisi magic se kam nahi hai. In chhoti chhoti baaton mein hi toh tum basti ho.'
+  },
+  {
+    num: 'Chapter 04',
+    title: 'The Calm Center',
+    content: 'Jab kabhi tumhein tension ho, ya duniya bojh lagne lage—bas yaad rakhna ki ek jagah aisi hai jahan sirf sukon hai. Mere khayalon mein tum hamesha mehfooz ho. Saas lo, gehra... sab theek hai.'
+  },
+  {
+    num: 'Chapter 05',
+    title: 'The Reflection',
+    content: 'Log kaanch mein khud ko dekhte hain, magar main tumhein apni nazron se dikhana chahta hoon. Tum itni khoobsurat ho ki meri har shayari adhoori lagti hai. Tumhara hona hi meri sabse badi khushi hai.'
+  },
+  {
+    num: 'Chapter 06',
+    title: 'Parallel Worlds',
+    content: 'Agar hazaron duniya hoti, toh har ek duniya mein main tumhein hi dhoondta. Humaara milna koi ittefaq nahi, shayad yeh sadiyon purana ek wada tha jo is zindagi mein pura ho raha hai.'
+  },
+  {
+    num: 'Chapter 07',
+    title: 'The Rhythm',
+    content: 'Tumhari aawaz mere liye kisi dhun ki tarah hai. Din bhar ki thakan mitti hai jab tum bolti ho. Main chahta hoon ki tum hamesha hasti raho, kyunki tumhari hasi meri duniya ki sabse pyari sound hai.'
+  },
+  {
+    num: 'Chapter 08',
+    title: 'Night Thoughts',
+    content: 'Jab raat gehari hoti hai aur duniya so jati hai, tab mere khayalon mein sirf tum hoti ho. Andhere mein bhi tumhari muskurahat ek roshni ki tarah chamakti hai. Tum mera woh sukoon ho jo neend mein bhi sath rehta hai.'
+  },
+  {
+    num: 'Chapter 09',
+    title: 'The Promise',
+    content: 'Main wada karta hoon ki chahe mousam badle ya log, meri chahat tumhare liye wahi rahegi. Main hamesha tumhara hath thame rakhunga—khushi mein bhi aur un mushkil raaton mein bhi jab tum akela mehsoos karo.'
+  },
+  {
+    num: 'Chapter 10',
+    title: 'The Unending',
+    content: 'Yeh kitab yahan khatam nahi hoti, yeh toh bas ek nayi shuruaat hai. Har naya din humaari kahani ka naya panna hoga. Jyotsana, tum meri zindagi ki woh kitab ho jise main baar-baar padhna chahta hoon.'
+  }
+];
 
 export default function App() {
-  const [scrollY, setScrollY] = useState(0);
-  const [theme, setTheme] = useState({ bg: '#f8f4f1', c1: '#e0c3fc', c2: '#8ecae6' });
+  const [flippedPages, setFlippedPages] = useState([]);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const y = window.scrollY;
-      setScrollY(y);
-      
-      // Dynamic Atmosphere shifting
-      if (y < 800) {
-        setTheme({ bg: '#f8f4f1', c1: '#e0c3fc', c2: '#8ecae6' });
-      } else if (y < 1800) {
-        setTheme({ bg: '#f1f8fc', c1: '#ffb5a7', c2: '#ffd166' });
-      } else {
-        setTheme({ bg: '#0c0c0c', c1: '#4a00e0', c2: '#8e2de2' });
-      }
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const isDark = scrollY > 1800;
+  const togglePage = (index) => {
+    if (flippedPages.includes(index)) {
+      setFlippedPages(flippedPages.filter(id => id < index));
+    } else {
+      setFlippedPages([...flippedPages, index]);
+    }
+  };
 
   return (
-    <div className="app-main" style={{ backgroundColor: theme.bg, color: isDark ? '#fff' : '#1a1a1a' }}>
-      
-      {/* --- ATMOSPHERE --- */}
-      <div className="atmosphere">
-        <div className="cloud" style={{ width: '60vw', height: '60vw', top: '-10%', left: '-10%', background: theme.c1 }} />
-        <div className="cloud" style={{ width: '50vw', height: '50vw', bottom: '-10%', right: '-10%', background: theme.c2, animationDelay: '-5s' }} />
-      </div>
-
-      {/* --- HERO: THE DREAM ENTRY --- */}
-      <section style={{ textAlign: 'center' }}>
-        <p className="korean-style-text" style={{ color: isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)' }}>
-           SCENE 01: THE AWAKENING
-        </p>
-        <h1 className="dream-title">jyotsana</h1>
-        <div style={{ marginTop: '2rem', fontSize: '1.2rem', opacity: 0.6 }}>
-           "A name written in the colors of the dawn."
-        </div>
-      </section>
-
-      {/* --- FLOATING THOUGHTS --- */}
-      <section>
-        <div className="island" style={{ margin: '0 auto', background: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.3)' }}>
-           <p className="korean-style-text">THE OBSERVATION</p>
-           <h2 style={{ fontSize: '2.5rem', marginTop: '1rem', fontFamily: 'Italiana' }}>
-             "Maine tumhe tab bhi dekha hai, <br /> jab tum khud ko dekhna bhool gayi thi."
-           </h2>
-           <p style={{ marginTop: '2rem', lineHeight: '1.8', opacity: 0.7 }}>
-             Aksar main sochta hoon ki kya tum jaanti ho? <br />
-             Jaanti ho ki tumhare chalne ka andaaz, ya tumhare baalon ko udhne dena... <br />
-             Yeh sab mere liye kisi kavita se kam nahi hai. <br />
-             Duniya ke liye tum ek insaan ho, magar mere liye tum ek 'Ehsaas' ho.
-           </p>
-        </div>
-
-        {/* Floating Thoughts decorations */}
-        <div className="floaty-thought" style={{ top: '10%', right: '5%', color: '#000' }}>"Your smile is a secret..."</div>
-        <div className="floaty-thought" style={{ bottom: '20%', left: '0%', color: '#000', animationDelay: '-2s' }}>"Shadows and Light."</div>
-      </section>
-
-      {/* --- THE SHIFT: DAY TO NIGHT --- */}
-      <section>
-        <div style={{ textAlign: 'center', width: '100%' }}>
-           <h2 className="dream-title" style={{ fontSize: '5rem' }}>the shift</h2>
-           <p style={{ maxWidth: '600px', margin: '2rem auto', lineHeight: '2', opacity: 0.8 }}>
-             Har din ek naya panna hai. <br />
-             Subah ki pehli kiran se lekar raat ke gehre sannate tak... <br />
-             Tumhara zikr meri har khamoshi mein hota hai. <br />
-             Kyunki tum sirf mere din ka hissa nahi, tum meri raat ka 'Khwab' ho.
-           </p>
-           <button className="btn-ethereal" style={{ backgroundColor: isDark ? '#fff' : '#1a1a1a', color: isDark ? '#000' : '#fff' }}>
-             Dream with me
-           </button>
-        </div>
-      </section>
-
-      {/* --- THE VOID PORTAL --- */}
-      <section style={{ opacity: Math.min(1, (scrollY - 1500) / 500) }}>
-        <div className="full-center">
-            <div className="avatar-mask">
-               <img src={avatarImg} alt="Soul" />
+    <div className="app-container">
+      <div className="book-container">
+        <div className="book">
+          {chapters.map((chapter, index) => (
+            <div 
+              key={index}
+              className={`page ${chapter.type === 'cover' ? 'cover' : ''} ${flippedPages.includes(index) ? 'flipped' : ''}`}
+              style={{ zIndex: chapters.length - index }}
+              onClick={() => togglePage(index)}
+            >
+              <div className="page-content">
+                {chapter.type === 'cover' ? (
+                  <>
+                    <h1>{chapter.title}</h1>
+                    <p className="cover-tagline">{chapter.subtitle}</p>
+                    <p style={{ marginTop: '3rem', color: 'rgba(255,255,255,0.4)', fontSize: '0.8rem' }}>Click to Open My Heart</p>
+                  </>
+                ) : (
+                  <>
+                    <span className="chapter-num">{chapter.num}</span>
+                    <h2 className="chapter-title">{chapter.title}</h2>
+                    <p className="page-text">{chapter.content}</p>
+                    <div style={{ marginTop: 'auto', textAlign: 'right', fontSize: '0.8rem', opacity: 0.4 }}>
+                      Page {index + 1}
+                    </div>
+                  </>
+                )}
+              </div>
             </div>
-            <h2 className="dream-title" style={{ marginTop: '3rem', fontSize: '6rem', color: '#fff' }}>unspoken</h2>
-            <p className="korean-style-text" style={{ color: 'rgba(255,255,255,0.4)', marginTop: '1rem' }}>
-               "Ab tum socho... kya maine kuch kaha?"
-            </p>
+          ))}
         </div>
-      </section>
-
-      <footer>
-         DESIGNED FOR INTERSTELLAR THOUGHTS • JYOTSANA
-      </footer>
-
-      {/* Cursor Decoration */}
-      <div style={{
-        position: 'fixed',
-        bottom: '40px',
-        left: '40px',
-        fontSize: '0.6rem',
-        letterSpacing: '3px',
-        opacity: 0.5
-      }}>
-        CHAPTER 02 &mdash; THE ECHO
       </div>
+      
+      <div className="nav-hint">
+        {flippedPages.length === 0 ? "Open the book to start the journey" : "Click to flip pages"}
+      </div>
+
+      {/* Background Ambience */}
+      <div style={{ position: 'fixed', top: '10%', right: '10%', fontSize: '2rem', opacity: 0.1 }}>🕯️</div>
+      <div style={{ position: 'fixed', bottom: '15%', left: '15%', fontSize: '2rem', opacity: 0.1 }}>🌸</div>
     </div>
   );
 }
