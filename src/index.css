@@ -93,9 +93,48 @@ body {
   text-align: left;
 }
 
-.formal-footer {
-  margin-top: 2rem;
+.page.end {
+  background: var(--cover);
+  border-left: 5px solid #222;
+  color: #fff;
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.end-title {
+  font-family: 'Great Vibes', cursive;
+  font-size: 4rem;
+  color: var(--gold);
+  margin-top: 1rem;
+}
+
+.btn-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+
+.btn-action {
+  background: var(--gold);
+  color: #fff;
+  border: none;
+  padding: 0.8rem 2rem;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
   font-size: 0.8rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  transition: 0.3s;
+}
+
+.btn-action:hover {
+  background: #fff;
+  color: var(--gold);
 }
 
 /* Cover Decoration */
@@ -232,4 +271,23 @@ body {
 .floating-icon {
   animation: float 3s infinite ease-in-out;
   display: inline-block;
+}
+
+/* Print Styles for PDF Download */
+@media print {
+  body { background: #fff !important; overflow: visible !important; }
+  .nav-hint, .btn-group, .floating-icon, .ornament, .nav-hint { display: none !important; }
+  .book-container { width: 100% !important; height: auto !important; perspective: none !important; }
+  .book { transform: none !important; }
+  .page { 
+    position: relative !important; 
+    transform: none !important; 
+    break-after: page !important; 
+    box-shadow: none !important;
+    border: 1px solid #eee !important;
+    margin-bottom: 20px !important;
+    display: block !important;
+  }
+  .page.flipped { transform: none !important; }
+  .app-container { display: block !important; padding: 0 !important; }
 }

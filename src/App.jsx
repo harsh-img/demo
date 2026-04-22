@@ -89,6 +89,11 @@ const chapters = [
       body: 'Respected Jyotsana, \n\nI am writing this to formally acknowledge the significant impact you have had on my surroundings. Your presence, though often silent, carries a depth that is impossible to ignore. This document serves as a record of my sincere observations of your character, your smile, and the warmth you bring into my life. \n\nI must state that your well-being is of utmost importance. Whenever you feel burdened by the pressures of the world, please consider this letter a standing invitation to find solace in the memories we share. Your presence is not merely a coincidence, but a vital component of my everyday happiness. \n\nPlease be advised: If this communication is received with a positive sentiment, I would appreciate a response. However, if it does not align with your current feelings, please feel free to disregard it. Your comfort remains the highest priority.',
       closing: 'Yours Truly, \nAlways & Forever ❤️'
     }
+  },
+  {
+    type: 'end',
+    title: 'The End',
+    message: 'Love you ❤️'
   }
 ];
 
@@ -144,6 +149,32 @@ export default function App() {
                       {chapter.content.closing.split('\n').map((line, i) => (
                         <div key={i}>{line}</div>
                       ))}
+                    </div>
+                  </div>
+                ) : chapter.type === 'end' ? (
+                  <div className="end-page">
+                    <p style={{ fontSize: '1.5rem', fontFamily: 'Dancing Script' }}>{chapter.message}</p>
+                    <h2 className="end-title">{chapter.title}</h2>
+                    <div className="btn-group">
+                       <button className="btn-action" onClick={() => setFlippedPages([])}>
+                         Read Again 📖
+                       </button>
+                       <a 
+                         href="https://wa.me/919413128045?text=I%20just%20finished%20reading%20your%20digital%20book!%20It%20was%20beautiful.%20❤️" 
+                         target="_blank" 
+                         rel="noopener noreferrer"
+                         className="btn-action"
+                         style={{ background: '#25D366' }}
+                       >
+                         Message Me 💬
+                       </a>
+                       <button 
+                         className="btn-action" 
+                         style={{ background: '#e63946' }}
+                         onClick={() => window.print()}
+                       >
+                         Download PDF 📥
+                       </button>
                     </div>
                   </div>
                 ) : (
