@@ -1,166 +1,173 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import './index.css';
 import avatarImg from './assets/avatar.png';
 
 /* 
-  Ethereal Starlight Background 
+  Dynamic background with floating hearts 
 */
-const Starfield = () => {
-  const stars = Array.from({ length: 50 }).map((_, i) => ({
-    id: i,
-    top: Math.random() * 100,
-    left: Math.random() * 100,
-    size: Math.random() * 3,
-    delay: Math.random() * 10,
-  }));
-
+const BackgroundElements = () => {
   return (
-    <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
-      {stars.map(s => (
+    <div style={{ position: 'fixed', inset: 0, zIndex: -1, overflow: 'hidden' }}>
+      {Array.from({ length: 15 }).map((_, i) => (
         <div
-          key={s.id}
+          key={i}
+          className="floating-heart"
           style={{
-            position: 'absolute',
-            top: `${s.top}%`,
-            left: `${s.left}%`,
-            width: `${s.size}px`,
-            height: `${s.size}px`,
-            background: 'white',
-            borderRadius: '50%',
-            opacity: 0,
-            animation: `fadeInOut 5s infinite ${s.delay}s`,
-            boxShadow: '0 0 10px white',
+            top: `${Math.random() * 100}%`,
+            left: `${Math.random() * 100}%`,
+            fontSize: `${Math.random() * 3 + 1}rem`,
+            animation: `float ${Math.random() * 5 + 5}s infinite ease-in-out`,
+            animationDelay: `${Math.random() * 5}s`
           }}
-        />
+        >
+          ❤️
+        </div>
       ))}
-      <style>{`
-        @keyframes fadeInOut {
-          0%, 100% { opacity: 0; transform: scale(0.5); }
-          50% { opacity: 0.8; transform: scale(1.2); }
-        }
-      `}</style>
+      <div style={{
+        position: 'absolute',
+        top: '20%',
+        right: '10%',
+        width: '400px',
+        height: '400px',
+        background: 'radial-gradient(circle, rgba(255,77,109,0.1) 0%, transparent 70%)',
+        filter: 'blur(60px)'
+      }} />
+      <div style={{
+        position: 'absolute',
+        bottom: '10%',
+        left: '5%',
+        width: '300px',
+        height: '300px',
+        background: 'radial-gradient(circle, rgba(226,149,120,0.1) 0%, transparent 70%)',
+        filter: 'blur(60px)'
+      }} />
     </div>
   );
 };
 
 export default function App() {
-  const [view, setView] = useState('PORTAL'); // PORTAL, LOADING, HEART_DEEP
-  const [tilt, setTilt] = useState({ x: 0, y: 0 });
-  const portalRef = useRef(null);
+  const [scrollY, setScrollY] = useState(0);
 
-  const handleMouseMove = (e) => {
-    if (!portalRef.current) return;
-    const rect = portalRef.current.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    setTilt({ x: x * 15, y: -y * 15 });
-  };
-
-  const exploreHeart = () => {
-    setView('LOADING');
-    setTimeout(() => {
-      setView('HEART_DEEP');
-    }, 2500);
-  };
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
-    <div className="surreal-container" onMouseMove={handleMouseMove}>
-      <div className="aurora" />
-      <div className="morphing-blob" style={{ top: '10%', left: '10%' }} />
-      <div className="morphing-blob" style={{ bottom: '10%', right: '10%', background: 'rgba(255,133,161,0.1)' }} />
-      <Starfield />
+    <div className="app-main">
+      <BackgroundElements />
 
-      {view === 'PORTAL' ? (
-        <main 
-          ref={portalRef}
-          className="portal-card"
-          style={{
-            transform: `rotateY(${tilt.x}deg) rotateX(${tilt.y}deg)`,
-            animation: 'fadeIn 1s ease-out'
-          }}
-        >
-          <div className="avatar-sphere">
-            <img 
-              src={avatarImg} 
-              className="avatar-img" 
-              alt="My Love Avatar"
-              style={{ animation: 'pulse 3s infinite ease-in-out' }}
-            />
-            <div style={{
-              position: 'absolute',
-              inset: '-10px',
-              border: '2px solid var(--secondary)',
-              borderRadius: '50%',
-              opacity: 0.5,
-              animation: 'auraOrbit 4s linear infinite',
-            }} />
-          </div>
+      {/* --- HERO SECTION --- */}
+      <section className="hero">
+        <div className="hero-content" style={{ transform: `translateY(${scrollY * 0.4}px)` }}>
+          <h2 className="hero-sub script-font">For My Only One</h2>
+          <h1 className="hero-title title-font grad-text">Jyotsana</h1>
+          <p className="script-font" style={{ fontSize: '2rem', opacity: 0.8 }}>
+            "Tum woh khayal ho jo kabhi dil se nahi jaata..."
+          </p>
+          <a href="#letter" className="btn-main">Mera Izhaar Padho</a>
+        </div>
+      </section>
 
-          <h1 className="love-title">Celestial Love</h1>
-          
-          <div className="interactive-quote">
-            "In a universe of billions, my soul recognized yours 
-            like a star finding its galaxy. You aren't just a part 
-            of my world; you are the gravity that holds it together."
-          </div>
-
-          <button className="cosmic-btn" onClick={exploreHeart}>
-            Explore My Heart ✨
-          </button>
-        </main>
-      ) : view === 'LOADING' ? (
-        <div className="loading-stage" style={{ zIndex: 300, textAlign: 'center', animation: 'fadeIn 0.5s' }}>
-          <div className="aurora" style={{ opacity: 0.8 }} />
-          <h2 className="love-title" style={{ fontSize: '2.5rem', animation: 'pulse 1s infinite' }}>
-            Traveling to the center of my heart...
-          </h2>
-          <div className="hb-wrap" style={{ display: 'flex', gap: '10px', justifyContent: 'center', marginTop: '2rem' }}>
-            <div className="hb-bar" style={{ height: '40px', animation: 'heartBeat 1.2s infinite' }}></div>
-            <div className="hb-bar" style={{ height: '60px', animation: 'heartBeat 1.2s infinite 0.2s' }}></div>
-            <div className="hb-bar" style={{ height: '40px', animation: 'heartBeat 1.2s infinite 0.4s' }}></div>
+      {/* --- THE LETTER SECTION --- */}
+      <section id="letter">
+        <div className="glass-container">
+          <h2 className="title-font grad-text" style={{ fontSize: '3rem', marginBottom: '2rem' }}>A Heartfelt Note</h2>
+          <p className="script-font" style={{ fontSize: '1.8rem', lineHeight: '1.8', color: 'var(--blush)' }}>
+            Main ne kabhi socha nahi tha ki koi itne kareeb aa jayega... <br />
+            Tumse milna sirf ek ittefaq nahi tha, meri zindagi ka sabse khoobsurat mor (turn) tha. 
+            Jab bhi ankhein band karta hoon, bas tumhari muskan dikhti hai. 
+            Main shayad duniya ke sabse bade shabdon ka use na kar paaun, lekin jo dil mein hai 
+            woh sirf aur sirf tumhare liye hai. 
+          </p>
+          <div style={{ marginTop: '2rem', fontStyle: 'italic', opacity: 0.6 }}>
+            — Sirf Tumhare Liye, Hamesha.
           </div>
         </div>
-      ) : (
-        <div className="deep-heart-container" style={{ zIndex: 200, textAlign: 'center', animation: 'fadeIn 1.5s' }}>
-          <div className="glass" style={{ padding: '4rem', maxWidth: '800px', borderRadius: '40px', border: '1px solid var(--primary)' }}>
-            <h2 className="love-title" style={{ fontSize: '4rem' }}>Deep Inside...</h2>
-            <div className="heart-visual" style={{ fontSize: '6rem', margin: '2rem 0', animation: 'heartBeat 1.2s infinite' }}>
-              ❤️
+      </section>
+
+      {/* --- THE PROMISES SECTION --- */}
+      <section id="promises">
+        <div style={{ width: '100%', maxWidth: '1200px' }}>
+          <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+            <h2 className="title-font grad-text" style={{ fontSize: '3.5rem' }}>Mere Char Wade</h2>
+            <p style={{ opacity: 0.7 }}>Jo main har saans ke saath poora karunga</p>
+          </div>
+
+          <div className="grid-layout">
+            <div className="promise-card">
+              <span style={{ fontSize: '3rem' }}>🌙</span>
+              <h3 className="title-font" style={{ margin: '1rem 0' }}>Sath Nibhana</h3>
+              <p style={{ opacity: 0.8 }}>Duniya chahe kitni bhi badle, mera sath tumhare liye hamesha wahi rahega.</p>
             </div>
-            <p style={{ fontSize: '1.4rem', color: 'var(--secondary)', marginBottom: '2rem', lineHeight: '1.7' }}>
-              Har dhadkan mein ek hi naam hai... <br />
-              <strong>"Bas Tum"</strong>
-            </p>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginTop: '3rem' }}>
-              <div className="glass-inner" style={{ padding: '1.5rem', background: 'rgba(255,255,255,0.05)', borderRadius: '20px' }}>
-                <span style={{ fontSize: '2rem' }}>🤝</span>
-                <h3>Mera Wada</h3>
-                <p style={{ fontSize: '0.9rem', opacity: 0.8 }}>Hamesha tumhara saath nibhaunga, har musibat mein.</p>
-              </div>
-              <div className="glass-inner" style={{ padding: '1.5rem', background: 'rgba(255,255,255,0.05)', borderRadius: '20px' }}>
-                <span style={{ fontSize: '2rem' }}>💖</span>
-                <h3>Mera Sach</h3>
-                <p style={{ fontSize: '0.9rem', opacity: 0.8 }}>Tumse be-panah mohabbat hi meri asliyat hai.</p>
-              </div>
+            <div className="promise-card">
+              <span style={{ fontSize: '3rem' }}>🛡️</span>
+              <h3 className="title-font" style={{ margin: '1rem 0' }}>Hifazat</h3>
+              <p style={{ opacity: 0.8 }}>Tumhari har takleef meri hogi, aur tumhari har khushi meri jeet.</p>
             </div>
-            <button className="cosmic-btn" style={{ marginTop: '3rem' }} onClick={() => setView('PORTAL')}>
-              Go Back to Portal
-            </button>
+            <div className="promise-card">
+              <span style={{ fontSize: '3rem' }}>💎</span>
+              <h3 className="title-font" style={{ margin: '1rem 0' }}>Izzat</h3>
+              <p style={{ opacity: 0.8 }}>Tum sirf meri mohabbat nahi, tum meri sabse badi garv (pride) ho.</p>
+            </div>
+            <div className="promise-card">
+              <span style={{ fontSize: '3rem' }}>🔥</span>
+              <h3 className="title-font" style={{ margin: '1rem 0' }}>Junoon</h3>
+              <p style={{ opacity: 0.8 }}>Meri chahat waqt ke sath kam nahi, balki har pal aur geheri hogi.</p>
+            </div>
           </div>
         </div>
-      )}
+      </section>
 
-      {/* Floating Footer text */}
+      {/* --- SOUL GALLERY SECTION --- */}
+      <section>
+        <div style={{ textAlign: 'center', width: '100%' }}>
+          <div className="glass-container" style={{ margin: '0 auto', border: 'none', background: 'transparent' }}>
+             <h2 className="script-font" style={{ fontSize: '3rem', color: 'var(--accent)' }}>
+               "Tum meri woh adhuri dua ho jise khuda ne bas mere liye poora kiya hai."
+             </h2>
+             <div style={{ marginTop: '3rem' }}>
+               <div style={{ display: 'inline-block', margin: '0 1rem', fontSize: '2rem' }}>💖</div>
+               <div style={{ display: 'inline-block', margin: '0 1rem', fontSize: '2rem' }}>✨</div>
+               <div style={{ display: 'inline-block', margin: '0 1rem', fontSize: '2rem' }}>💖</div>
+             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* --- FINAL FINALE SECTION --- */}
+      <section style={{ background: 'linear-gradient(to bottom, transparent, var(--dark-plum))' }}>
+        <div className="glass-container" style={{ textAlign: 'center', position: 'relative' }}>
+          <div style={{ width: '150px', height: '150px', margin: '0 auto 2rem', borderRadius: '50%', overflow: 'hidden', border: '3px solid var(--accent)', boxShadow: '0 0 30px var(--accent)' }}>
+            <img src={avatarImg} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          </div>
+          <h2 className="title-font grad-text" style={{ fontSize: '3.5rem' }}>Mera Akhri Sach</h2>
+          <p className="script-font" style={{ fontSize: '2rem', marginTop: '1rem', color: 'var(--blush)' }}>
+            Jyotsana... Main tumse be-panah mohabbat karta hoon. <br />
+            Aur yeh safar toh bas shuru hua hai.
+          </p>
+          <div style={{ marginTop: '3rem', letterSpacing: '4px', fontSize: '0.8rem', opacity: 0.5 }}>
+            CREATED WITH INFINITE LOVE
+          </div>
+          <p style={{ marginTop: '1rem', fontSize: '0.7rem', color: 'var(--accent)' }}>
+            BEYOND FOREVER
+          </p>
+        </div>
+      </section>
+
+      {/* Navigation Hint */}
       <div style={{
-        position: 'absolute',
-        bottom: '30px',
-        width: '100%',
-        textAlign: 'center',
-        color: 'rgba(255,255,255,0.3)',
-        fontSize: '0.8rem',
-        letterSpacing: '5px'
+        position: 'fixed',
+        bottom: '20px',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        fontSize: '0.7rem',
+        opacity: 0.4,
+        letterSpacing: '2px',
+        pointerEvents: 'none'
       }}>
-        BEYOND SPACE & TIME
+        SCROLL TO EXPLORE MY SOUL
       </div>
     </div>
   );
