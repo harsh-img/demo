@@ -79,10 +79,16 @@ const chapters = [
   },
   {
     type: 'letter',
-    num: 'A Special Note',
+    num: 'Formal Submission',
     title: 'A Letter for You 💌',
-    content: 'Jyotsana, yeh kitab likhte waqt mere dil mein sirf ek hi baat thi—ki tumhare chehre par woh smile dekh sakun jo mere liye duniya ki sabse badi khushi hai. Main nahi jaanta life humein kahan le jayegi, magar jitna bhi safar hai, main use tumhare sath jeena chahta hoon. Tum sirf ek ehsaas nahi, tum meri woh khwahish ho jo puri toh ho gayi hai, magar khamosh nahi hui. Mere paas alfaz kam hain, magar jazbaat behisab hain. \n\nBas ek baat kehni thi—agar yeh sab padh kar tumhein sach mein dil se achaa lage, toh hi reply karna... barna koi baat nahi, ise tumhare liye ek pyari yaad samajh kar rehne dena. Main hamesha tumhara wahi wahi wahi rahungA. ❤️',
-    note: 'With infinite love, Always. 🤙🌹'
+    content: {
+      date: 'Date: 22nd April 2026',
+      to: 'To: Jyotsana (The Resident of My Heart)',
+      from: 'From: Someone Who Finds Peace in Your Thoughts',
+      subject: 'Subject: Official Acknowledgment of Your Kindness and Presence',
+      body: 'Respected Jyotsana, \n\nI am writing this to formally acknowledge the significant impact you have had on my surroundings. Your presence, though often silent, carries a depth that is impossible to ignore. This document serves as a record of my sincere observations of your character, your smile, and the warmth you bring into my life. \n\nI must state that your well-being is of utmost importance. Whenever you feel burdened by the pressures of the world, please consider this letter a standing invitation to find solace in the memories we share. Your presence is not merely a coincidence, but a vital component of my everyday happiness. \n\nPlease be advised: If this communication is received with a positive sentiment, I would appreciate a response. However, if it does not align with your current feelings, please feel free to disregard it. Your comfort remains the highest priority.',
+      closing: 'Yours Truly, \nAlways & Forever ❤️'
+    }
   }
 ];
 
@@ -117,6 +123,27 @@ export default function App() {
                     <p className="cover-tagline">{chapter.subtitle}</p>
                     <div style={{ marginTop: '4rem', opacity: 0.5, fontSize: '0.8rem' }}>
                       Panno ko paltein aur <br /> jaadu dekhein... ✨
+                    </div>
+                  </div>
+                ) : chapter.type === 'letter' ? (
+                  <div className="formal-letter">
+                    <div className="formal-header">
+                      {chapter.content.date} <br />
+                      {chapter.content.to} <br />
+                      {chapter.content.from}
+                    </div>
+                    <div className="formal-subject">
+                      {chapter.content.subject}
+                    </div>
+                    <div className="formal-body">
+                      {chapter.content.body.split('\n').map((line, i) => (
+                        <p key={i} style={{ marginBottom: line.trim() === '' ? '1rem' : '0' }}>{line}</p>
+                      ))}
+                    </div>
+                    <div className="formal-footer">
+                      {chapter.content.closing.split('\n').map((line, i) => (
+                        <div key={i}>{line}</div>
+                      ))}
                     </div>
                   </div>
                 ) : (

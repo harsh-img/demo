@@ -66,8 +66,36 @@ body {
 }
 
 .page.letter {
-  background: white;
-  border: 2px solid var(--gold);
+  background: #fff;
+  border: 1px solid #ddd;
+  padding: 2rem !important;
+  display: block !important;
+}
+
+.formal-header {
+  font-size: 0.75rem;
+  line-height: 1.4;
+  margin-bottom: 1.5rem;
+  color: #555;
+}
+
+.formal-subject {
+  font-weight: 700;
+  text-decoration: underline;
+  margin-bottom: 1.5rem;
+  font-size: 0.8rem;
+}
+
+.formal-body {
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: #333;
+  text-align: left;
+}
+
+.formal-footer {
+  margin-top: 2rem;
+  font-size: 0.8rem;
 }
 
 /* Cover Decoration */
