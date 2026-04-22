@@ -1,174 +1,157 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './index.css';
 import avatarImg from './assets/avatar.png';
 
 /* 
-  Dynamic background with floating hearts 
+  Interactive Aura Background 
 */
-const BackgroundElements = () => {
+const AuroraBackground = () => {
+  const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      setMousePos({
+        x: (e.clientX / window.innerWidth) * 100,
+        y: (e.clientY / window.innerHeight) * 100,
+      });
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
   return (
-    <div style={{ position: 'fixed', inset: 0, zIndex: -1, overflow: 'hidden' }}>
-      {Array.from({ length: 15 }).map((_, i) => (
-        <div
-          key={i}
-          className="floating-heart"
-          style={{
-            top: `${Math.random() * 100}%`,
-            left: `${Math.random() * 100}%`,
-            fontSize: `${Math.random() * 3 + 1}rem`,
-            animation: `float ${Math.random() * 5 + 5}s infinite ease-in-out`,
-            animationDelay: `${Math.random() * 5}s`
-          }}
-        >
-          ❤️
-        </div>
-      ))}
-      <div style={{
-        position: 'absolute',
-        top: '20%',
-        right: '10%',
-        width: '400px',
-        height: '400px',
-        background: 'radial-gradient(circle, rgba(255,77,109,0.1) 0%, transparent 70%)',
-        filter: 'blur(60px)'
-      }} />
-      <div style={{
-        position: 'absolute',
-        bottom: '10%',
-        left: '5%',
-        width: '300px',
-        height: '300px',
-        background: 'radial-gradient(circle, rgba(226,149,120,0.1) 0%, transparent 70%)',
-        filter: 'blur(60px)'
-      }} />
+    <div className="liquid-bg">
+      <div 
+        className="aura-blob" 
+        style={{ 
+          top: `${mousePos.y}%`, 
+          left: `${mousePos.x}%`, 
+          transform: 'translate(-50%, -50%)',
+          transition: 'top 0.3s ease-out, left 0.3s ease-out'
+        }} 
+      />
+      <div className="aura-blob" style={{ bottom: '10%', right: '10%', opacity: 0.5 }} />
     </div>
   );
 };
 
-export default function App() {
-  const [scrollY, setScrollY] = useState(0);
+/* 
+  Typewriter Animation Component 
+*/
+const Typewriter = ({ text }) => {
+  const [displayedText, setDisplayedText] = useState("");
+  const [index, setIndex] = useState(0);
 
   useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
+    if (index < text.length) {
+      const timeout = setTimeout(() => {
+        setDisplayedText(prev => prev + text.charAt(index));
+        setIndex(index + 1);
+      }, 50);
+      return () => clearTimeout(timeout);
+    }
+  }, [index, text]);
+
+  return <span>{displayedText}</span>;
+};
+
+export default function App() {
+  const [scrolled, setScrolled] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
-    <div className="app-main">
-      <BackgroundElements />
+    <div className="app-container">
+      <AuroraBackground />
 
-      {/* --- HERO SECTION --- */}
-      <section className="hero">
-        <div className="hero-content" style={{ transform: `translateY(${scrollY * 0.4}px)` }}>
-          <h2 className="hero-sub script-font">For My Only One</h2>
-          <h1 className="hero-title title-font grad-text">Jyotsana</h1>
-          <p className="script-font" style={{ fontSize: '2rem', opacity: 0.8 }}>
-            "Tum woh khayal ho jo kabhi dil se nahi jaata..."
-          </p>
-          <a href="#letter" className="btn-main">Mera Izhaar Padho</a>
-        </div>
-      </section>
-
-      {/* --- THE LETTER SECTION --- */}
-      <section id="letter">
-        <div className="glass-container">
-          <h2 className="title-font grad-text" style={{ fontSize: '3rem', marginBottom: '2rem' }}>A Heartfelt Note</h2>
-          <p className="script-font" style={{ fontSize: '1.8rem', lineHeight: '1.8', color: 'var(--blush)' }}>
-            Main ne kabhi socha nahi tha ki koi itne kareeb aa jayega... <br />
-            Tumse milna sirf ek ittefaq nahi tha, meri zindagi ka sabse khoobsurat mor (turn) tha. 
-            Jab bhi ankhein band karta hoon, bas tumhari muskan dikhti hai. 
-            Main shayad duniya ke sabse bade shabdon ka use na kar paaun, lekin jo dil mein hai 
-            woh sirf aur sirf tumhare liye hai. 
-          </p>
-          <div style={{ marginTop: '2rem', fontStyle: 'italic', opacity: 0.6 }}>
-            — Sirf Tumhare Liye, Hamesha.
+      {/* --- SECTION 1: THE ARRIVAL --- */}
+      <section className="full-center">
+        <div style={{ opacity: Math.max(0, 1 - scrolled / 500) }}>
+          <h1 className="hero-title grad-text">Jyotsana</h1>
+          <div className="sub-title">"Ek अनकही पहेली" (An Untold Puzzle)</div>
+          <div style={{ marginTop: '2rem', fontSize: '1.2rem', opacity: 0.6, letterSpacing: '8px' }}>
+            THE DEPTHS YOU HIDE
           </div>
         </div>
+        <div className="scroll-heart">✨</div>
       </section>
 
-      {/* --- THE PROMISES SECTION --- */}
-      <section id="promises">
-        <div style={{ width: '100%', maxWidth: '1200px' }}>
-          <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
-            <h2 className="title-font grad-text" style={{ fontSize: '3.5rem' }}>Mere Char Wade</h2>
-            <p style={{ opacity: 0.7 }}>Jo main har saans ke saath poora karunga</p>
-          </div>
-
-          <div className="grid-layout">
-            <div className="promise-card">
-              <span style={{ fontSize: '3rem' }}>🌙</span>
-              <h3 className="title-font" style={{ margin: '1rem 0' }}>Sath Nibhana</h3>
-              <p style={{ opacity: 0.8 }}>Duniya chahe kitni bhi badle, mera sath tumhare liye hamesha wahi rahega.</p>
-            </div>
-            <div className="promise-card">
-              <span style={{ fontSize: '3rem' }}>🛡️</span>
-              <h3 className="title-font" style={{ margin: '1rem 0' }}>Hifazat</h3>
-              <p style={{ opacity: 0.8 }}>Tumhari har takleef meri hogi, aur tumhari har khushi meri jeet.</p>
-            </div>
-            <div className="promise-card">
-              <span style={{ fontSize: '3rem' }}>💎</span>
-              <h3 className="title-font" style={{ margin: '1rem 0' }}>Izzat</h3>
-              <p style={{ opacity: 0.8 }}>Tum sirf meri mohabbat nahi, tum meri sabse badi garv (pride) ho.</p>
-            </div>
-            <div className="promise-card">
-              <span style={{ fontSize: '3rem' }}>🔥</span>
-              <h3 className="title-font" style={{ margin: '1rem 0' }}>Junoon</h3>
-              <p style={{ opacity: 0.8 }}>Meri chahat waqt ke sath kam nahi, balki har pal aur geheri hogi.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* --- SOUL GALLERY SECTION --- */}
+      {/* --- SECTION 2: THE INNER THOUGHT (Mystery Typewriter) --- */}
       <section>
-        <div style={{ textAlign: 'center', width: '100%' }}>
-          <div className="glass-container" style={{ margin: '0 auto', border: 'none', background: 'transparent' }}>
-             <h2 className="script-font" style={{ fontSize: '3rem', color: 'var(--accent)' }}>
-               "Tum meri woh adhuri dua ho jise khuda ne bas mere liye poora kiya hai."
-             </h2>
-             <div style={{ marginTop: '3rem' }}>
-               <div style={{ display: 'inline-block', margin: '0 1rem', fontSize: '2rem' }}>💖</div>
-               <div style={{ display: 'inline-block', margin: '0 1rem', fontSize: '2rem' }}>✨</div>
-               <div style={{ display: 'inline-block', margin: '0 1rem', fontSize: '2rem' }}>💖</div>
-             </div>
+        <div className="emotional-card">
+          <h2 className="sub-title" style={{ color: 'var(--primary)', marginBottom: '2rem' }}>Tumhari Khamoshi</h2>
+          <p className="poetry-text">
+            <Typewriter text="Maine dekha hai... jab tum bheed mein hoti ho magar tumhara dhyan kahin aur hota hai. Maine dekha hai tumhari aankhon ka woh rang jo sirf tab dikhta hai jab tum kuch gehra sochti ho. Aksar log tumhe dekhte hain, magar bahut kam log tumhe 'sunte' hain..." />
+          </p>
+          <div style={{ marginTop: '3rem', width: '60px', height: '2px', background: 'var(--primary)' }}></div>
+        </div>
+      </section>
+
+      {/* --- SECTION 3: THE MEMORIES (Observations) --- */}
+      <section id="memories">
+        <div className="full-center" style={{ marginBottom: '4rem' }}>
+          <h2 className="hero-title" style={{ fontSize: '4rem' }}>Voh Pal?</h2>
+          <p className="sub-title">"Jo Shayad Tum Bhool Gayi"</p>
+        </div>
+
+        <div className="polaroid-grid">
+          <div className="polaroid">
+            <div className="polaroid-img">🌬️</div>
+            <p className="polaroid-caption">Tumhari Woh Soch</p>
+          </div>
+          <div className="polaroid" style={{ animationDelay: '0.2s' }}>
+            <div className="polaroid-img">🌑</div>
+            <p className="polaroid-caption">Adhuri Baatein</p>
+          </div>
+          <div className="polaroid" style={{ animationDelay: '0.4s' }}>
+            <div className="polaroid-img">🌧️</div>
+            <p className="polaroid-caption">Be-Wajah Muskurana</p>
           </div>
         </div>
       </section>
 
-      {/* --- FINAL FINALE SECTION --- */}
-      <section style={{ background: 'linear-gradient(to bottom, transparent, var(--dark-plum))' }}>
-        <div className="glass-container" style={{ textAlign: 'center', position: 'relative' }}>
-          <div style={{ width: '150px', height: '150px', margin: '0 auto 2rem', borderRadius: '50%', overflow: 'hidden', border: '3px solid var(--accent)', boxShadow: '0 0 30px var(--accent)' }}>
-            <img src={avatarImg} alt="Avatar" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-          </div>
-          <h2 className="title-font grad-text" style={{ fontSize: '3.5rem' }}>Mera Akhri Sach</h2>
-          <p className="script-font" style={{ fontSize: '2rem', marginTop: '1rem', color: 'var(--blush)' }}>
-            Jyotsana... Main tumse be-panah mohabbat karta hoon. <br />
-            Aur yeh safar toh bas shuru hua hai.
-          </p>
-          <div style={{ marginTop: '3rem', letterSpacing: '4px', fontSize: '0.8rem', opacity: 0.5 }}>
-            CREATED WITH INFINITE LOVE
-          </div>
-          <p style={{ marginTop: '1rem', fontSize: '0.7rem', color: 'var(--accent)' }}>
-            BEYOND FOREVER
-          </p>
+      {/* --- SECTION 4: THE PROMISE (Lingering Mystery) --- */}
+      <section>
+        <div className="emotional-card" style={{ background: 'linear-gradient(135deg, rgba(80,0,150,0.1), rgba(200,50,150,0.1))' }}>
+           <h2 className="hero-title" style={{ fontSize: '3.5rem', marginBottom: '2rem' }}>The Unseen</h2>
+           <div className="poetry-text" style={{ fontSize: '1.4rem' }}>
+             "Main tumhein wada nahi doonGA, <br />
+             Main sirf ek 'Ehsaas' banke rahoonGA. <br />
+             Jab bhi tum koi purani dhun suno gi, <br />
+             Ya baarish ki pehli boond mehsus karo gi... <br />
+             Wahan main yaad aaunGA."
+           </div>
+           
+           <div style={{ display: 'flex', gap: '2rem', marginTop: '3rem' }}>
+             <button className="cosmic-btn">Kyun Aisa Hai?</button>
+           </div>
         </div>
       </section>
 
-      {/* Navigation Hint */}
-      <div style={{
-        position: 'fixed',
-        bottom: '20px',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        fontSize: '0.7rem',
-        opacity: 0.4,
-        letterSpacing: '2px',
-        pointerEvents: 'none'
-      }}>
-        SCROLL TO EXPLORE MY SOUL
-      </div>
+      {/* --- SECTION 5: THE SOUL PORTAL (The Final Hook) --- */}
+      <section className="full-center" style={{ background: 'radial-gradient(circle at center, rgba(115,3,192,0.2) 0%, transparent 80%)' }}>
+        <div className="signature">
+          <div className="avatar-circle">
+            <img src={avatarImg} alt="Mystery" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          </div>
+          <h2 className="hero-title grad-text" style={{ fontSize: '4.5rem' }}>Tumhara Khayal...</h2>
+          <p className="sub-title" style={{ fontSize: '1.8rem', color: '#fff' }}>
+             "Ab tum tay karo... main kaun hoon?"
+          </p>
+          
+          <div style={{ marginTop: '5rem', opacity: 0.3, letterSpacing: '12px', fontSize: '0.7rem' }}>
+            A THOUGHT YOU CAN'T ESCAPE
+          </div>
+        </div>
+      </section>
+
+      {/* Persistent Decorative particles */}
+      <div style={{ position: 'fixed', top: '10%', left: '5%', fontSize: '2rem', opacity: 0.1, animation: 'float 6s infinite' }}>✨</div>
+      <div style={{ position: 'fixed', bottom: '20%', right: '8%', fontSize: '3rem', opacity: 0.1, animation: 'float 8s infinite' }}>🌸</div>
     </div>
   );
 }
