@@ -1,104 +1,105 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './index.css';
 
 const chapters = [
   {
     type: 'cover',
     title: 'Jyotsana',
-    subtitle: 'Soul living in my heart'
+    subtitle: 'The Unfinished Symphony - Part II',
+    edition: 'Emotional & Funny Edition'
   },
   {
     num: 'Chapter 01',
-    title: 'The First Spark ✨',
-    emoji: '🔥',
-    content: 'Duniya mein 8 billion log hain, magar meri nazar hamesha "voh" ek insaan dhoondti thi. Aur jab tum mili, toh aisa laga jaise movie ka koi slow-motion scene chal raha ho! 🎬',
-    note: 'P.S. Pehli baar mein hi tumne mera dil chura liya tha! 🕵️‍♀️💕'
+    title: 'The Sequel Nobody Asked For 😂',
+    emoji: '🎬',
+    content: 'Pehli kitab toh hit ho gayi (mere mann mein! 😜). Toh socha Part 2 bhi nikaal hi dete hain. Kyunki tumhari baatein aur tumhari yaadein itni zyada hain ki ek library bhi kam pad jaye. Tum mere life ki woh movie ho jiska interval main kabhi nahi chahta! 🍿',
+    note: 'P.S. Ticket free hai, bas smile dena padega! ✨'
   },
   {
     num: 'Chapter 02',
-    title: 'Sweet Quietness 🤫',
-    emoji: '🍂',
-    content: 'Log kehte hain silence awkward hota hai, magar tumhare sath khamoshi bhi kitni music jaisi lagti hai na? Bina bole itni baatein kar lena sirf humein aata hai. ☕',
-    note: 'Fun Fact: Tumhari khamoshi mein bhi ek alag hi swag hai! 😎'
+    title: 'Gym Boy Logic 💪',
+    emoji: '🏋️‍♂️',
+    content: 'Main gym mein weights toh utha leta hoon, magar tumhare nakhre uthana sabse mushkil (aur favorite) exercise hai! 😂 Log kehte hain "No Pain, No Gain", magar tumhare sath toh "No Tum, No Gain" wala scene hai. Meri protein shake se zyada zarurat tumhari smile ki hai. 🥤',
+    note: 'Workout Update: Aaj bhi dil ne sirf tumhare liye cardio kiya! ❤️'
   },
   {
     num: 'Chapter 03',
-    title: 'Your Little Quirks 😸',
-    emoji: '🧸',
-    content: 'Woh jo tum gusse mein apni naak sikodti ho, ya jab tum excited hoti ho toh tumhari aankhein chamakne lagti hain—yeh sab dekh kar main bas hasta rehta hoon. Kitni cute ho tum! 🌸',
-    note: 'Note: Tumhari pagal-panti hi toh meri favorite hai! 🤪❤️'
+    title: 'Emotional Damage? 🥺',
+    emoji: '🩹',
+    content: 'Kabhi-kabhi main baith kar sochta hoon ki agar tum nahi hoti, toh main itna "filmy" kaise banta? Tumne mujhe ek "shayar" bana diya hai. Wese toh main thoda sakht hoon, magar tumhari ek "Hmm" par bhi pighal jata hoon. Yeh emotional attachment hai ya tumhara jaadu? ✨',
+    note: 'Warning: Main bahut emotional ho raha hoon, tissues ready rakho! 🤧'
   },
   {
     num: 'Chapter 04',
-    title: 'Relaxation Zone 🧘‍♀️',
-    emoji: '☁️',
-    content: 'Tension? Stress? 🚫 Chodo un sab ko! Jab bhi thaka hua feel karo, bas aankhein band karo aur socho hum saath mein ice-cream kha rahe hain. Sab problems gayab ho jayengi! 🍦✨',
-    note: 'Task: Abhi ke abhi ek lambi saans lo... aur smile karo! 😊'
+    title: 'The "Foodie" Bond 🍕',
+    emoji: '🍟',
+    content: 'Yaad hai jab humne khane ki baatein ki thi? Mera sapna hai ki main tumhare liye kuch cook karun (aur tum use chup-chaap kha lo bina hospital jaye! 😂). Humari chemistry toh theek hai, magar humari "Foodistry" world-class honi chahiye! 🍔',
+    note: 'Note: Tumhari pasand ka har khana, meri recipe book mein saved hai! 📖'
   },
   {
     num: 'Chapter 05',
-    title: 'Absolute Queen 👸',
-    emoji: '👑',
-    content: 'Log filter use karte hain, magar tumhein zarurat hi nahi hai. Tumhare natural smile ke aage filters fail hain. Tum sirf meri queen nahi, tum mera pura kingdom ho! 🏰💖',
-    note: 'Warning: Itni pyaari mat bana karo, nazar lag jayegi! 🧿'
+    title: 'Chance De Ke Toh Dekho 🤝',
+    emoji: '🎯',
+    content: 'Acha suno, log kehte hain ki life mein ek baar risk lena chahiye. Toh ek baar mujhe chance de ke toh dekho? Main guarantee toh nahi de sakta ki sab kuch movie jaisa hoga, magar yeh vada hai ki tumhare raste mein kabhi koi kaanta nahi aane dunga. Ek baar trust karke dekho, shayad main wohi hoon jiska tumne intezaar kiya ho. 🌹',
+    note: 'Task: Bas ek baar "Haan" kehne ki koshish toh karo! 😉'
   },
   {
     num: 'Chapter 06',
-    title: 'Multiverse of Us 🌌',
-    emoji: '🛸',
-    content: 'Agar main kisi dusre planet par bhi hota, toh alien banke tumhare pass aata! 👽 Kyunki gravity humein nahi, humaara pyaar humein khichta hai. Har universe mein "Bas Tum". 💫',
-    note: 'Imagination: Kya hum aliens banke bhi itne hi cute lagte? 🛸💕'
+    title: 'Bahubali of Your Kingdom 👑',
+    emoji: '🛡️',
+    content: 'Tumhara dil ek samrajye (kingdom) hai, aur main chahta hoon ki tum mujhe wahan ka "Bahubali" bana kar dekho. Main sirf tumhare liye ladunga, sirf tumhara sath dunga. Tumhe kabhi kisi ne woh ehsaas nahi karaya hoga jo main karunga. Fikr mat karo, main insaan hi hoon, kha nahi jaunga! 😂',
+    note: 'Dev Sena, tumhare intezaar mein Mahishmati (mera dil) ruka hua hai! 🏰'
   },
   {
-    num: 'Chapter 07',
-    title: 'The Radio You 📻',
-    emoji: '🎵',
-    content: 'Tumhari aawaz sunna mera favorite kaam hai. Chahe tum koi boring story sunao ya sirf "Hmm" kaho, mere liye woh kisi hit gaane se kam nahi hai. Remix karke sunun kya? 😂',
-    note: 'Dedication: Yeh chapter tumhari pyaari si voice ke naam! 🎙️❤️'
-  },
-  {
-    num: 'Chapter 08',
-    title: 'Night Owl Story 🦉',
-    emoji: '🌙',
-    content: 'Raat ko jab baarish hoti hai aur tum mere khayalon mein aati ho, toh neend kahan aayegi? Bas tumhari purani photos dekhta hoon aur phir se tumse pyaar ho jata hai. 🌧️💞',
-    note: 'Secret: Kabhi-kabhi main tumhari photos ko "Hi" bhi bolta hoon! 🤭'
-  },
-  {
-    num: 'Chapter 09',
-    title: 'Pinky Promise 🤙',
-    emoji: '🤝',
-    content: 'Wada raha... tumhare har nakhre uthaunga, tumhari har zid poori karunga (within budget! 😂). Main hamesha tumhara "Personal Cheerleader" rahunga. 📣🥰',
-    note: 'Vow: Main kabhi tumhara hath nahi chhodunga. Promise! 🤞❤️'
-  },
-  {
-    num: 'The Final Chapter',
-    title: 'To Be Continued... 📖',
-    emoji: '🌈',
-    content: 'Yeh kitab toh bas trailer hai, puri film toh abhi baki hai mere dost! 🎥 Har naya din, humari kahani ka naya romantic aur funny episode hoga. Main hamesha tumhara yehi "Personal Cheerleader" rahunga! ❤️',
-    note: 'Next Step: Check the very last page... 💌'
+    num: 'The Final Letter',
+    title: 'Mann Ki Baat 💌',
+    emoji: '🖋️',
+    content: 'Yeh koi chapter nahi hai, yeh meri rooh ki awaaz hai. Agla panna palto, wahan tumhare liye ek aakhri paigam hai. Shayad iske baad mujhe mauka na mile, magar jo hai, sab sach hai. ❤️',
+    note: 'Last Page is waiting for you...'
   },
   {
     type: 'letter',
-    num: 'Formal Submission',
-    title: 'A Letter for You 💌',
+    num: 'A Heartfelt Letter',
+    title: 'Dear Dev Sena ✉️',
     content: {
-      date: 'Date: 22nd April 2026',
-      to: 'To: Jyotsana (The Resident of My Heart)',
-      from: 'From: Someone Who Finds Peace in Your Thoughts',
-      subject: 'Subject: Official Acknowledgment of Your Kindness and Presence',
-      body: 'Respected Jyotsana, \n\nI am writing this to formally acknowledge the significant impact you have had on my surroundings. Your presence, though often silent, carries a depth that is impossible to ignore. This document serves as a record of my sincere observations of your character, your smile, and the warmth you bring into my life. \n\nI must state that your well-being is of utmost importance. Whenever you feel burdened by the pressures of the world, please consider this letter a standing invitation to find solace in the memories we share. Your presence is not merely a coincidence, but a vital component of my everyday happiness. \n\nPlease be advised: If this communication is received with a positive sentiment, I would appreciate a response. However, if it does not align with your current feelings, please feel free to disregard it. Your comfort remains the highest priority.',
-      closing: 'Yours Truly, \nAlways & Forever ❤️'
+      date: 'April 27, 2026',
+      to: 'To: My Dev Sena (The Queen of My Thoughts)',
+      from: 'From: Your Gym Boy',
+      subject: 'Subject: Ek Aakhri Koshish aur Dil Ki Baat',
+      body: 'hey dev sena yeh mere mnn ki baat hai joh likh raha hu mai jyada kuch nahi bolunga bss yeh ki tum ek baar apne samrajye ka bhahubali bna krr toh dekho tumko kabhi kissi ne ehsas nahi karaya hoga boh ehsaas karunga fikr mt krr insaan hi hu kha nahi jayunga jab bhi tumko esalage mai tumko uncomertable kr raha hu toh khud hi mujhe bta dena life mai ups and down toh aate rahenge lekin mai tuhmara permanent bnn na chahta hu mai sath hu tumahre jindagi mai tantraums lage rehnge toh kya hmm sath mai inko manage kr skte hai ? .\n\nBese bhi aaj iss link ka expiration time hai 12 bje raat phir iska bill generate hojayega link bnd toh yeh bhi ho skta hai mera last letter ho iske baad kuch nahi likhunga kyuki mai abh tut chuka hu. Bss itna hi bolna tha.',
+      closing: 'Aapka apna,\nGym Boy 💪❤️'
     }
   },
   {
     type: 'end',
-    title: 'The End',
-    message: 'Love you ❤️'
+    title: 'The End?',
+    message: 'I am waiting for your answer... ⏳'
   }
 ];
 
 export default function App() {
   const [flippedPages, setFlippedPages] = useState([]);
+  const [timeLeft, setTimeLeft] = useState('');
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const now = new Date();
+      const midnight = new Date();
+      midnight.setHours(24, 0, 0, 0);
+      
+      const diff = midnight - now;
+      if (diff <= 0) {
+        setTimeLeft('Link Expired');
+        clearInterval(timer);
+      } else {
+        const h = Math.floor(diff / 3600000);
+        const m = Math.floor((diff % 3600000) / 60000);
+        const s = Math.floor((diff % 60000) / 1000);
+        setTimeLeft(`${h}h ${m}m ${s}s remaining`);
+      }
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   const togglePage = (index) => {
     if (flippedPages.includes(index)) {
@@ -110,106 +111,105 @@ export default function App() {
 
   return (
     <div className="app-container">
+      <div className="expiry-banner">
+        ⚠️ This book expires at 12:00 AM tonight! {timeLeft}
+      </div>
+
       <div className="book-container">
         <div className="book">
           {chapters.map((chapter, index) => (
             <div 
               key={index}
-              className={`page ${chapter.type === 'cover' ? 'cover' : ''} ${chapter.type === 'letter' ? 'letter' : ''} ${flippedPages.includes(index) ? 'flipped' : ''}`}
+              className={`page ${chapter.type || ''} ${flippedPages.includes(index) ? 'flipped' : ''}`}
               style={{ zIndex: chapters.length - index }}
               onClick={() => togglePage(index)}
             >
               <div className="page-content">
-                {chapter.type === 'cover' ? (
-                  <div style={{ textAlign: 'center', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <div className="cover-corner-br">✻</div>
-                    <div className="floating-icon" style={{ fontSize: '3rem', marginBottom: '1rem' }}>📔</div>
-                    <h1>{chapter.title}</h1>
-                    <p className="cover-tagline">{chapter.subtitle}</p>
-                    <div style={{ marginTop: '4rem', opacity: 0.5, fontSize: '0.8rem' }}>
-                      Panno ko paltein aur <br /> jaadu dekhein... ✨
+                <div className="page-front">
+                  {chapter.type === 'cover' ? (
+                    <div className="cover-design">
+                      <div className="ornament-top">❦</div>
+                      <div className="floating-icon book-icon">📜</div>
+                      <h1 className="main-title">{chapter.title}</h1>
+                      <div className="divider"></div>
+                      <p className="subtitle">{chapter.subtitle}</p>
+                      <p className="edition">{chapter.edition}</p>
+                      <div className="instruction">Click to reveal the next chapter... ✨</div>
+                      <div className="ornament-bottom">❦</div>
                     </div>
-                  </div>
-                ) : chapter.type === 'letter' ? (
-                  <div className="formal-letter">
-                    <div className="formal-header">
-                      {chapter.content.date} <br />
-                      {chapter.content.to} <br />
-                      {chapter.content.from}
-                    </div>
-                    <div className="formal-subject">
-                      {chapter.content.subject}
-                    </div>
-                    <div className="formal-body">
-                      {chapter.content.body.split('\n').map((line, i) => (
-                        <p key={i} style={{ marginBottom: line.trim() === '' ? '1rem' : '0' }}>{line}</p>
-                      ))}
-                    </div>
-                    <div className="formal-footer">
-                      {chapter.content.closing.split('\n').map((line, i) => (
-                        <div key={i}>{line}</div>
-                      ))}
-                    </div>
-                  </div>
-                ) : chapter.type === 'end' ? (
-                  <div className="end-page">
-                    <p style={{ fontSize: '1.5rem', fontFamily: 'Dancing Script' }}>{chapter.message}</p>
-                    <h2 className="end-title">{chapter.title}</h2>
-                    <div className="btn-group">
-                       <button className="btn-action" onClick={() => setFlippedPages([])}>
-                         Read Again 📖
-                       </button>
-                       <a 
-                         href="https://wa.me/919413128045?text=I%20just%20finished%20reading%20your%20digital%20book!%20It%20was%20beautiful.%20❤️" 
-                         target="_blank" 
-                         rel="noopener noreferrer"
-                         className="btn-action"
-                         style={{ background: '#25D366' }}
-                       >
-                         Message Me 💬
-                       </a>
-                       <button 
-                         className="btn-action" 
-                         style={{ background: '#e63946' }}
-                         onClick={() => window.print()}
-                       >
-                         Download PDF 📥
-                       </button>
-                    </div>
-                  </div>
-                ) : (
-                  <>
-                    <div className="chapter-num">
-                      <span>{chapter.num}</span>
-                      <span className="floating-icon">{chapter.emoji}</span>
-                    </div>
-                    <h2 className="chapter-title">{chapter.title}</h2>
-                    <p className="page-text">{chapter.content}</p>
-                    {chapter.note && (
-                      <div className="handwritten">
-                        {chapter.note}
+                  ) : chapter.type === 'letter' ? (
+                    <div className="letter-design">
+                      <div className="letter-header">
+                        <p>{chapter.content.date}</p>
+                        <p>{chapter.content.to}</p>
+                        <p>{chapter.content.from}</p>
                       </div>
-                    )}
-                    <div className="page-footer">
-                      <span>Memories of Jyotsana</span>
-                      <span>Page {index + 1}</span>
+                      <div className="letter-subject">{chapter.content.subject}</div>
+                      <div className="letter-body">
+                        {chapter.content.body.split('\n').map((line, i) => (
+                          <p key={i}>{line}</p>
+                        ))}
+                      </div>
+                      <div className="letter-footer">
+                        {chapter.content.closing.split('\n').map((line, i) => (
+                          <div key={i}>{line}</div>
+                        ))}
+                      </div>
                     </div>
-                  </>
-                )}
+                  ) : chapter.type === 'end' ? (
+                    <div className="end-design">
+                      <div className="heart-animation">❤️</div>
+                      <h2 className="end-text">{chapter.title}</h2>
+                      <p className="end-message">{chapter.message}</p>
+                      <div className="action-buttons">
+                        <button className="btn restart" onClick={(e) => { e.stopPropagation(); setFlippedPages([]); }}>
+                          Read Part 2 Again 🔄
+                        </button>
+                        <a 
+                          href="https://wa.me/919413128045?text=Hey%20Bahubali!%20Part%202%20padha%20maine...%20Emotional%20tha!%20😭❤️" 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="btn message"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          Send My Answer 💬
+                        </a>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="chapter-design">
+                      <div className="chapter-meta">
+                        <span className="chapter-num-tag">{chapter.num}</span>
+                        <span className="chapter-emoji-icon">{chapter.emoji}</span>
+                      </div>
+                      <h2 className="chapter-title-text">{chapter.title}</h2>
+                      <div className="content-wrapper">
+                        <p className="chapter-text-content">{chapter.content}</p>
+                        {chapter.note && (
+                          <div className="handwritten-note">
+                            {chapter.note}
+                          </div>
+                        )}
+                      </div>
+                      <div className="page-numbering">
+                        <span>The Journey of Us</span>
+                        <span>Chapter {index}</span>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           ))}
         </div>
       </div>
       
-      <div className="nav-hint" style={{ color: 'var(--gold)' }}>
-        {flippedPages.length === 0 ? "Click to open the magic cover! ✨" : "Click the right side to keep reading... 📖"}
+      <div className="floating-decorations">
+        <div className="float-item">💖</div>
+        <div className="float-item">✨</div>
+        <div className="float-item">🔥</div>
+        <div className="float-item">🧸</div>
       </div>
-
-      {/* Decorations */}
-      <div style={{ position: 'fixed', top: '5%', left: '5%', fontSize: '2rem', opacity: 0.1, animation: 'float 4s infinite' }}>⭐</div>
-      <div style={{ position: 'fixed', top: '15%', right: '15%', fontSize: '2rem', opacity: 0.1, animation: 'float 5s infinite' }}>💖</div>
-      <div style={{ position: 'fixed', bottom: '10%', left: '10%', fontSize: '2rem', opacity: 0.1, animation: 'float 6s infinite' }}>🧸</div>
     </div>
   );
 }
