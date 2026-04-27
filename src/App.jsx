@@ -51,11 +51,11 @@ const chapters = [
     note: 'Dev Sena, tumhare intezaar mein Mahishmati (mera dil) ruka hua hai! 🏰'
   },
   {
-    num: 'The Final Letter',
-    title: 'Mann Ki Baat 💌',
+    num: 'The Letter',
+    title: 'Dil Se Dil Tak 💌',
     emoji: '🖋️',
-    content: 'Yeh koi chapter nahi hai, yeh meri rooh ki awaaz hai. Agla panna palto, wahan tumhare liye ek aakhri paigam hai. Shayad iske baad mujhe mauka na mile, magar jo hai, sab sach hai. ❤️',
-    note: 'Last Page is waiting for you...'
+    content: 'Yeh koi chapter nahi hai, yeh meri rooh ki awaaz hai. Agla panna palto, wahan tumhare liye ek paigam hai. Maine jo bhi likha hai, sab sach hai aur hamesha rahega. ❤️',
+    note: 'The next page is just for you...'
   },
   {
     type: 'letter',
@@ -65,8 +65,8 @@ const chapters = [
       date: 'April 27, 2026',
       to: 'To: My Dev Sena (The Queen of My Thoughts)',
       from: 'From: Your Gym Boy',
-      subject: 'Subject: Ek Aakhri Koshish aur Dil Ki Baat',
-      body: 'hey dev sena yeh mere mnn ki baat hai joh likh raha hu mai jyada kuch nahi bolunga bss yeh ki tum ek baar apne samrajye ka bhahubali bna krr toh dekho tumko kabhi kissi ne ehsas nahi karaya hoga boh ehsaas karunga fikr mt krr insaan hi hu kha nahi jayunga jab bhi tumko esalage mai tumko uncomertable kr raha hu toh khud hi mujhe bta dena life mai ups and down toh aate rahenge lekin mai tuhmara permanent bnn na chahta hu mai sath hu tumahre jindagi mai tantraums lage rehnge toh kya hmm sath mai inko manage kr skte hai ? .\n\nBese bhi aaj iss link ka expiration time hai 12 bje raat phir iska bill generate hojayega link bnd toh yeh bhi ho skta hai mera last letter ho iske baad kuch nahi likhunga kyuki mai abh tut chuka hu. Bss itna hi bolna tha.',
+      subject: 'Subject: Dil Ki Baat aur Kuch Khass Ehsaas',
+      body: 'hey dev sena yeh mere mnn ki baat hai joh likh raha hu mai jyada kuch nahi bolunga bss yeh ki tum ek baar apne samrajye ka bhahubali bna krr toh dekho tumko kabhi kissi ne ehsas nahi karaya hoga boh ehsaas karunga fikr mt krr insaan hi hu kha nahi jayunga jab bhi tumko esalage mai tumko uncomertable kr raha hu toh khud hi mujhe bta dena life mai ups and down toh aate rahenge lekin mai tuhmara permanent bnn na chahta hu mai sath hu tumahre jindagi mai tantraums lage rehnge toh kya hmm sath mai inko manage kr skte hai ? .',
       closing: 'Aapka apna,\nGym Boy 💪❤️'
     }
   },
@@ -80,27 +80,6 @@ const chapters = [
 
 export default function App() {
   const [flippedPages, setFlippedPages] = useState([]);
-  const [timeLeft, setTimeLeft] = useState('');
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      const now = new Date();
-      const midnight = new Date();
-      midnight.setHours(24, 0, 0, 0);
-      
-      const diff = midnight - now;
-      if (diff <= 0) {
-        setTimeLeft('Link Expired');
-        clearInterval(timer);
-      } else {
-        const h = Math.floor(diff / 3600000);
-        const m = Math.floor((diff % 3600000) / 60000);
-        const s = Math.floor((diff % 60000) / 1000);
-        setTimeLeft(`${h}h ${m}m ${s}s remaining`);
-      }
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
 
   const togglePage = (index) => {
     if (flippedPages.includes(index)) {
@@ -112,10 +91,6 @@ export default function App() {
 
   return (
     <div className="app-container">
-      <div className="expiry-banner">
-        ⚠️ This book expires at 12:00 AM tonight! {timeLeft}
-      </div>
-
       <div className="book-container">
         <div className="book">
           {chapters.map((chapter, index) => (
