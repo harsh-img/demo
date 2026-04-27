@@ -73,7 +73,8 @@ const chapters = [
   {
     type: 'end',
     title: 'The End?',
-    message: 'I am waiting for your answer... ⏳'
+    message: 'I am waiting for your answer... ⏳',
+    extra: 'I love you meri jaan ❤️'
   }
 ];
 
@@ -161,6 +162,7 @@ export default function App() {
                       <div className="heart-animation">❤️</div>
                       <h2 className="end-text">{chapter.title}</h2>
                       <p className="end-message">{chapter.message}</p>
+                      <h3 className="end-extra">{chapter.extra}</h3>
                       <div className="action-buttons">
                         <button className="btn restart" onClick={(e) => { e.stopPropagation(); setFlippedPages([]); }}>
                           Read Part 2 Again 🔄
