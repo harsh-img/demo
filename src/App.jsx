@@ -1,26 +1,36 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, useScroll, useSpring, useTransform, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import './index.css';
+
+const Petal = ({ i }) => {
+  const x = Math.random() * 100;
+  const delay = Math.random() * 10;
+  const duration = 10 + Math.random() * 20;
+
+  return (
+    <motion.div
+      className="petal"
+      initial={{ top: -20, left: `${x}vw`, opacity: 0, rotate: 0 }}
+      animate={{ 
+        top: '110vh', 
+        left: `${x + (Math.random() * 10 - 5)}vw`, 
+        opacity: [0, 0.6, 0.6, 0],
+        rotate: 360 
+      }}
+      transition={{ 
+        duration: duration, 
+        repeat: Infinity, 
+        delay: delay,
+        ease: "linear"
+      }}
+    >
+      🌸
+    </motion.div>
+  );
+};
 
 export default function App() {
   const [muted, setMuted] = useState(false);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const containerRef = useRef(null);
-
-  const { scrollYProgress } = useScroll();
-  const scaleX = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001
-  });
-
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      setMousePos({ x: e.clientX, y: e.clientY });
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
 
   const photos = [
     '/WhatsApp Image 2026-05-04 at 4.57.59 PM (1).jpeg',
@@ -31,198 +41,146 @@ export default function App() {
     '/WhatsApp Image 2026-05-04 at 4.58.00 PM.jpeg',
   ];
 
-  const fadeInUp = {
-    initial: { opacity: 0, y: 60 },
+  const reveal = {
+    initial: { opacity: 0, y: 30 },
     whileInView: { opacity: 1, y: 0 },
     viewport: { once: true },
-    transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] }
+    transition: { duration: 1, ease: "easeOut" }
   };
 
   return (
-    <div className="app-container" ref={containerRef}>
-      <div className="noise"></div>
-      
-      {/* Custom Cursor */}
-      <motion.div 
-        className="cursor"
-        animate={{ x: mousePos.x - 10, y: mousePos.y - 10 }}
-        transition={{ type: 'spring', damping: 20, stiffness: 250, mass: 0.5 }}
-      />
+    <div className="app-container">
+      {/* Falling Petals */}
+      {[...Array(15)].map((_, i) => <Petal key={i} />)}
 
-      {/* Scroll Progress */}
-      <motion.div className="scroll-progress" style={{ scaleX }} />
-
-      {/* Background Music */}
       <audio src="/Ishqa Ve Chadeya - Ishqa Ve _ Zeeshan Ali _ Punjabi Song.mp3" autoPlay loop muted={muted} />
-      <motion.div 
-        className="mute-float" 
-        whileHover={{ scale: 1.1 }} 
-        whileTap={{ scale: 0.9 }}
-        onClick={() => setMuted(!muted)}
-      >
+      
+      <div className="mute-ornamental" onClick={() => setMuted(!muted)}>
         {muted ? '🔊' : '🔇'}
-      </motion.div>
+      </div>
 
-      {/* 1. Hero Section */}
-      <section className="hero" style={{ backgroundImage: `url("${photos[1]}")` }}>
-        <div className="hero-overlay"></div>
+      {/* 1. Hero Section - The Grand Entrance */}
+      <section>
+        <motion.div {...reveal}>
+          <h1 className="title-luxury">Jyotsana</h1>
+          <div className="ornament"></div>
+          <p className="subtitle-script">Ek Haseen Khwab...</p>
+        </motion.div>
+        
         <motion.div 
-          className="hero-content"
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+          className="frame-luxury" 
+          style={{ width: '300px', marginTop: '50px' }}
+          initial={{ scale: 0.8, opacity: 0 }}
+          whileInView={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 1.5 }}
         >
-          <h1 className="hero-title">JYOTSANA</h1>
-          <motion.p 
-            className="hero-subtitle"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1 }}
-          >
-            The Universe Within You ❤️
-          </motion.p>
+          <img src={photos[1]} alt="Hero" />
         </motion.div>
       </section>
 
-      {/* 2. The Muse - Deep Personality Section */}
+      {/* 2. The Beginning - Detailed Content */}
       <section>
-        <div className="story-section">
-          <motion.div className="story-img-container" {...fadeInUp}>
-            <img src={photos[4]} className="story-img" alt="Muse" />
+        <div className="ornament"></div>
+        <motion.h2 className="title-luxury" style={{ fontSize: '3rem' }} {...reveal}>Aghaaz-e-Mohabbat</motion.h2>
+        
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '50px', justifyContent: 'center', marginTop: '50px' }}>
+          <motion.div className="frame-luxury" style={{ width: '350px', transform: 'rotate(-3deg)' }} {...reveal}>
+            <img src={photos[0]} alt="Start" />
           </motion.div>
-          <motion.div className="story-content" {...fadeInUp} transition={{ delay: 0.2 }}>
-            <span className="section-tag">The Icon</span>
-            <h2 className="section-title">Classic, Modern, and Everything In Between.</h2>
-            <p className="section-p">
-              Tumhari personality mein ek alag hi "Paradox" hai. Kabhi tum itni calm lagti ho jaise koi peaceful lake, aur kabhi itni vibrant jaise koi celebration. Tumhari har photo mein ek alag hi grace hai, magar jo cheez camera capture nahi kar sakta, woh hai tumhari rooh ki chamak.
-            </p>
-            <p className="section-p" style={{ marginTop: '20px' }}>
-              Style toh tumhara birthright hai, magar tumhara "Vibe" tumhare dil se aata hai. Jab tum ethnic wear mein hoti ho, toh lagta hai jaise koi purani dastan zinda ho gayi ho, aur jab casuals mein, toh lagta hai tum hi dunya ki sabse cool insaan ho. 
-              Hinglish mein bolu toh: "Tum sirf ek trend nahi ho, tum ek poora era ho!"
+          
+          <motion.div style={{ maxWidth: '500px' }} {...reveal}>
+            <p className="content-p" style={{ textAlign: 'left' }}>
+              Yaad hai woh din jab humari baatein shuru hui thi? Maine kabhi nahi socha tha ki ek ajnabi mere dil ke itne qareeb aa jayega. Tumhara baat karne ka tareeka, woh sense of humor, aur woh choti-choti baatein... sab kuch jaise ek dastan banti gayi. 
+              <br /><br />
+              Log kehte hain ki mohobbat ek ehsaas hai, magar tumhare sath rehkar mujhe laga ki mohobbat ek "Sukun" hai. Jab tum hasti ho, toh lagta hai dunya ki saari khushiyan ek hi jagah simat gayi hain. Tum sirf ek ladki nahi ho, tum meri life ki woh roshni ho jo andhere mein bhi rasta dikhati hai.
             </p>
           </motion.div>
         </div>
       </section>
 
-      {/* 3. Detailed Humour Section */}
-      <section style={{ background: '#050505' }}>
-        <motion.span className="section-tag" {...fadeInUp}>The Daily Dose</motion.span>
-        <motion.h2 className="section-title" {...fadeInUp}>Laughter is Our Language</motion.h2>
-        <div className="grid-container">
-          <motion.div className="card" {...fadeInUp} transition={{ delay: 0.1 }}>
-            <div className="card-emoji">🏋️‍♂️</div>
-            <h3>Gym Boy’s Weakness</h3>
-            <p className="section-p">
-              Main 100kg ka deadlift toh maar leta hoon, magar jab tum gusse mein "OK" likhti ho na, toh wahan meri saari strength khatam ho jati hai! 😂 Log protein ke peeche bhaagte hain, magar meri asli energy toh tumhare sath woh 5 minute ki faltu baaton mein hai. No Gym, No Gain? No... No Tum, No Gain!
-            </p>
-          </motion.div>
-          <motion.div className="card" {...fadeInUp} transition={{ delay: 0.2 }}>
-            <div className="card-emoji">🍟</div>
-            <h3>The Foodie Diaries</h3>
-            <p className="section-p">
-              Burger aur Fries tumhare liye shayad bas khana ho, magar mere liye woh tumhare sath bitaye huye palon ka ek bahana hai. Humari "Foodistry" (Food + Chemistry) itni strong hai ki hum dunya ka har menu card khatam kar sakte hain. Agli baar jab milenge, diet gayi tel lene, hum sirf treat lenge! 🍔
-            </p>
-          </motion.div>
-          <motion.div className="card" {...fadeInUp} transition={{ delay: 0.3 }}>
-            <div className="card-emoji">🤡</div>
-            <h3>Tantrums Manager</h3>
-            <p className="section-p">
-              Tumhare nakhre handle karna mera favorite part-time (aur full-time) job hai. Tumhare "Mood Swings" meri life ke sabse adventurous roller-coaster rides hain. Magar fikar mat karna, main hamesha front seat par rahunga, bas tum rote-rote kabhi hasna mat bhulna.
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* 4. Cinematic Gallery */}
-      <section>
-        <motion.span className="section-tag" {...fadeInUp}>Frames of Love</motion.span>
-        <motion.h2 className="section-title" {...fadeInUp}>Visualizing You</motion.h2>
-        <div className="masonry-gallery">
-          {photos.map((photo, i) => (
-            <motion.div 
-              key={i} 
-              className="gallery-item"
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ delay: i * 0.1 }}
-              viewport={{ once: true }}
-            >
-              <img src={photo} alt={`Memory ${i}`} />
+      {/* 3. Funny Side - Scrapbook Cards */}
+      <section style={{ background: 'rgba(0,0,0,0.2)' }}>
+        <h2 className="title-luxury" style={{ fontSize: '3rem' }}>Humari Kahani, Humari Zubani</h2>
+        <div className="ornament"></div>
+        
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '30px', width: '100%', maxWidth: '1200px', marginTop: '50px' }}>
+          {[
+            { title: 'Gym Boy Logic', content: 'Main 100kg deadlift toh maar leta hoon, magar tumhare "Hmm" se mera dil pighal jata hai! 😂 Protein shake se zyada mujhe tumhari smile ki zarurat hai energy ke liye. No Gym, No Gain? No, No Tum, No Gain!', icon: '💪' },
+            { title: 'The Foodie War', content: 'Pizza tumhara pehla pyar hai, aur main doosra? Koi baat nahi, main compromise kar lunga. Humari Foodistry itni strong honi chahiye ki hum dunya ka har menu card khatam kar dein! 🍔', icon: '🍔' },
+            { title: 'Tantrums Manager', content: 'Tumhare nakhre handle karna meri favorite hobby hai. Tumhara gussa bhi tumhare pyar ki tarah hi cute hai. Main hamesha ready hoon tumhare nakhre uthane ke liye! 🧸', icon: '🧸' }
+          ].map((card, i) => (
+            <motion.div key={i} className="frame-luxury" style={{ padding: '40px', background: 'var(--dark)', border: '1px solid var(--gold)' }} {...reveal} transition={{ delay: i * 0.2 }}>
+              <div style={{ fontSize: '3rem', marginBottom: '20px' }}>{card.icon}</div>
+              <h3 className="title-luxury" style={{ fontSize: '1.5rem', marginBottom: '10px' }}>{card.title}</h3>
+              <p className="content-p" style={{ fontSize: '1rem', lineHieght: '1.6' }}>{card.content}</p>
             </motion.div>
           ))}
         </div>
       </section>
 
-      {/* 5. The Future - Detailed Narrative */}
-      <section style={{ background: '#080808' }}>
-        <div className="story-section" style={{ gridTemplateColumns: '1.2fr 1fr' }}>
-          <motion.div className="story-content" {...fadeInUp}>
-            <span className="section-tag">Beyond Today</span>
-            <h2 className="section-title">What the Future Holds</h2>
-            <p className="section-p">
-              Main sirf aaj mein nahi rehna chahta, main tumhare sath har "Kal" dekhna chahta hoon. Woh subah jab hum sath mein coffee peeyenge, woh shaamein jab hum bina kisi wajah ke lambi walks par jayenge, aur woh raatein jab hum purani photos dekh kar hasenge.
-            </p>
-            <p className="section-p" style={{ marginTop: '20px' }}>
-              Humein dunya bhar ghumna hai, naye naye cafes try karne hain, aur dher saari pagalpanti karni hai. Meri life ka har big decision tumhare "Yes" ya "No" par depend karega. Humari story ka climax hamesha "Happily Ever After" hi hoga, kyunki humne ise likha hi dil se hai. 
-              Future forecast? 100% chance of infinite togetherness.
-            </p>
-          </motion.div>
-          <motion.div className="story-img-container" {...fadeInUp} transition={{ delay: 0.3 }}>
-            <img src={photos[5]} className="story-img" alt="Future" />
-          </motion.div>
+      {/* 4. The Aesthetic You - Collage Section */}
+      <section>
+        <h2 className="title-luxury" style={{ fontSize: '3rem' }}>Tasveer-e-Ishq</h2>
+        <div className="ornament"></div>
+        
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px', width: '100%', maxWidth: '1200px', marginTop: '50px' }}>
+          {photos.map((photo, i) => (
+            <motion.div key={i} className="frame-luxury" {...reveal} transition={{ delay: i * 0.1 }}>
+              <img src={photo} alt={`Gallery ${i}`} />
+            </motion.div>
+          ))}
         </div>
       </section>
 
-      {/* 6. Deep Confessions */}
-      <section>
-        <motion.div className="premium-box" {...fadeInUp}>
-          <span className="section-tag">Heart-to-Heart</span>
-          <h2 className="section-title">Unspoken Truths</h2>
-          <div style={{ textAlign: 'left', margin: '0 auto', maxWidth: '800px' }}>
-            <p className="section-p" style={{ color: '#fff', marginBottom: '30px' }}>
-              Sach toh yeh hai ki tumhare bina sab kuch "Black & White" lagta hai. Tumne mujhe sikhaya ki life ko sirf jeena nahi, use enjoy karna chahiye. Jab bhi main low feel karta hoon, tumhari ek audio note ya ek purani photo hi kaafi hoti hai mujhe pump up karne ke liye.
-            </p>
-            <p className="section-p" style={{ color: '#fff', marginBottom: '30px' }}>
-              Main thoda sa sakht hoon, magar tumhare nakhre ke aage main hamesha "Pighal" jata hoon. Tum meri woh priority ho jiske liye main dunya se lad sakta hoon. Tum sirf ek rishta nahi, tum meri rooh ka ek hissa ho.
-            </p>
-            <p className="section-p" style={{ color: '#fff' }}>
-              Hinglish mein agar main summary bolu: "Main tumhare liye hamesha wahan khada rahunga jahan tumne mujhe pehli baar dekha tha. Bas ab aur intezaar mat karwao!" ❤️
-            </p>
-          </div>
+      {/* 5. Deep Feelings - The Narrative */}
+      <section style={{ background: 'rgba(212, 175, 55, 0.05)' }}>
+        <div className="ornament"></div>
+        <motion.div style={{ maxWidth: '900px', textAlign: 'center' }} {...reveal}>
+          <h2 className="title-luxury" style={{ fontSize: '3.5rem' }}>Kyun Tum?</h2>
+          <p className="content-p">
+            Dunya mein bohot log hain, magar tum jaisa koi nahi. Tumne mujhe woh ehsaas karaya jo maine pehle kabhi feel nahi kiya tha. Tumhare saath silence bhi comfortable lagta hai. Tum meri life ki woh movie ho jiska interval main kabhi nahi chahta. 
+            <br /><br />
+            Sach toh yeh hai ki tumhare bina sab kuch "Black & White" lagta hai. Tumne mujhe sikhaya ki life ko sirf jeena nahi, use enjoy karna chahiye. Jab bhi main low feel karta hoon, tumhari ek photo hi kaafi hoti hai mujhe pump up karne ke liye. Main thoda sa sakht hoon, magar tumhare nakhre ke aage main hamesha "Pighal" jata hoon.
+            <br /><br />
+            Meri har subah tumhare khayal se shuru hoti hai aur har raat tumhari yaadon mein khatam. Tum sirf ek rishta nahi, tum meri rooh ka ek hissa ho.
+          </p>
         </motion.div>
+        <div className="ornament"></div>
       </section>
 
-      {/* 7. The Ultimate Proposal - Dastaan-e-Mohabbat */}
-      <section style={{ backgroundImage: `linear-gradient(rgba(0,0,0,0.9), rgba(0,0,0,0.9)), url("${photos[2]}")`, backgroundSize: 'cover', backgroundAttachment: 'fixed' }}>
-        <motion.div className="premium-box" initial={{ opacity: 0, y: 100 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 1 }}>
-          <span className="section-tag">Final Act</span>
-          <h2 className="section-title" style={{ fontFamily: 'var(--font-accent)', fontSize: '4rem', textTransform: 'none' }}>Dastaan-e-Mohabbat</h2>
-          <p className="letter-text" style={{ fontSize: '2.5rem' }}>
+      {/* 6. The Proposal - Dastaan-e-Mohabbat */}
+      <section style={{ backgroundImage: `linear-gradient(rgba(26, 15, 15, 0.9), rgba(26, 15, 15, 0.9)), url("${photos[4]}")`, backgroundSize: 'cover', backgroundAttachment: 'fixed' }}>
+        <motion.div style={{ textAlign: 'center' }} {...reveal}>
+          <h2 className="title-luxury" style={{ fontSize: '4rem' }}>Dastaan-e-Mohabbat</h2>
+          <div className="ornament"></div>
+          <p className="subtitle-script" style={{ fontSize: '4rem' }}>Will You Be Mine?</p>
+          
+          <p className="content-p" style={{ fontStyle: 'italic', maxWidth: '700px' }}>
             "Jyotsana, will you be the Queen of my samrajye forever? <br /> 
-            Will you let me be your Bahubali till my last breath?"
-          </p>
-          <motion.p className="section-p" style={{ margin: '40px auto' }} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ delay: 0.5 }}>
+            Will you let me be your Bahubali till my last breath? <br /><br />
             Yeh sirf ek sawal nahi hai, yeh meri life ka sabse bada commitment hai. 
             Main vada karta hoon ki tumhare raste mein kabhi koi kaanta nahi aane dunga. 
-            Bas ek baar muskura kar "Haan" keh do. ❤️
-          </motion.p>
+            Bas ek baar muskura kar 'Haan' keh do."
+          </p>
+          
           <motion.a 
-            href="https://wa.me/919413128045?text=Hey%20Bahubali!%20Everything%20is%20perfect...%20Yes!%20😍❤️" 
+            href="https://wa.me/919413128045?text=Hey%20Bahubali!%20Everything%20is%20so%20beautiful...%20Yes!%20❤️" 
             target="_blank" 
             rel="noreferrer" 
-            className="btn-premium"
-            whileHover={{ scale: 1.1, letterSpacing: '5px' }}
+            className="btn-gold"
+            whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
           >
-            Send My Answer 💌
+            Qubool Hai ❤️
           </motion.a>
         </motion.div>
       </section>
 
       {/* Footer */}
-      <footer style={{ padding: '80px 20px', textAlign: 'center', opacity: 0.5 }}>
-        <p style={{ letterSpacing: '10px', textTransform: 'uppercase', fontSize: '0.7rem' }}>Dedicated to Jyotsana // Always & Forever</p>
-        <p style={{ marginTop: '20px', fontFamily: 'var(--font-accent)', fontSize: '1.5rem' }}>Tum bohot special ho ❤️</p>
+      <footer style={{ padding: '80px 20px', textAlign: 'center', opacity: 0.6 }}>
+        <div className="ornament"></div>
+        <p style={{ fontFamily: 'var(--font-title)', color: 'var(--gold)', letterSpacing: '5px' }}>FOREVER & ALWAYS</p>
+        <p style={{ marginTop: '20px', fontFamily: 'var(--font-script)', fontSize: '2rem' }}>Tum bohot special ho, Jyotsana ❤️</p>
       </footer>
     </div>
   );
