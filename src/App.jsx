@@ -1,186 +1,133 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './index.css';
 
-const magContent = [
-  {
-    type: 'hero',
-    title: 'JYOTSANA',
-    subtitle: 'THE MODERN MUSE',
-    image: '/WhatsApp Image 2026-05-04 at 4.58.00 PM (2).jpeg',
-    badge: 'MAY 2026 ISSUE'
-  },
-  {
-    type: 'narrative',
-    title: 'THE GLOW',
-    dropCap: 'S',
-    content: 'Style toh bohot logo ke pas hota hai, magar "Grace" sirf tumhare pas hai. Tumhari hassi mein ek alag hi vibe hai jo sabko attract karti hai. Humari baatein aur tumhari nakhre—yeh combination life ko interesting banata hai. Hinglish mein bole toh: "Tum sirf ek girl nahi, tum ek high-end magazine ki star ho!"',
-    image: '/WhatsApp Image 2026-05-04 at 4.57.59 PM (1).jpeg',
-    vertical: 'VIBRANT // 2026'
-  },
-  {
-    type: 'minimal',
-    title: 'FITNESS & FINESSE',
-    content: 'Gym ke pasine se lekar camera ke samne ki chamak tak... tum har look mein "Perfect" lagti ho. Mera favorite view? Bas tumhara muskuraata hua chehra.',
-    image: '/WhatsApp Image 2026-05-04 at 4.58.00 PM (1).jpeg',
-    tag: 'POWER UP'
-  },
-  {
-    type: 'layered',
-    title: 'DIL SE',
-    quote: 'Tum woh sukoon ho jo mujhe shorr mein bhi milta hai.',
-    image: '/WhatsApp Image 2026-05-04 at 4.58.00 PM.jpeg'
-  },
-  {
-    type: 'collage-modern',
-    images: [
-      '/WhatsApp Image 2026-05-04 at 4.57.59 PM.jpeg',
-      '/WhatsApp Image 2026-05-04 at 4.58.01 PM.jpeg',
-      '/WhatsApp Image 2026-05-04 at 4.58.00 PM (2).jpeg',
-      '/WhatsApp Image 2026-05-04 at 4.57.59 PM (2).jpeg'
-    ]
-  },
-  {
-    type: 'narrative',
-    title: 'TASTE OF US',
-    dropCap: 'F',
-    content: 'Food and Us... ek aisi love story jo kabhi khatam nahi hogi. Pizza ki slice ho ya coffee ki cup, tumhare saath har cheez ka taste premium ho jata hai. Humara safar aise hi chalta rahe, baaton aur khane ke saath.',
-    image: '/WhatsApp Image 2026-05-04 at 4.58.01 PM (1).jpeg',
-    vertical: 'LIFESTYLE // MAY'
-  },
-  {
-    type: 'proposal-page',
-    title: 'THE FINAL ACT',
-    content: 'Kya tum mere life ki permanent "Main Lead" banogi? Ek chance de ke toh dekho, yeh story "Superhit" hogi! ❤️',
-    image: '/WhatsApp Image 2026-05-04 at 4.57.59 PM (2).jpeg'
-  },
-  {
-    type: 'back-cover-modern',
-    title: 'WAITING...',
-    message: 'I love you, Jyotsana. Waiting for your yes!',
-    whatsapp: 'https://wa.me/919413128045'
-  }
-];
-
 export default function App() {
-  const [flipped, setFlipped] = useState([]);
+  const [scrollProgress, setScrollProgress] = useState(0);
   const [muted, setMuted] = useState(false);
 
-  const flip = (i) => {
-    if (flipped.includes(i)) {
-      setFlipped(flipped.filter(x => x < i));
-    } else {
-      setFlipped([...flipped, i]);
-    }
-  };
+  useEffect(() => {
+    const updateScroll = () => {
+      const currentScroll = window.scrollY;
+      const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+      setScrollProgress((currentScroll / scrollHeight) * 100);
+    };
+    window.addEventListener('scroll', updateScroll);
+    return () => window.removeEventListener('scroll', updateScroll);
+  }, []);
+
+  const photos = [
+    '/WhatsApp Image 2026-05-04 at 4.57.59 PM (1).jpeg',
+    '/WhatsApp Image 2026-05-04 at 4.57.59 PM (2).jpeg',
+    '/WhatsApp Image 2026-05-04 at 4.57.59 PM.jpeg',
+    '/WhatsApp Image 2026-05-04 at 4.58.00 PM (1).jpeg',
+    '/WhatsApp Image 2026-05-04 at 4.58.00 PM (2).jpeg',
+    '/WhatsApp Image 2026-05-04 at 4.58.00 PM.jpeg',
+    '/WhatsApp Image 2026-05-04 at 4.58.01 PM (1).jpeg',
+    '/WhatsApp Image 2026-05-04 at 4.58.01 PM.jpeg',
+  ];
 
   return (
     <div className="app-container">
+      {/* Scroll Progress */}
+      <div className="scroll-progress" style={{ width: `${scrollProgress}%` }}></div>
+
+      {/* Background Music */}
       <audio src="/Ishqa Ve Chadeya - Ishqa Ve _ Zeeshan Ali _ Punjabi Song.mp3" autoPlay loop muted={muted} />
-      
-      <button className="custom-mute" onClick={() => setMuted(!muted)}>
+      <div className="mute-float" onClick={() => setMuted(!muted)}>
         {muted ? '🔇' : '🔊'}
-      </button>
+      </div>
 
-      <div className="mag-wrapper">
-        <div className="magazine">
-          {magContent.map((p, i) => (
-            <div 
-              key={i}
-              className={`page ${flipped.includes(i) ? 'flipped' : ''}`}
-              style={{ zIndex: magContent.length - i }}
-              onClick={() => flip(i)}
-            >
-              <div className="page-content">
-                
-                {p.type === 'hero' && (
-                  <div style={{ height: '100%', position: 'relative' }}>
-                    <img src={p.image} className="mag-bg" alt="Hero" />
-                    <div className="mag-badge">{p.badge}</div>
-                    <div className="glass-panel">
-                      <p className="mag-subtitle">{p.subtitle}</p>
-                      <h1 className="mag-title-main">{p.title}</h1>
-                    </div>
-                  </div>
-                )}
+      {/* 1. Hero Section */}
+      <section className="hero" style={{ backgroundImage: `url("${photos[1]}")` }}>
+        <div className="hero-overlay"></div>
+        <div className="hero-content">
+          <h1 className="hero-title">JYOTSANA</h1>
+          <p className="hero-subtitle">The Magic of You ✨</p>
+        </div>
+      </section>
 
-                {p.type === 'narrative' && (
-                  <div className="layout-split">
-                    <div className="side-text">
-                      <h1 className="mag-title-main" style={{ fontSize: '3rem', WebkitTextFillColor: 'black' }}>{p.title}</h1>
-                      <p style={{ lineHeight: '1.8' }}>
-                        <span className="drop-cap-modern">{p.dropCap}</span>
-                        {p.content}
-                      </p>
-                      <div className="vertical-text" style={{ color: '#ddd' }}>{p.vertical}</div>
-                    </div>
-                    <div style={{ position: 'relative' }}>
-                      <img src={p.image} className="mag-bg" style={{ filter: 'none' }} alt="Narrative" />
-                    </div>
-                  </div>
-                )}
+      {/* 2. Our Story / About Section */}
+      <section>
+        <div className="story-section">
+          <div className="story-img-container">
+            <img src={photos[4]} className="story-img" alt="Story" />
+          </div>
+          <div className="story-content">
+            <span className="section-tag">The Muse</span>
+            <h2 className="section-title">Aesthetic, Classy & You.</h2>
+            <p className="section-p">
+              Style toh bohot logo ke pas hota hai, magar "Grace" sirf tumhare pas hai. 
+              Tumhari har photo ek story kehti hai, aur har story mein ek hi hero hai—Tum. 
+              Hinglish mein bole toh: "Tum sirf ek ladki nahi, tum meri puri vibes ho!"
+            </p>
+            <p className="section-p">
+              Kyunki tumhara hona hi meri life ki sabse badi blessing hai. 
+              Iss website mein humari wohi choti-choti baatein capture karne ki koshish ki hai.
+            </p>
+          </div>
+        </div>
+      </section>
 
-                {p.type === 'minimal' && (
-                  <div style={{ height: '100%', background: '#000' }}>
-                    <img src={p.image} className="mag-bg" style={{ opacity: 0.7 }} alt="Minimal" />
-                    <div style={{ position: 'absolute', top: '50%', left: '10%', right: '10%' }}>
-                      <span style={{ color: 'var(--primary)', letterSpacing: '5px' }}>{p.tag}</span>
-                      <h1 className="mag-title-main" style={{ fontSize: '4rem' }}>{p.title}</h1>
-                      <p style={{ fontSize: '1.2rem', maxWidth: '400px' }}>{p.content}</p>
-                    </div>
-                  </div>
-                )}
+      {/* 3. Funny Side Section */}
+      <section style={{ background: '#0a0a0a' }}>
+        <span className="section-tag">Love & Laughter</span>
+        <h2 className="section-title">The Funny Side of Us</h2>
+        <div className="funny-grid">
+          <div className="funny-card">
+            <div className="card-emoji">💪</div>
+            <h3>Gym vs Smile</h3>
+            <p className="section-p">Main gym mein weights utha leta hoon, magar jab tum "Hmm" likhti ho na... wahan cardio fail ho jata hai! 😂</p>
+          </div>
+          <div className="funny-card">
+            <div className="card-emoji">🍕</div>
+            <h3>The Foodie Bond</h3>
+            <p className="section-p">Pizza tumhara favorite, aur tum meri! Humari chemistry theek hai, magar "Foodistry" world-class honi chahiye.</p>
+          </div>
+          <div className="funny-card">
+            <div className="card-emoji">🩹</div>
+            <h3>Tantrums Expert</h3>
+            <p className="section-p">Tumhare nakhre handle karna meri favorite workout routine hai. Warning: No pain, No gain! 😜</p>
+          </div>
+        </div>
+      </section>
 
-                {p.type === 'layered' && (
-                  <div style={{ height: '100%', position: 'relative' }}>
-                    <img src={p.image} className="mag-bg" alt="Layered" />
-                    <div className="heart-glow">❤️</div>
-                    <div style={{ position: 'absolute', top: '40%', left: '10%', right: '10%', textAlign: 'center' }}>
-                      <h2 style={{ fontFamily: 'var(--font-accent)', fontSize: '3rem', textShadow: '0 5px 20px rgba(0,0,0,0.8)' }}>{p.quote}</h2>
-                    </div>
-                  </div>
-                )}
-
-                {p.type === 'collage-modern' && (
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', height: '100%', gap: '1px', background: '#000' }}>
-                    {p.images.map((img, idx) => (
-                      <div key={idx} style={{ position: 'relative', overflow: 'hidden' }}>
-                        <img src={img} style={{ width: '100%', height: '100%', object-fit: 'cover' }} alt="Collage" />
-                      </div>
-                    ))}
-                    <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', background: '#fff', color: '#000', padding: '10px 30px', fontWeight: '900', letterSpacing: '5px' }}>GALLERY</div>
-                  </div>
-                )}
-
-                {p.type === 'proposal-page' && (
-                  <div style={{ height: '100%', background: '#fff' }}>
-                    <img src={p.image} className="mag-bg" style={{ filter: 'brightness(0.3)' }} alt="Proposal" />
-                    <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', textAlign: 'center', width: '80%' }}>
-                      <h1 className="mag-title-main">{p.title}</h1>
-                      <p style={{ fontSize: '1.5rem', fontFamily: 'var(--font-accent)' }}>{p.content}</p>
-                    </div>
-                  </div>
-                )}
-
-                {p.type === 'back-cover-modern' && (
-                  <div style={{ height: '100%', background: '#111', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '40px' }}>
-                    <h1 className="mag-title-main" style={{ fontSize: '4rem' }}>{p.title}</h1>
-                    <p style={{ marginBottom: '40px' }}>{p.message}</p>
-                    <div style={{ display: 'flex', gap: '20px' }}>
-                      <button className="custom-mute" style={{ width: 'auto', borderRadius: '30px', padding: '0 30px' }} onClick={(e) => { e.stopPropagation(); setFlipped([]); }}>Restart</button>
-                      <a href={p.whatsapp} target="_blank" rel="noreferrer" className="custom-mute" style={{ width: 'auto', borderRadius: '30px', padding: '0 30px', textDecoration: 'none' }}>Say Yes! 💌</a>
-                    </div>
-                  </div>
-                )}
-
-              </div>
+      {/* 4. Gallery Section */}
+      <section>
+        <span className="section-tag">Moments</span>
+        <h2 className="section-title">Gallery of Grace</h2>
+        <div className="gallery-container">
+          {photos.map((photo, i) => (
+            <div key={i} className="gallery-item">
+              <img src={photo} alt={`Moment ${i}`} />
             </div>
           ))}
         </div>
-      </div>
+      </section>
 
-      <div style={{ position: 'fixed', bottom: '30px', fontSize: '0.7rem', letterSpacing: '5px', opacity: 0.4 }}>
-        FLIP TO EXPLORE THE JOURNEY
-      </div>
+      {/* 5. The Final Act / Proposal */}
+      <section style={{ backgroundImage: `linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url("${photos[7]}")`, backgroundSize: 'cover', backgroundAttachment: 'fixed' }}>
+        <div className="letter-box">
+          <span className="section-tag">A Message for You</span>
+          <h2 className="section-title" style={{ fontFamily: 'var(--font-accent)', fontSize: '3.5rem' }}>Dil Ki Baat</h2>
+          <p className="letter-text">
+            "Hey Dev Sena, tum ek baar apne samrajye ka Bahubali bana kar toh dekho. 
+            Life mein ups and downs toh aate rahenge, magar main tumhara permanent banna chahta hoon. 
+            Kya hum saath mein yeh life manage kar sakte hain? ❤️"
+          </p>
+          <a href="https://wa.me/919413128045?text=Hey%20Bahubali!%20Website%20dekh%20li...%20Bohot%20mast%20hai!%20😍❤️" 
+             target="_blank" 
+             rel="noreferrer" 
+             className="btn-main">
+            Send My Answer 💬
+          </a>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer style={{ padding: '40px', textAlign: 'center', opacity: 0.5, fontSize: '0.9rem' }}>
+        <p>Made with ❤️ for Jyotsana // May 2026</p>
+        <p style={{ marginTop: '10px' }}>Keep Scrolling for Love</p>
+      </footer>
     </div>
   );
 }
