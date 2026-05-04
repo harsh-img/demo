@@ -1,40 +1,43 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Outfit:wght@300;400;600&family=Dancing+Script:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Montserrat:wght@200;400;700;900&family=Dancing+Script:wght@700&family=Bodoni+Moda:ital,wght@0,400;0,900;1,400&display=swap');
 
 :root {
-  --primary-accent: #ff3366;
-  --bg-dark: #0a0a0a;
-  --text-gold: #d4af37;
-  --magazine-white: #f8f8f8;
-  --glass: rgba(255, 255, 255, 0.1);
+  --accent: #e63946;
+  --dark: #0f0f0f;
+  --light: #fefefe;
+  --gold: #c5a059;
+  --gray: #888;
+  --font-serif: 'Bodoni Moda', serif;
+  --font-sans: 'Montserrat', sans-serif;
+  --font-script: 'Dancing Script', cursive;
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
 }
 
 body {
-  background-color: var(--bg-dark);
-  color: var(--magazine-white);
-  font-family: 'Outfit', sans-serif;
+  background-color: #050505;
+  color: var(--light);
+  font-family: var(--font-sans);
   overflow-x: hidden;
 }
 
 .app-container {
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
-  background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%);
+  background: radial-gradient(circle at center, #111 0%, #000 100%);
 }
 
-/* Magazine Container */
-.magazine-container {
-  width: 100%;
-  max-width: 900px;
-  height: 90vh;
+/* Magazine Wrapper */
+.magazine-wrapper {
+  width: 90vw;
+  max-width: 1000px;
+  height: 85vh;
   position: relative;
   perspective: 2000px;
 }
@@ -46,22 +49,20 @@ body {
   transform-style: preserve-3d;
 }
 
-/* Page Styling */
+/* Page Base */
 .page {
   position: absolute;
   width: 100%;
   height: 100%;
   top: 0;
   left: 0;
-  background: var(--magazine-white);
-  color: #1a1a1a;
+  background: white;
+  color: #111;
   transform-origin: left;
-  transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1), box-shadow 0.6s ease;
-  cursor: pointer;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+  box-shadow: 0 0 50px rgba(0,0,0,0.8);
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
+  cursor: pointer;
 }
 
 .page.flipped {
@@ -71,194 +72,254 @@ body {
 .page-content {
   width: 100%;
   height: 100%;
-  display: flex;
-  flex-direction: column;
   position: relative;
   backface-visibility: hidden;
 }
 
-/* Specific Page Designs */
-.cover-page {
-  background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('/WhatsApp Image 2026-05-04 at 4.57.59 PM (2).jpeg');
+/* --- Cover Page Design (Vogue Style) --- */
+.vogue-cover {
+  width: 100%;
+  height: 100%;
   background-size: cover;
   background-position: center;
-  color: white;
-  text-align: center;
+  position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  justify-content: space-between;
   padding: 40px;
+  color: white;
+  border: 15px solid white;
 }
 
-.cover-page .mag-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 5rem;
+.vogue-title {
+  font-family: var(--font-serif);
+  font-size: 8rem;
   font-weight: 900;
+  text-align: center;
+  letter-spacing: -5px;
+  line-height: 0.8;
   text-transform: uppercase;
-  letter-spacing: 10px;
-  margin-bottom: 10px;
-  text-shadow: 0 5px 15px rgba(0,0,0,0.5);
+  margin-top: 20px;
+  mix-blend-mode: overlay;
 }
 
-.cover-page .sub-title {
+.cover-headlines {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 300px;
+}
+
+.headline-item {
+  border-left: 4px solid var(--accent);
+  padding-left: 15px;
+}
+
+.headline-item h3 {
   font-size: 1.2rem;
-  letter-spacing: 5px;
   text-transform: uppercase;
-  border-top: 2px solid white;
-  border-bottom: 2px solid white;
-  padding: 10px 0;
-  margin-bottom: 40px;
+  font-weight: 900;
+  letter-spacing: 2px;
 }
 
-.cover-page .edition {
-  position: absolute;
-  bottom: 40px;
-  font-family: 'Dancing Script', cursive;
-  font-size: 2.5rem;
-  color: var(--primary-accent);
+.headline-item p {
+  font-size: 0.8rem;
+  color: #eee;
+  text-transform: uppercase;
 }
 
-/* Layout Grid for Magazine Pages */
-.mag-grid {
+.cover-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+}
+
+/* --- Inner Page Layouts --- */
+.inner-layout {
   display: grid;
   grid-template-columns: 1fr 1fr;
   height: 100%;
-  padding: 40px;
-  gap: 30px;
+  background: #fff;
 }
 
-.text-section {
+/* Feature Page */
+.feature-text {
+  padding: 60px;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
-.mag-h1 {
-  font-family: 'Playfair Display', serif;
+.drop-cap {
+  font-family: var(--font-serif);
+  font-size: 5rem;
+  float: left;
+  line-height: 0.8;
+  margin-right: 15px;
+  color: var(--accent);
+}
+
+.feature-title {
+  font-family: var(--font-serif);
   font-size: 3.5rem;
+  margin-bottom: 30px;
   line-height: 1;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.feature-p {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: #333;
   margin-bottom: 20px;
-  color: var(--primary-accent);
+  column-count: 1;
 }
 
-.mag-p {
-  font-size: 1.1rem;
-  line-height: 1.6;
-  color: #444;
-  margin-bottom: 15px;
-}
-
-.img-section {
+.feature-img-box {
   position: relative;
   overflow: hidden;
-  border-radius: 5px;
 }
 
-.mag-img {
+.feature-img-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Collage Page */
+.collage-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  height: 100%;
+  gap: 10px;
+  padding: 10px;
+  background: #111;
+}
+
+.collage-item {
+  overflow: hidden;
+  position: relative;
+}
+
+.collage-item img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: transform 0.5s ease;
 }
 
-.img-section:hover .mag-img {
-  transform: scale(1.05);
+.collage-item:hover img {
+  transform: scale(1.1);
 }
 
-/* Variations */
-.page-dark {
-  background: #1a1a1a;
-  color: white;
-}
-
-.page-dark .mag-p { color: #ccc; }
-
-.full-img-page {
-  padding: 0 !important;
-}
-
-.full-img-page img {
-  width: 100%;
+/* Quote Page */
+.quote-page {
   height: 100%;
-  object-fit: cover;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 80px;
+  text-align: center;
+  background: #f8f8f8;
 }
 
-.quote-overlay {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 40px;
-  background: linear-gradient(transparent, rgba(0,0,0,0.8));
-  color: white;
+.quote-icon {
+  font-family: var(--font-serif);
+  font-size: 8rem;
+  color: #ddd;
+  line-height: 0;
+  margin-bottom: 40px;
 }
 
-.quote-text {
-  font-family: 'Dancing Script', cursive;
-  font-size: 2.2rem;
+.quote-main {
+  font-family: var(--font-serif);
+  font-size: 2.5rem;
+  font-style: italic;
+  margin-bottom: 30px;
 }
 
-/* Floating Decorations */
-.floating-decorations {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: -1;
-}
-
-.float-item {
-  position: absolute;
+.quote-author {
+  font-family: var(--font-script);
   font-size: 2rem;
-  animation: float 6s infinite ease-in-out;
-  opacity: 0.3;
+  color: var(--accent);
 }
 
-@keyframes float {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-20px) rotate(20deg); }
+/* Letter Design */
+.premium-letter {
+  background: #fffcf5;
+  height: 100%;
+  padding: 80px;
+  position: relative;
 }
 
-.float-item:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
-.float-item:nth-child(2) { top: 20%; right: 15%; animation-delay: 1s; }
-.float-item:nth-child(3) { bottom: 15%; left: 20%; animation-delay: 2s; }
-.float-item:nth-child(4) { bottom: 10%; right: 10%; animation-delay: 3s; }
-
-/* Responsive */
-@media (max-width: 768px) {
-  .mag-grid {
-    grid-template-columns: 1fr;
-    padding: 20px;
-  }
-  .mag-h1 { font-size: 2.5rem; }
-  .cover-page .mag-title { font-size: 3rem; }
+.premium-letter::before {
+  content: '';
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  right: 20px;
+  bottom: 20px;
+  border: 1px solid #e0d8c0;
+  pointer-events: none;
 }
 
-/* Letter Style */
-.letter-page {
-  background: #fdf6e3;
-  padding: 50px;
-  font-family: 'Playfair Display', serif;
-}
-
-.letter-header { margin-bottom: 30px; border-bottom: 1px solid #ddd; padding-bottom: 10px; }
-.letter-body { font-size: 1.2rem; line-height: 1.8; font-style: italic; }
-
-/* Call to Action */
-.cta-btn {
+.letter-top {
+  font-family: var(--font-serif);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 5px;
+  margin-bottom: 50px;
+  border-bottom: 2px solid #111;
   display: inline-block;
-  padding: 15px 30px;
-  background: var(--primary-accent);
-  color: white;
-  text-decoration: none;
-  border-radius: 50px;
-  font-weight: bold;
-  margin-top: 20px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.cta-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 5px 15px rgba(255, 51, 102, 0.4);
+.letter-content {
+  font-family: var(--font-script);
+  font-size: 1.8rem;
+  line-height: 1.5;
+  color: #2c3e50;
+}
+
+/* Controls */
+.mute-btn {
+  background: white;
+  border: none;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.mute-btn:hover { transform: scale(1.1); }
+
+/* Floating Elements */
+.mag-float {
+  position: absolute;
+  font-weight: 900;
+  font-size: 0.7rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gray);
+}
+
+.mag-float.top-left { top: 20px; left: 20px; }
+.mag-float.bottom-right { bottom: 20px; right: 20px; }
+
+/* Mobile */
+@media (max-width: 768px) {
+  .vogue-title { font-size: 4rem; }
+  .inner-layout { grid-template-columns: 1fr; }
+  .feature-img-box { height: 300px; }
 }
