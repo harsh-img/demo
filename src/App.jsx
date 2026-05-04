@@ -1,203 +1,174 @@
 import React, { useState } from 'react';
 import './index.css';
 
-const magazineContent = [
+const magContent = [
   {
-    type: 'vogue-cover',
+    type: 'hero',
     title: 'JYOTSANA',
-    image: '/WhatsApp Image 2026-05-04 at 4.57.59 PM (2).jpeg',
-    headlines: [
-      { h: 'The Gym Boy Secret', p: 'How a simple smile changed everything' },
-      { h: 'Love & Laughter', p: '10 ways to handle his tantrums' },
-      { h: 'The Bahubali Era', p: 'Protecting the kingdom of heart' }
-    ],
-    issue: 'MAY 2026',
-    price: '$FREE / PRICELESS'
+    subtitle: 'THE MODERN MUSE',
+    image: '/WhatsApp Image 2026-05-04 at 4.58.00 PM (2).jpeg',
+    badge: 'MAY 2026 ISSUE'
   },
   {
-    type: 'editorial',
-    title: 'The Muse',
-    dropCap: 'T',
-    content: 'Tumhari har photo ek story kehti hai, aur har story mein ek hi hero hai—Tum. Yeh magazine sirf ek design nahi hai, yeh ek tribute hai us insaan ke liye jo meri duniya ko vibrant banata hai. Log kehte hain ki perfection nahi hoti, magar shayad unhone tumhe haste huye nahi dekha. Hinglish mein bolu toh: "Aapka style, aapka smile, aur aapki baatein—sab kuch toh top-notch hai!"',
-    image: '/WhatsApp Image 2026-05-04 at 4.57.59 PM (1).jpeg'
+    type: 'narrative',
+    title: 'THE GLOW',
+    dropCap: 'S',
+    content: 'Style toh bohot logo ke pas hota hai, magar "Grace" sirf tumhare pas hai. Tumhari hassi mein ek alag hi vibe hai jo sabko attract karti hai. Humari baatein aur tumhari nakhre—yeh combination life ko interesting banata hai. Hinglish mein bole toh: "Tum sirf ek girl nahi, tum ek high-end magazine ki star ho!"',
+    image: '/WhatsApp Image 2026-05-04 at 4.57.59 PM (1).jpeg',
+    vertical: 'VIBRANT // 2026'
   },
   {
-    type: 'fashion-spread',
-    title: 'Glow Up',
-    content: 'Gym mein pasina bahana ek taraf, aur tumhari ek jhalak dekhna ek taraf. Mera favorite workout routine? Tumhare nakhre uthana! 😂 Log protein shakes peete hain, mujhe bas tumhari presence chahiye energy ke liye.',
+    type: 'minimal',
+    title: 'FITNESS & FINESSE',
+    content: 'Gym ke pasine se lekar camera ke samne ki chamak tak... tum har look mein "Perfect" lagti ho. Mera favorite view? Bas tumhara muskuraata hua chehra.',
     image: '/WhatsApp Image 2026-05-04 at 4.58.00 PM (1).jpeg',
-    tag: 'FASHION & FITNESS'
+    tag: 'POWER UP'
   },
   {
-    type: 'quote',
-    text: 'Tum woh sukoon ho jo mujhe shorr mein bhi milta hai. Kuch pal aise hote hain jinhe sirf feel kiya ja sakta hai.',
-    author: '— Yours Truly'
+    type: 'layered',
+    title: 'DIL SE',
+    quote: 'Tum woh sukoon ho jo mujhe shorr mein bhi milta hai.',
+    image: '/WhatsApp Image 2026-05-04 at 4.58.00 PM.jpeg'
   },
   {
-    type: 'collage',
+    type: 'collage-modern',
     images: [
       '/WhatsApp Image 2026-05-04 at 4.57.59 PM.jpeg',
-      '/WhatsApp Image 2026-05-04 at 4.58.00 PM.jpeg',
+      '/WhatsApp Image 2026-05-04 at 4.58.01 PM.jpeg',
       '/WhatsApp Image 2026-05-04 at 4.58.00 PM (2).jpeg',
-      '/WhatsApp Image 2026-05-04 at 4.58.01 PM.jpeg'
+      '/WhatsApp Image 2026-05-04 at 4.57.59 PM (2).jpeg'
     ]
   },
   {
-    type: 'fashion-spread',
-    title: 'The Foodie Bond',
-    content: 'Pasta ho ya Pani-Puri, tumhare saath har niwala double tasty ho jata hai. Mera sapna hai ki hum dunya bhar ka khana saath mein explore karein. Soulmates who eat together, stay together!',
+    type: 'narrative',
+    title: 'TASTE OF US',
+    dropCap: 'F',
+    content: 'Food and Us... ek aisi love story jo kabhi khatam nahi hogi. Pizza ki slice ho ya coffee ki cup, tumhare saath har cheez ka taste premium ho jata hai. Humara safar aise hi chalta rahe, baaton aur khane ke saath.',
     image: '/WhatsApp Image 2026-05-04 at 4.58.01 PM (1).jpeg',
-    tag: 'LIFESTYLE & TASTE'
+    vertical: 'LIFESTYLE // MAY'
   },
   {
-    type: 'premium-letter',
-    title: 'THE PROPOSAL',
-    body: 'Hey Dev Sena, tum ek baar apne samrajye ka Bahubali bana kar toh dekho. Life mein ups and downs toh aate rahenge, magar main tumhara permanent banna chahta hoon. Kya hum saath mein yeh life manage kar sakte hain? ❤️'
+    type: 'proposal-page',
+    title: 'THE FINAL ACT',
+    content: 'Kya tum mere life ki permanent "Main Lead" banogi? Ek chance de ke toh dekho, yeh story "Superhit" hogi! ❤️',
+    image: '/WhatsApp Image 2026-05-04 at 4.57.59 PM (2).jpeg'
   },
   {
-    type: 'vogue-cover',
-    title: 'THE END?',
-    image: '/WhatsApp Image 2026-05-04 at 4.58.01 PM (1).jpeg',
-    headlines: [
-      { h: 'Waiting for you', p: 'The clock is ticking... ⏳' },
-      { h: 'I LOVE YOU', p: 'Always and Forever' }
-    ],
-    issue: 'FOREVER EDITION',
-    price: 'Awaiting Answer...',
-    isBack: true
+    type: 'back-cover-modern',
+    title: 'WAITING...',
+    message: 'I love you, Jyotsana. Waiting for your yes!',
+    whatsapp: 'https://wa.me/919413128045'
   }
 ];
 
 export default function App() {
-  const [flippedPages, setFlippedPages] = useState([]);
-  const [isMuted, setIsMuted] = useState(false);
+  const [flipped, setFlipped] = useState([]);
+  const [muted, setMuted] = useState(false);
 
-  const togglePage = (index) => {
-    if (flippedPages.includes(index)) {
-      setFlippedPages(flippedPages.filter(id => id < index));
+  const flip = (i) => {
+    if (flipped.includes(i)) {
+      setFlipped(flipped.filter(x => x < i));
     } else {
-      setFlippedPages([...flippedPages, index]);
+      setFlipped([...flipped, i]);
     }
-  };
-
-  const reset = (e) => {
-    e.stopPropagation();
-    setFlippedPages([]);
   };
 
   return (
     <div className="app-container">
-      <audio 
-        src="/Ishqa Ve Chadeya - Ishqa Ve _ Zeeshan Ali _ Punjabi Song.mp3" 
-        autoPlay 
-        loop 
-        muted={isMuted}
-      />
+      <audio src="/Ishqa Ve Chadeya - Ishqa Ve _ Zeeshan Ali _ Punjabi Song.mp3" autoPlay loop muted={muted} />
       
-      <div style={{ position: 'fixed', top: '20px', right: '20px', zIndex: 1000, display: 'flex', gap: '10px' }}>
-        <button className="mute-btn" onClick={() => setIsMuted(!isMuted)}>
-          {isMuted ? '🔇' : '🔊'}
-        </button>
-      </div>
+      <button className="custom-mute" onClick={() => setMuted(!muted)}>
+        {muted ? '🔇' : '🔊'}
+      </button>
 
-      <div className="magazine-wrapper">
+      <div className="mag-wrapper">
         <div className="magazine">
-          {magazineContent.map((page, index) => (
+          {magContent.map((p, i) => (
             <div 
-              key={index}
-              className={`page ${flippedPages.includes(index) ? 'flipped' : ''}`}
-              style={{ zIndex: magazineContent.length - index }}
-              onClick={() => togglePage(index)}
+              key={i}
+              className={`page ${flipped.includes(i) ? 'flipped' : ''}`}
+              style={{ zIndex: magContent.length - i }}
+              onClick={() => flip(i)}
             >
               <div className="page-content">
                 
-                {/* Vogue Cover Layout */}
-                {(page.type === 'vogue-cover') && (
-                  <div className="vogue-cover" style={{ backgroundImage: `linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url("${page.image}")` }}>
-                    <div className="mag-float top-left">{page.issue}</div>
-                    <h1 className="vogue-title">{page.title}</h1>
-                    <div className="cover-headlines">
-                      {page.headlines.map((h, i) => (
-                        <div key={i} className="headline-item">
-                          <h3>{h.h}</h3>
-                          <p>{h.p}</p>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="cover-footer">
-                      <span>{page.price}</span>
-                      <span>Vol. 1 // Issue 2</span>
-                    </div>
-                    {page.isBack && (
-                      <div style={{ position: 'absolute', bottom: '100px', width: 'calc(100% - 80px)', display: 'flex', gap: '20px' }}>
-                        <button className="mute-btn" style={{ width: 'auto', borderRadius: '30px', padding: '0 20px', background: 'var(--accent)', color: 'white' }} onClick={reset}>Restart</button>
-                        <a href="https://wa.me/919413128045" target="_blank" rel="noreferrer" className="mute-btn" style={{ width: 'auto', borderRadius: '30px', padding: '0 20px', textDecoration: 'none', background: 'white', color: 'black' }}>Reply 💬</a>
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {/* Editorial Layout */}
-                {page.type === 'editorial' && (
-                  <div className="inner-layout">
-                    <div className="feature-text">
-                      <div className="mag-float top-left">THE MUSE // VOL 1</div>
-                      <h1 className="feature-title">{page.title}</h1>
-                      <div className="feature-p">
-                        <span className="drop-cap">{page.dropCap}</span>
-                        {page.content}
-                      </div>
-                    </div>
-                    <div className="feature-img-box">
-                      <img src={page.image} alt="Muse" />
+                {p.type === 'hero' && (
+                  <div style={{ height: '100%', position: 'relative' }}>
+                    <img src={p.image} className="mag-bg" alt="Hero" />
+                    <div className="mag-badge">{p.badge}</div>
+                    <div className="glass-panel">
+                      <p className="mag-subtitle">{p.subtitle}</p>
+                      <h1 className="mag-title-main">{p.title}</h1>
                     </div>
                   </div>
                 )}
 
-                {/* Fashion Spread */}
-                {page.type === 'fashion-spread' && (
-                  <div className="inner-layout">
-                    <div className="feature-img-box">
-                      <img src={page.image} alt="Spread" />
+                {p.type === 'narrative' && (
+                  <div className="layout-split">
+                    <div className="side-text">
+                      <h1 className="mag-title-main" style={{ fontSize: '3rem', WebkitTextFillColor: 'black' }}>{p.title}</h1>
+                      <p style={{ lineHeight: '1.8' }}>
+                        <span className="drop-cap-modern">{p.dropCap}</span>
+                        {p.content}
+                      </p>
+                      <div className="vertical-text" style={{ color: '#ddd' }}>{p.vertical}</div>
                     </div>
-                    <div className="feature-text" style={{ background: '#000', color: '#fff' }}>
-                      <span style={{ color: 'var(--accent)', fontWeight: 'bold', fontSize: '0.8rem', letterSpacing: '3px' }}>{page.tag}</span>
-                      <h1 className="feature-title" style={{ color: '#fff' }}>{page.title}</h1>
-                      <p className="feature-p" style={{ color: '#ccc' }}>{page.content}</p>
+                    <div style={{ position: 'relative' }}>
+                      <img src={p.image} className="mag-bg" style={{ filter: 'none' }} alt="Narrative" />
                     </div>
                   </div>
                 )}
 
-                {/* Quote Layout */}
-                {page.type === 'quote' && (
-                  <div className="quote-page">
-                    <div className="quote-icon">“</div>
-                    <p className="quote-main">{page.text}</p>
-                    <p className="quote-author">{page.author}</p>
-                    <div className="mag-float bottom-right">L'AMOUR // PAGE 04</div>
+                {p.type === 'minimal' && (
+                  <div style={{ height: '100%', background: '#000' }}>
+                    <img src={p.image} className="mag-bg" style={{ opacity: 0.7 }} alt="Minimal" />
+                    <div style={{ position: 'absolute', top: '50%', left: '10%', right: '10%' }}>
+                      <span style={{ color: 'var(--primary)', letterSpacing: '5px' }}>{p.tag}</span>
+                      <h1 className="mag-title-main" style={{ fontSize: '4rem' }}>{p.title}</h1>
+                      <p style={{ fontSize: '1.2rem', maxWidth: '400px' }}>{p.content}</p>
+                    </div>
                   </div>
                 )}
 
-                {/* Collage Layout */}
-                {page.type === 'collage' && (
-                  <div className="collage-grid">
-                    {page.images.map((img, i) => (
-                      <div key={i} className="collage-item">
-                        <img src={img} alt="Collage" />
+                {p.type === 'layered' && (
+                  <div style={{ height: '100%', position: 'relative' }}>
+                    <img src={p.image} className="mag-bg" alt="Layered" />
+                    <div className="heart-glow">❤️</div>
+                    <div style={{ position: 'absolute', top: '40%', left: '10%', right: '10%', textAlign: 'center' }}>
+                      <h2 style={{ fontFamily: 'var(--font-accent)', fontSize: '3rem', textShadow: '0 5px 20px rgba(0,0,0,0.8)' }}>{p.quote}</h2>
+                    </div>
+                  </div>
+                )}
+
+                {p.type === 'collage-modern' && (
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', height: '100%', gap: '1px', background: '#000' }}>
+                    {p.images.map((img, idx) => (
+                      <div key={idx} style={{ position: 'relative', overflow: 'hidden' }}>
+                        <img src={img} style={{ width: '100%', height: '100%', object-fit: 'cover' }} alt="Collage" />
                       </div>
                     ))}
+                    <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', background: '#fff', color: '#000', padding: '10px 30px', fontWeight: '900', letterSpacing: '5px' }}>GALLERY</div>
                   </div>
                 )}
 
-                {/* Letter Layout */}
-                {page.type === 'premium-letter' && (
-                  <div className="premium-letter">
-                    <div className="letter-top">{page.title}</div>
-                    <div className="letter-content">
-                      <p>{page.body}</p>
-                      <p style={{ marginTop: '50px' }}>— Aapka Apna, Gym Boy 💪</p>
+                {p.type === 'proposal-page' && (
+                  <div style={{ height: '100%', background: '#fff' }}>
+                    <img src={p.image} className="mag-bg" style={{ filter: 'brightness(0.3)' }} alt="Proposal" />
+                    <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', textAlign: 'center', width: '80%' }}>
+                      <h1 className="mag-title-main">{p.title}</h1>
+                      <p style={{ fontSize: '1.5rem', fontFamily: 'var(--font-accent)' }}>{p.content}</p>
                     </div>
-                    <div className="mag-float bottom-right">CONFIDENTIAL // 2026</div>
+                  </div>
+                )}
+
+                {p.type === 'back-cover-modern' && (
+                  <div style={{ height: '100%', background: '#111', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '40px' }}>
+                    <h1 className="mag-title-main" style={{ fontSize: '4rem' }}>{p.title}</h1>
+                    <p style={{ marginBottom: '40px' }}>{p.message}</p>
+                    <div style={{ display: 'flex', gap: '20px' }}>
+                      <button className="custom-mute" style={{ width: 'auto', borderRadius: '30px', padding: '0 30px' }} onClick={(e) => { e.stopPropagation(); setFlipped([]); }}>Restart</button>
+                      <a href={p.whatsapp} target="_blank" rel="noreferrer" className="custom-mute" style={{ width: 'auto', borderRadius: '30px', padding: '0 30px', textDecoration: 'none' }}>Say Yes! 💌</a>
+                    </div>
                   </div>
                 )}
 
@@ -207,8 +178,8 @@ export default function App() {
         </div>
       </div>
 
-      <div style={{ position: 'fixed', bottom: '20px', left: '50%', transform: 'translateX(-50%)', opacity: 0.5, fontSize: '0.8rem', letterSpacing: '2px' }}>
-        CLICK TO FLIP PAGES • EXPERIENCE THE LUXURY
+      <div style={{ position: 'fixed', bottom: '30px', fontSize: '0.7rem', letterSpacing: '5px', opacity: 0.4 }}>
+        FLIP TO EXPLORE THE JOURNEY
       </div>
     </div>
   );
