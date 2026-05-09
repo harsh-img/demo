@@ -288,7 +288,7 @@ const App = () => {
         <p style={{ fontSize: '1.5rem', marginTop: '20px' }}>
           Ab pakka jao, server ka bill badh raha hai! 💸
         </p>
-        <p style={{ 
+        {/* <p style={{ 
           fontSize: '1.8rem', 
           marginTop: '40px', 
           color: 'var(--hot-pink)', 
@@ -300,7 +300,7 @@ const App = () => {
           boxShadow: '5px 5px 0px var(--cyan)'
         }}>
           Jyotsana, smile ke saath ek selfie zaroor bhej dena, varna main sochunga achha nahi bana! 😉📸
-        </p>
+        </p> */}
         <p style={{ marginTop: '40px', opacity: 0.5 }}>© 2026 The Chaos Lab. No Refund for wasted time.</p>
       </footer>
 
