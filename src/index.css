@@ -1,14 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Great+Vibes&family=Montserrat:wght@200;400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Bungee&display=swap');
 
 :root {
-  --gold: #d4af37;
-  --deep-red: #800000;
-  --cream: #fffaf0;
-  --dark: #1a0f0f;
-  --font-title: 'Cinzel Decorative', cursive;
-  --font-script: 'Great Vibes', cursive;
-  --font-serif: 'Playfair Display', serif;
-  --font-sans: 'Montserrat', sans-serif;
+  --acid-green: #bfff00;
+  --hot-pink: #ff00ff;
+  --cyan: #00ffff;
+  --bg-black: #050505;
+  --card-bg: #111;
+  --border-size: 4px;
 }
 
 * {
@@ -18,163 +16,118 @@
 }
 
 body {
-  background-color: var(--dark);
-  color: var(--cream);
-  font-family: var(--font-serif);
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: var(--bg-black);
+  color: white;
   overflow-x: hidden;
+  background-image: radial-gradient(circle at 2px 2px, #333 1px, transparent 0);
+  background-size: 40px 40px;
 }
 
-/* Luxury Paper Background */
-.app-container {
-  min-height: 100vh;
-  background-image: 
-    linear-gradient(rgba(26, 15, 15, 0.8), rgba(26, 15, 15, 0.8)),
-    url('https://www.transparenttextures.com/patterns/natural-paper.png');
+h1, h2, h3 {
+  font-family: 'Bungee', cursive;
+  text-transform: uppercase;
+  line-height: 1;
 }
 
-/* Custom Scrollbar */
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: var(--dark); }
-::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 10px; }
-
-/* Sections */
-section {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 100px 20px;
-  position: relative;
-  border-bottom: 1px solid rgba(212, 175, 55, 0.1);
-}
-
-/* Ornamental Border */
-.ornament {
-  width: 200px;
-  height: 2px;
-  background: linear-gradient(to right, transparent, var(--gold), transparent);
-  margin: 20px 0;
+.crazy-card {
+  background: var(--card-bg);
+  border: var(--border-size) solid white;
+  box-shadow: 10px 10px 0px var(--acid-green);
+  transition: all 0.2s ease;
+  padding: 2rem;
   position: relative;
 }
 
-.ornament::after {
-  content: '❦';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: var(--dark);
-  padding: 0 10px;
-  color: var(--gold);
+.crazy-card:hover {
+  transform: translate(-5px, -5px);
+  box-shadow: 15px 15px 0px var(--hot-pink);
+}
+
+.crazy-btn {
+  font-family: 'Bungee', cursive;
+  padding: 1rem 2rem;
   font-size: 1.5rem;
+  background: var(--acid-green);
+  border: var(--border-size) solid black;
+  box-shadow: 5px 5px 0px black;
+  cursor: pointer;
+  transition: 0.1s;
 }
 
-/* Typography */
-.title-luxury {
-  font-family: var(--font-title);
-  font-size: clamp(3rem, 10vw, 8rem);
-  color: var(--gold);
-  text-align: center;
-  letter-spacing: 5px;
-  text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+.crazy-btn:active {
+  transform: translate(3px, 3px);
+  box-shadow: 2px 2px 0px black;
 }
 
-.subtitle-script {
-  font-family: var(--font-script);
-  font-size: 3rem;
-  color: var(--cream);
-  margin-top: -20px;
-}
-
-.content-p {
-  font-size: 1.2rem;
-  line-height: 2;
-  max-width: 800px;
-  text-align: center;
-  margin: 30px 0;
-  color: #e0d5c0;
-}
-
-/* Photo Frames */
-.frame-luxury {
-  padding: 15px;
-  background: white;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-  border: 1px solid #ddd;
+.glitch-text {
   position: relative;
-  transition: transform 0.5s;
+  display: inline-block;
 }
 
-.frame-luxury img {
+.glitch-text::before, .glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  display: block;
+  height: 100%;
 }
 
-.frame-luxury::before {
-  content: '';
-  position: absolute;
-  top: -10px;
-  left: -10px;
-  right: -10px;
-  bottom: -10px;
-  border: 1px solid var(--gold);
-  pointer-events: none;
-  opacity: 0.5;
+.glitch-text::before {
+  left: 2px;
+  text-shadow: -2px 0 var(--hot-pink);
+  clip: rect(44px, 450px, 56px, 0);
+  animation: glitch-anim 5s infinite linear alternate-reverse;
 }
 
-/* Petals Animation */
-.petal {
-  position: fixed;
-  color: #ffb7c5;
-  font-size: 20px;
-  pointer-events: none;
-  z-index: 999;
+.glitch-text::after {
+  left: -2px;
+  text-shadow: -2px 0 var(--cyan);
+  clip: rect(44px, 450px, 56px, 0);
+  animation: glitch-anim2 5s infinite linear alternate-reverse;
 }
 
-/* CTA */
-.btn-gold {
-  padding: 20px 50px;
-  background: transparent;
-  color: var(--gold);
-  border: 2px solid var(--gold);
-  font-family: var(--font-title);
-  text-decoration: none;
-  font-weight: bold;
-  letter-spacing: 3px;
-  transition: all 0.3s;
-  cursor: pointer;
-  margin-top: 40px;
+@keyframes glitch-anim {
+  0% { clip: rect(31px, 9999px, 94px, 0); }
+  20% { clip: rect(62px, 9999px, 42px, 0); }
+  40% { clip: rect(16px, 9999px, 78px, 0); }
+  60% { clip: rect(58px, 9999px, 12px, 0); }
+  80% { clip: rect(93px, 9999px, 54px, 0); }
+  100% { clip: rect(2px, 9999px, 81px, 0); }
 }
 
-.btn-gold:hover {
-  background: var(--gold);
-  color: var(--dark);
-  box-shadow: 0 0 30px rgba(212, 175, 55, 0.4);
+@keyframes glitch-anim2 {
+  0% { clip: rect(65px, 9999px, 100px, 0); }
+  20% { clip: rect(24px, 9999px, 13px, 0); }
+  40% { clip: rect(82px, 9999px, 5px, 0); }
+  60% { clip: rect(11px, 9999px, 34px, 0); }
+  80% { clip: rect(48px, 9999px, 92px, 0); }
+  100% { clip: rect(77px, 9999px, 21px, 0); }
 }
 
-/* Mute Toggle */
-.mute-ornamental {
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  z-index: 1000;
-  width: 60px;
-  height: 60px;
-  border: 2px solid var(--gold);
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: var(--gold);
-  cursor: pointer;
-  background: var(--dark);
+.rotate-infinite {
+  animation: rotate-inf 10s linear infinite;
 }
 
-/* Floating Hearts */
-.floating-heart {
-  position: absolute;
-  opacity: 0.1;
-  color: var(--gold);
-  pointer-events: none;
+@keyframes rotate-inf {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.floating-crazy {
+  animation: floating-crazy 2s ease-in-out infinite alternate;
+}
+
+@keyframes floating-crazy {
+  from { transform: translateY(0) rotate(0deg); }
+  to { transform: translateY(-20px) rotate(5deg); }
+}
+
+@media (max-width: 768px) {
+  .crazy-card {
+    padding: 1rem;
+    box-shadow: 6px 6px 0px var(--acid-green);
+  }
+  h1 { font-size: 2.5rem !important; }
 }
