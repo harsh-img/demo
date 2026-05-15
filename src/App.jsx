@@ -1,327 +1,248 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const jokes = [
-  "Why did the programmer quit his job? Because he didn't get arrays (a raise). 😂",
-  "Girl: My father is a lawyer. Boy: My father is a terrorist. Girl: Toh? Boy: Toh dhyan rakhna, 'argument' nahi seedha 'blast' hoga! 💣",
-  "Teacher: Why are you talking during my lesson? Student: Why are you teaching during my conversation? 😎",
-  "My life is like a software update. Whenever I think it's finally getting better, it crashes at 99%. 🖥️",
-  "I asked my dog what's two minus two. He said nothing. 🐕",
-  "Doctor: Your brain is missing. Me: Wait, where is it? Doctor: In your mobile's cache! 📱",
-  "Roses are red, My screen is blue. I forgot to save, and now I hate you (Windows). 🟦"
-];
-
-const poems = [
-  { title: "The Diet Struggle", text: "Gym jane ka socha tha roz, Lekin raste me mil gaye momos. Ab pet thoda bahar hai, Magar dil mera gulzar hai! 🥟" },
-  { title: "Engineer Ki Zindagi", text: "Subah utho, code likho. Raat ko error dekho. Shaadi ki umar ho gayi, Lekin 'Bug' ne zindagi tabah kar di! 🐛" },
-  { title: "Mobile Love", text: "Twinkle Twinkle Little Star, Mobile is my world's car. Bina charging mera dil rota hai, 1% pe dukh bada hota hai! 🔋" }
-];
-
 const App = () => {
-  const [jokeIndex, setJokeIndex] = useState(0);
-  const [btnPos, setBtnPos] = useState({ x: 0, y: 0 });
-  const [scanResult, setScanResult] = useState("");
-  const [isScanning, setIsScanning] = useState(false);
+  const [showMessage, setShowMessage] = useState(false);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
-  const [isDestructing, setIsDestructing] = useState(false);
-  const [countdown, setCountdown] = useState(5);
-  const [showCat, setShowCat] = useState(false);
-  const [degreeName, setDegreeName] = useState("");
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      setMousePos({ x: e.clientX, y: e.clientY });
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
 
-  const nextJoke = () => {
-    setJokeIndex((prev) => (prev + 1) % jokes.length);
-  };
-
-  const startDestruct = () => {
-    setIsDestructing(true);
-    let count = 5;
-    const interval = setInterval(() => {
-      count -= 1;
-      setCountdown(count);
-      if (count === 0) {
-        clearInterval(interval);
-        setIsDestructing(false);
-        setShowCat(true);
-        setCountdown(5);
-      }
-    }, 1000);
-  };
-
-  const moveBtn = () => {
-    const x = Math.random() * (window.innerWidth - 150);
-    const y = Math.random() * (window.innerHeight - 80);
-    setBtnPos({ x, y });
-  };
-
-  const runScanner = () => {
-    setIsScanning(true);
-    setScanResult("");
-    setTimeout(() => {
-      const results = [
-        "ERROR: 100% Brain Not Found! 🧠❌",
-        "WARNING: Extreme levels of 'Vella-panti' detected! 🛋️",
-        "STATUS: Soulmate detected but they are currently eating pizza without you. 🍕",
-        "DANGER: You are too cool for this website. Please leave. 😎",
-        "ADVICE: Go sleep, your phone is tired of you. 😴"
-      ];
-      setScanResult(results[Math.floor(Math.random() * results.length)]);
-      setIsScanning(false);
-    }, 2000);
-  };
+  const floatingEmojis = ['😂', '✨', '⚡', '💖', '🔥', '😇', '🍕', '🎸'];
 
   return (
-    <div className="main-wrapper" style={{ padding: '20px', maxWidth: '1000px', margin: '0 auto' }}>
+    <div className="relative min-h-screen w-full overflow-hidden bg-[#050505] selection:bg-pink-500/30 text-white font-['Outfit']">
       
-      {/* HEADER */}
-      <header style={{ textAlign: 'center', padding: '60px 0' }}>
+      {/* Background Layer */}
+      <div 
+        className="fixed inset-0 pointer-events-none opacity-20"
+        style={{
+          backgroundImage: 'url(/bg.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      />
+      
+      {/* Animated Gradient Glows */}
+      <motion.div 
+        animate={{
+          scale: [1, 1.2, 1],
+          opacity: [0.3, 0.5, 0.3],
+        }}
+        transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+        className="fixed top-[-20%] left-[-10%] w-[60%] h-[60%] bg-pink-600/20 rounded-full blur-[150px] pointer-events-none" 
+      />
+      <motion.div 
+        animate={{
+          scale: [1.2, 1, 1.2],
+          opacity: [0.3, 0.5, 0.3],
+        }}
+        transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+        className="fixed bottom-[-20%] right-[-10%] w-[60%] h-[60%] bg-blue-600/20 rounded-full blur-[150px] pointer-events-none" 
+      />
+
+      {/* Floating Emojis */}
+      {floatingEmojis.map((emoji, i) => (
         <motion.div
-          animate={{ rotate: [0, -2, 2, 0] }}
-          transition={{ repeat: Infinity, duration: 0.5 }}
+          key={i}
+          className="fixed text-3xl pointer-events-none z-0"
+          initial={{ 
+            x: Math.random() * 100 + '%', 
+            y: Math.random() * 100 + '%',
+            opacity: 0 
+          }}
+          animate={{ 
+            y: ['0vh', '-100vh'],
+            opacity: [0, 0.6, 0],
+            rotate: [0, 360]
+          }}
+          transition={{ 
+            duration: Math.random() * 10 + 10, 
+            repeat: Infinity, 
+            ease: "linear",
+            delay: Math.random() * 5
+          }}
         >
-          <img 
-            src="/funny/confused_monkey_scientist_1778349723248.png" 
-            alt="Monkey" 
-            className="floating-crazy"
-            style={{ width: '200px', border: '5px solid white', marginBottom: '20px' }}
-          />
+          {emoji}
         </motion.div>
-        <h1 className="glitch-text" data-text="CHAOS CORNER" style={{ fontSize: '4rem', color: 'var(--acid-green)' }}>
-          CHAOS CORNER
-        </h1>
-        <p style={{ fontSize: '1.5rem', fontWeight: 'bold', background: 'var(--hot-pink)', display: 'inline-block', padding: '5px 15px', marginTop: '10px', color: 'black' }}>
-          JAHAN LOG PAGAL HOTE HAIN! 🤪
-        </p>
-      </header>
+      ))}
 
-      {/* JOKE SECTION */}
-      <section className="crazy-card" style={{ marginBottom: '40px' }}>
-        <h2 style={{ color: 'var(--cyan)', marginBottom: '20px' }}>Joke of the Moment</h2>
-        <motion.p 
-          key={jokeIndex}
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          style={{ fontSize: '1.8rem', minHeight: '100px', marginBottom: '20px' }}
+      <main className="relative z-10 max-w-6xl mx-auto px-6 py-20 flex flex-col items-center">
+        
+        {/* Header Badge */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="mb-12"
         >
-          {jokes[jokeIndex]}
-        </motion.p>
-        <button className="crazy-btn" onClick={nextJoke}>ANOTHER ONE! 🤣</button>
-      </section>
-
-      {/* INTERACTIVE SCANNER */}
-      <section className="crazy-card" style={{ marginBottom: '40px', borderLeftColor: 'var(--hot-pink)' }}>
-        <h2 style={{ color: 'var(--acid-green)', marginBottom: '20px' }}>Personality Scanner 🔍</h2>
-        <p style={{ marginBottom: '20px' }}>Place your virtual finger on the screen (or just click the button below).</p>
-        <div style={{ textAlign: 'center' }}>
-          {isScanning ? (
-            <motion.div 
-              animate={{ x: [-10, 10, -10] }}
-              transition={{ repeat: Infinity, duration: 0.1 }}
-              style={{ fontSize: '2rem', color: 'var(--hot-pink)' }}
-            >
-              SCANNING BRAIN... (Wait, it's empty?)
-            </motion.div>
-          ) : scanResult ? (
-            <motion.div initial={{ scale: 2 }} animate={{ scale: 1 }} style={{ fontSize: '2rem', color: 'white' }}>
-              {scanResult}
-            </motion.div>
-          ) : null}
-          {!isScanning && <button className="crazy-btn" onClick={runScanner} style={{ marginTop: '20px' }}>START SCAN 🚀</button>}
-        </div>
-      </section>
-
-      {/* IMAGE BREAK */}
-      <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', marginBottom: '40px' }}>
-        <div className="crazy-card" style={{ flex: '1', minWidth: '300px' }}>
-          <img src="/funny/alien_taco_ear_1778349738811.png" alt="Alien" style={{ width: '100%', marginBottom: '10px' }} />
-          <h3>Alien vs Taco</h3>
-          <p>He's trying his best, okay?</p>
-        </div>
-        <div className="crazy-card" style={{ flex: '1', minWidth: '300px', boxOffset: '10px' }}>
-          <img src="/funny/skating_banana_1778349760961.png" alt="Banana" style={{ width: '100%', marginBottom: '10px' }} />
-          <h3>B-NANA FLOW</h3>
-          <p>Too cool for the fruit bowl.</p>
-        </div>
-      </div>
-
-      {/* POEMS SECTION */}
-      <section style={{ marginBottom: '60px' }}>
-        <h2 style={{ textAlign: 'center', fontSize: '3rem', marginBottom: '30px' }}>Legendary Shayari ✍️</h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '30px' }}>
-          {poems.map((p, i) => (
-            <motion.div 
-              key={i} 
-              className="crazy-card"
-              whileHover={{ rotate: i % 2 === 0 ? 2 : -2 }}
-            >
-              <h3 style={{ color: 'var(--hot-pink)', marginBottom: '10px' }}>{p.title}</h3>
-              <p style={{ fontSize: '1.2rem', whiteSpace: 'pre-line' }}>{p.text}</p>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* THE SELF-DESTRUCT SECTION */}
-      <section className="crazy-card" style={{ marginBottom: '60px', textAlign: 'center', borderColor: 'red', boxShadow: '10px 10px 0px red' }}>
-        <h2 style={{ color: 'red', fontSize: '3rem', marginBottom: '20px' }}>⚠️ DANGER ZONE ⚠️</h2>
-        <p style={{ marginBottom: '20px', fontWeight: 'bold' }}>DO NOT CLICK THE RED BUTTON. REPEAT: DO NOT CLICK.</p>
-        
-        {isDestructing ? (
-          <div style={{ padding: '40px' }}>
-            <motion.h1 
-              animate={{ scale: [1, 1.5, 1], color: ['#ff0000', '#ffffff', '#ff0000'] }}
-              transition={{ repeat: Infinity, duration: 0.5 }}
-              style={{ fontSize: '6rem' }}
-            >
-              {countdown}
-            </motion.h1>
-            <p className="glitch-text" data-text="SELF DESTRUCT INITIATED!">SELF DESTRUCT INITIATED!</p>
+          <div className="px-6 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md text-xs tracking-[0.3em] uppercase text-pink-400 font-bold">
+            Established 2026 • Vibes Only
           </div>
-        ) : showCat ? (
-          <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} style={{ padding: '20px' }}>
-            <img 
-              src="/funny/lazy_super_cat_1778350094204.png" 
-              alt="Lazy Cat" 
-              style={{ width: '300px', border: '10px solid white' }}
-            />
-            <h2 style={{ marginTop: '20px', color: 'var(--acid-green)' }}>DESTRUCTION CANCELLED!</h2>
-            <p>Our superhero cat was supposed to press the 'Explode' button, but he fell asleep after eating too much pizza. Lucky you! 🍕💤</p>
-            <button className="crazy-btn" onClick={() => setShowCat(false)} style={{ marginTop: '20px' }}>WHEW! RESET 😅</button>
+        </motion.div>
+
+        {/* Hero Section */}
+        <div className="text-center mb-32">
+          <motion.h1 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-7xl md:text-9xl font-black tracking-tighter leading-[0.9] mb-8"
+          >
+            SITUATION KO <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-400 to-blue-500">SHMJHO</span>
+          </motion.h1>
+          
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+            className="flex items-center justify-center gap-6"
+          >
+            <span className="text-2xl md:text-3xl font-light italic text-white/60">#BackchodiOnTop</span>
+            <div className="h-px w-12 bg-white/20" />
+            <motion.div
+              animate={{ rotate: [0, 10, -10, 0] }}
+              transition={{ duration: 4, repeat: Infinity }}
+              className="w-16 h-16 rounded-2xl overflow-hidden border border-white/10 shadow-2xl"
+            >
+              <img src="/stickers.png" alt="vibes" className="w-full h-full object-cover" />
+            </motion.div>
           </motion.div>
-        ) : (
-          <button 
-            className="crazy-btn" 
-            style={{ background: 'red', color: 'white', fontSize: '2rem' }}
-            onClick={startDestruct}
-          >
-            I'M A REBEL, CLICK ME! 💣
-          </button>
-        )}
-      </section>
+        </div>
 
-      {/* VELLA-PANTI CERTIFICATE */}
-      <section className="crazy-card" style={{ marginBottom: '60px', background: 'white', color: 'black', boxShadow: '10px 10px 0px var(--cyan)' }}>
-        <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>🎓 The Vella-panti University</h2>
-        <p style={{ textAlign: 'center', marginBottom: '20px' }}>Enter your name to receive your official 'Vella' Degree.</p>
-        
-        {!degreeName ? (
-          <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
-            <input 
-              type="text" 
-              placeholder="Your Name Here..." 
-              id="name-input"
-              style={{ padding: '10px', border: '4px solid black', fontSize: '1.2rem', width: '70%' }}
-            />
-            <button 
-              className="crazy-btn" 
-              style={{ fontSize: '1rem' }}
-              onClick={() => {
-                const name = document.getElementById('name-input').value;
-                if(name) setDegreeName(name);
-              }}
-            >
-              GET DEGREE 📜
-            </button>
-          </div>
-        ) : (
+        {/* Cards Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full">
+          
+          {/* Card 1 */}
           <motion.div 
-            initial={{ rotate: -10, scale: 0 }}
-            animate={{ rotate: 0, scale: 1 }}
-            style={{ 
-              border: '10px double black', 
-              padding: '40px', 
-              textAlign: 'center',
-              position: 'relative',
-              background: '#fffdf0'
-            }}
+            whileHover={{ y: -10 }}
+            className="relative group"
           >
-            <div style={{ fontSize: '1.5rem', fontWeight: 'bold', textDecoration: 'underline' }}>CERTIFICATE OF SUPREME USELESSNESS</div>
-            <p style={{ marginTop: '20px' }}>This is to certify that</p>
-            <h1 style={{ fontSize: '3rem', margin: '10px 0', borderBottom: '2px solid black', display: 'inline-block' }}>{degreeName}</h1>
-            <p style={{ marginTop: '20px' }}>Has successfully wasted 10 minutes of their life on this website instead of doing something productive. We are proud of your zero contribution to society.</p>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '40px' }}>
+            <div className="absolute -inset-0.5 bg-gradient-to-r from-pink-500 to-purple-600 rounded-[32px] blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
+            <div className="relative glass p-10 h-full flex flex-col justify-between">
               <div>
-                <div style={{ fontWeight: 'bold' }}>Dr. Pagal Insaan</div>
-                <div style={{ fontSize: '0.8rem' }}>Dean of Time-Wasting</div>
+                <span className="text-pink-500 text-sm font-bold tracking-widest uppercase mb-4 block">Section 01</span>
+                <h2 className="text-4xl md:text-5xl font-bold mb-6 devanagari">सीरियस मत हो!</h2>
+                <p className="text-xl text-white/70 leading-relaxed font-light">
+                  "Maje mai raho, reel se mai kuch tumko jatana nahi chahta bss thoda masti majak krta hu. 
+                  Isliye tumko must watch likha tha."
+                </p>
               </div>
-              <div style={{ width: '80px', height: '80px', background: 'red', borderRadius: '50%', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', transform: 'rotate(-20deg)', border: '4px dashed white' }}>
-                SEAL OF VELLA
+              <div className="mt-8 pt-8 border-t border-white/5 flex items-center gap-4">
+                <div className="w-10 h-10 rounded-full bg-pink-500/20 flex items-center justify-center text-pink-500">😎</div>
+                <span className="font-medium text-white/90">Ok be cool!</span>
               </div>
             </div>
-            <button className="crazy-btn" onClick={() => setDegreeName("")} style={{ marginTop: '30px', background: '#ccc' }}>TRY AGAIN 🔄</button>
           </motion.div>
-        )}
-      </section>
 
-      {/* THE IMPOSSIBLE BUTTON (Moved here and made smaller) */}
-      <section style={{ height: '200px', position: 'relative', border: '5px dashed white', display: 'flex', justifyContent: 'center', alignItems: 'center', overflow: 'hidden', marginBottom: '60px' }}>
-        <h3 style={{ opacity: 0.2 }}>CHASE ME IF YOU CAN...</h3>
-        <motion.button
-          className="crazy-btn"
-          style={{ 
-            position: 'absolute',
-            left: btnPos.x,
-            top: btnPos.y,
-            background: 'white',
-            color: 'black',
-            fontSize: '1rem'
-          }}
-          onMouseEnter={moveBtn}
-          onClick={() => alert("HOW?! 😱")}
-        >
-          TOUCH ME!
-        </motion.button>
-      </section>
+          {/* Card 2 */}
+          <motion.div 
+            whileHover={{ y: -10 }}
+            className="relative group"
+          >
+            <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-cyan-600 rounded-[32px] blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
+            <div className="relative glass p-10 h-full flex flex-col justify-between">
+              <div>
+                <span className="text-blue-500 text-sm font-bold tracking-widest uppercase mb-4 block">Section 02</span>
+                <h2 className="text-4xl md:text-5xl font-bold mb-6 devanagari">दोस्ती बनी रहे...</h2>
+                <p className="text-xl text-white/70 leading-relaxed font-light">
+                  "Jab tak tumko lagega, jab tum mujhe bol dena mai intezaar krta rahunga. 
+                  Tab tak toh jese apn the achee dost, unki trh toh reh skte hai..."
+                </p>
+              </div>
+              <div className="mt-8 pt-8 border-t border-white/5 flex items-center gap-4">
+                <div className="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-500">😅</div>
+                <span className="font-medium text-white/90">Majak masti wali life!</span>
+              </div>
+            </div>
+          </motion.div>
 
-      {/* HONEST RATING */}
-      <div style={{ textAlign: 'center', marginBottom: '100px' }}>
-        <h2>Rate this masterpiece?</h2>
-        <div style={{ display: 'flex', gap: '20px', justifyContent: 'center', marginTop: '20px', flexWrap: 'wrap' }}>
-          <button className="crazy-btn" onClick={() => alert("I know, I'm a genius. 😎")}>Masterpiece</button>
-          <button className="crazy-btn" onClick={() => alert("Haters gonna hate. Go watch pogo! 📺")}>It's Trash</button>
-          <button className="crazy-btn" onClick={() => alert("Police is on the way to arrest you for your bad taste! 🚓")}>I'm Calling Police</button>
         </div>
-      </div>
 
-      {/* FOOTER */}
-      <footer style={{ textAlign: 'center', padding: '100px 0', borderTop: '5px solid white' }}>
-        <h2 className="rotate-infinite" style={{ display: 'inline-block', fontSize: '3rem', color: 'var(--acid-green)' }}>★</h2>
-        <p style={{ fontSize: '1.5rem', marginTop: '20px' }}>
-          Ab pakka jao, server ka bill badh raha hai! 💸
-        </p>
-        {/* <p style={{ 
-          fontSize: '1.8rem', 
-          marginTop: '40px', 
-          color: 'var(--hot-pink)', 
-          fontWeight: 'bold',
-          background: 'white',
-          padding: '10px 20px',
-          display: 'inline-block',
-          border: '4px solid black',
-          boxShadow: '5px 5px 0px var(--cyan)'
-        }}>
-          Jyotsana, smile ke saath ek selfie zaroor bhej dena, varna main sochunga achha nahi bana! 😉📸
-        </p> */}
-        <p style={{ marginTop: '40px', opacity: 0.5 }}>© 2026 The Chaos Lab. No Refund for wasted time.</p>
-      </footer>
+        {/* Surprise Button Section */}
+        <div className="mt-40 text-center">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            className="flex flex-col items-center gap-12"
+          >
+            <div className="flex flex-wrap justify-center gap-6">
+              <motion.button
+                onClick={() => setShowMessage(!showMessage)}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="px-10 py-5 rounded-2xl bg-white text-black font-bold text-lg hover:bg-pink-500 hover:text-white transition-colors duration-300 shadow-[0_0_30px_rgba(255,255,255,0.1)]"
+              >
+                {showMessage ? "Close Message" : "Open Surprise 🎁"}
+              </motion.button>
+              
+              <motion.button
+                whileHover={{ 
+                  x: [0, -100, 100, -100, 0],
+                  y: [0, 50, -50, 50, 0],
+                  scale: 0.8
+                }}
+                className="px-10 py-5 rounded-2xl border border-white/20 bg-white/5 backdrop-blur-xl font-bold text-lg"
+              >
+                Don't Click 🚫
+              </motion.button>
+            </div>
 
-      {isDestructing && (
-        <style>{`
-          body { animation: shake 0.1s infinite; }
-          @keyframes shake {
-            0% { transform: translate(1px, 1px) rotate(0deg); }
-            10% { transform: translate(-1px, -2px) rotate(-1deg); }
-            20% { transform: translate(-3px, 0px) rotate(1deg); }
-            30% { transform: translate(3px, 2px) rotate(0deg); }
-            40% { transform: translate(1px, -1px) rotate(1deg); }
-            50% { transform: translate(-1px, 2px) rotate(-1deg); }
-            60% { transform: translate(-3px, 1px) rotate(0deg); }
-            70% { transform: translate(3px, 1px) rotate(-1deg); }
-            80% { transform: translate(-1px, -1px) rotate(1deg); }
-            90% { transform: translate(1px, 2px) rotate(0deg); }
-            100% { transform: translate(1px, -2px) rotate(-1deg); }
-          }
-        `}</style>
-      )}
+            <AnimatePresence>
+              {showMessage && (
+                <motion.div
+                  initial={{ opacity: 0, y: 40, filter: 'blur(10px)' }}
+                  animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                  exit={{ opacity: 0, y: 40, filter: 'blur(10px)' }}
+                  className="max-w-2xl p-12 rounded-[40px] border border-white/10 bg-white/[0.02] backdrop-blur-3xl relative overflow-hidden"
+                >
+                  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500"></div>
+                  <p className="text-3xl md:text-4xl font-light italic leading-relaxed text-white/90 devanagari">
+                    "Phad liya? Ab smile krdo thoda! 😊 <br />
+                    Hmara goal toh bss tumhari khushi hai."
+                  </p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
+        </div>
+
+        {/* Final Tagline */}
+        <motion.div 
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          className="mt-60 mb-20 text-center"
+        >
+          <p className="text-white/40 text-sm tracking-[0.5em] uppercase mb-4">The Final Word</p>
+          <h3 className="text-5xl md:text-7xl font-black italic text-white/20">BACKCHODI ON TOP</h3>
+        </motion.div>
+
+        <footer className="w-full border-t border-white/5 pt-10 pb-20 flex flex-col md:flex-row justify-between items-center text-white/40 text-sm gap-6">
+          <p>© 2026 Crafted for a Lovely Human</p>
+          <div className="flex gap-8">
+            <span>Chill Vibes</span>
+            <span>Friendly Mode</span>
+            <span>Waiting...</span>
+          </div>
+        </footer>
+
+      </main>
+
+      {/* Custom Cursor */}
+      <motion.div 
+        className="fixed top-0 left-0 w-6 h-6 rounded-full bg-white mix-blend-difference pointer-events-none z-[100]"
+        animate={{
+          x: mousePos.x - 12,
+          y: mousePos.y - 12,
+          scale: showMessage ? 3 : 1
+        }}
+        transition={{ type: 'spring', damping: 25, stiffness: 400, mass: 0.5 }}
+      />
+
     </div>
   );
 };
